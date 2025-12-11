@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FootWearHub | Premium E-Commerce</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Swiper -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- 1. CORE VARIABLES & RESET --- */
+        :root {
+            --bg-dark: #0f0f0f;
+            --bg-card: #1a1a1a;
+            --bg-lighter: #252525;
+            --accent: #FFD700; /* Gold */
+            --accent-hover: #e6c200;
+            --text-main: #ffffff;
+            --text-muted: #a0a0a0;
+            --danger: #ff4d4d;
+            --success: #00c851;
+            --glass: rgba(26, 26, 26, 0.8);
+            --border: 1px solid rgba(255, 255, 255, 0.08);
+            --shadow: 0 10px 30px rgba(0,0,0,0.5);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+        /* --- 2. HEADER & NAVIGATION --- */
+        header {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            padding: 1rem 5%;
+            z-index: 1000;
+            background: rgba(15, 15, 15, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: var(--text-main);
+        }
+        .logo span { color: var(--accent); }
+
+        .nav-center {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-link {
+            font-size: 0.95rem;
+            font-weight: 500;
+            position: relative;
+            color: var(--text-muted);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 2px;
+            background: var(--accent);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover, .nav-link.active { color: var(--text-main); }
+        .nav-link:hover::after { width: 100%; }
+
+        .nav-icons { display: flex; gap: 1.5rem; align-items: center; }
+        .icon-btn {
+            position: relative;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--text-main);
+        }
+        .icon-btn:hover { color: var(--accent); transform: translateY(-2px); }
+        
+        .badge {
+            position: absolute;
+            top: -8px; right: -8px;
+            background: var(--accent);
+            color: var(--bg-dark);
+            font-size: 0.7rem;
+            font-weight: 700;
+            width: 18px; height: 18px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* --- 3. HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            width: 100%;
+            margin-top: 0;
+        }
+        .hero-slide {
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%);
+        }
+        .hero-content {
+            position: relative; z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            padding: 0 1rem;
+            opacity: 0; /* Hidden initially for animation */
+        }
+        .hero-subtitle {
+            color: var(--accent);
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+        .btn {
+            padding: 1rem 2.5rem;
+            background: var(--accent);
+            color: var(--bg-dark);
+            font-weight: 600;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+        }
+        .btn:hover { background: var(--text-main); transform: translateY(-3px); }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--text-main);
+            color: var(--text-main);
+            margin-left: 1rem;
+        }
+        .btn-outline:hover { background: var(--text-main); color: var(--bg-dark); }
+
+        /* --- 4. FEATURES STRIP --- */
+        .features-strip {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            background: var(--bg-card);
+            padding: 3rem 5%;
+            border-bottom: var(--border);
+        }
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+        }
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--accent);
+        }
+        .feature-text h4 { font-size: 1rem; font-weight: 600; }
+        .feature-text p { font-size: 0.85rem; color: var(--text-muted); }
+
+        /* --- 5. CATEGORIES BENTO GRID --- */
+        .section { padding: 5rem 5%; }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            margin-bottom: 3rem;
+        }
+        .heading-group h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .heading-group p { color: var(--text-muted); }
+        .view-all { color: var(--accent); font-weight: 600; }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, 250px);
+            gap: 1.5rem;
+        }
+        
+        .cat-card {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            height: 100%;
+            min-height: 250px;
+        }
+
+        /* Bento Grid Logic */
+        .cat-card:nth-child(1) { grid-column: span 2; grid-row: span 2; } /* Large Square */
+        .cat-card:nth-child(2) { grid-column: span 1; grid-row: span 2; } /* Tall Vertical */
+        .cat-card:nth-child(3) { grid-column: span 1; grid-row: span 1; } /* Small Square */
+        .cat-card:nth-child(4) { grid-column: span 1; grid-row: span 1; } /* Small Square */
+        /* If 5th element exists */
+        .cat-card:nth-child(5) { grid-column: span 4; grid-row: span 1; display: none; } /* Hidden for 4-item bento or make visible if needed */
+
+        .cat-card img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        .cat-card:hover img { transform: scale(1.1); }
+        .cat-content {
+            position: absolute;
+            bottom: 0; left: 0; width: 100%;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+        }
+
+        /* --- 6. FLASH SALE --- */
+        .flash-sale {
+            background: linear-gradient(45deg, #1a1a1a 0%, #000000 100%);
+            padding: 4rem 5%;
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+            border-top: var(--border);
+            border-bottom: var(--border);
+        }
+        .flash-image { flex: 1; position: relative; }
+        .flash-image img { border-radius: 8px; box-shadow: var(--shadow); }
+        .flash-badge {
+            position: absolute; top: 20px; left: 20px;
+            background: var(--danger);
+            color: white;
+            padding: 0.5rem 1rem;
+            font-weight: 700;
+            border-radius: 4px;
+        }
+        .flash-content { flex: 1; }
+        .flash-content h2 { font-size: 3rem; margin-bottom: 1rem; }
+        .countdown {
+            display: flex; gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .time-block {
+            text-align: center;
+            background: var(--bg-lighter);
+            padding: 1rem;
+            min-width: 80px;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .time-val { font-size: 1.8rem; font-weight: 700; color: var(--accent); display: block; }
+        .time-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; }
+
+        /* --- 7. FILTERABLE PRODUCTS & SLIDER --- */
+        .filter-tabs {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 1rem;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 0.5rem 0;
+        }
+        .tab-btn.active { color: var(--accent); border-bottom: 2px solid var(--accent); }
+
+        /* Converted to Swiper styles */
+        .productSwiper {
+            width: 100%;
+            padding-bottom: 4rem; /* Space for pagination/navigation */
+            overflow: hidden; /* Ensure swiper doesn't break layout */
+        }
+        
+        .product-card {
+            background: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+            border: var(--border);
+            transition: var(--transition);
+            position: relative;
+            height: 100%; /* Important for swiper */
+        }
+        .product-card:hover { transform: translateY(-10px); box-shadow: var(--shadow); border-color: var(--accent); }
+        
+        .p-img-container {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+            background: #222;
+        }
+        .p-img-container img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .product-card:hover .p-img-container img { transform: scale(1.05); }
+        
+        .p-actions {
+            position: absolute;
+            bottom: -50px; left: 0; width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px;
+            transition: 0.3s;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+        }
+        .product-card:hover .p-actions { bottom: 0; }
+        
+        .action-btn {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: white;
+            color: black;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+        }
+        .action-btn:hover { background: var(--accent); }
+
+        .p-info { padding: 1.5rem; }
+        .p-cat { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; }
+        .p-title { font-size: 1.1rem; margin: 0.5rem 0; font-weight: 600; }
+        .p-price-row { display: flex; justify-content: space-between; align-items: center; }
+        .p-price { color: var(--accent); font-weight: 700; font-size: 1.2rem; }
+        .p-rating { font-size: 0.8rem; color: #ffc107; }
+
+        /* Custom Navigation Buttons */
+        .nav-arrow {
+            position: absolute;
+            top: 50%; transform: translateY(-50%);
+            width: 50px; height: 50px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            color: white;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: 0.3s;
+        }
+        .nav-arrow:hover { background: var(--accent); color: black; }
+        .nav-prev { left: 10px; }
+        .nav-next { right: 10px; }
+
+        /* --- 8. TESTIMONIALS --- */
+        .testimonials { background: var(--bg-lighter); text-align: center; }
+        .test-card {
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: 8px;
+            border: var(--border);
+            position: relative;
+            margin: 1rem;
+        }
+        .quote-icon { font-size: 2rem; color: var(--accent); margin-bottom: 1rem; opacity: 0.5; }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .user-img {
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* --- 9. BLOG SLIDER --- */
+        .blogSwiper {
+            width: 100%;
+            padding-bottom: 3rem;
+        }
+        .blog-card {
+            background: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+            border: var(--border);
+            height: 100%;
+        }
+        .blog-img { height: 200px; width: 100%; object-fit: cover; }
+        .blog-content { padding: 1.5rem; }
+        .blog-date { font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem; }
+        .blog-title { font-size: 1.2rem; margin-bottom: 1rem; transition: 0.3s; }
+        .blog-title:hover { color: var(--accent); }
+        .read-more { font-size: 0.9rem; font-weight: 600; color: var(--accent); text-transform: uppercase; }
+
+        /* --- 10. FOOTER --- */
+        footer {
+            background: #050505;
+            padding: 5rem 5% 1rem;
+            border-top: var(--border);
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+        .f-col h4 { font-size: 1.1rem; margin-bottom: 1.5rem; color: white; }
+        .f-col p { color: var(--text-muted); margin-bottom: 1.5rem; }
+        .f-links li { margin-bottom: 0.8rem; }
+        .f-links a { color: var(--text-muted); font-size: 0.9rem; }
+        .f-links a:hover { color: var(--accent); padding-left: 5px; }
+        
+        .newsletter-input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: var(--border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* --- QUICK VIEW MODAL --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none;
+            transition: var(--transition);
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+        
+        .modal-content {
+            background: var(--bg-card);
+            width: 900px; max-width: 90%;
+            display: grid; grid-template-columns: 1fr 1fr;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            transform: translateY(50px);
+            transition: var(--transition);
+            border: 1px solid var(--accent);
+        }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        .close-modal {
+            position: absolute; top: 15px; right: 15px;
+            background: none; border: none; color: white;
+            font-size: 1.5rem; cursor: pointer; z-index: 10;
+        }
+        .modal-img img { width: 100%; height: 100%; object-fit: cover; }
+        .modal-details { padding: 3rem; display: flex; flex-direction: column; justify-content: center; }
+        .modal-price { font-size: 2rem; color: var(--accent); font-weight: 700; margin: 1rem 0; }
+        .size-selector { display: flex; gap: 10px; margin: 1.5rem 0; }
+        .size-btn {
+            width: 40px; height: 40px;
+            border: 1px solid #333;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .size-btn:hover, .size-btn.selected { border-color: var(--accent); background: rgba(255, 215, 0, 0.1); }
+
+        /* RESPONSIVE */
+        @media(max-width: 992px) {
+            .category-grid { 
+                grid-template-columns: repeat(2, 1fr); 
+                grid-template-rows: auto;
+            }
+            .cat-card:nth-child(1) { grid-column: span 2; grid-row: span 1; height: 300px; }
+            .cat-card:nth-child(2) { grid-column: span 1; grid-row: span 1; height: 250px; }
+            .cat-card:nth-child(3) { grid-column: span 1; grid-row: span 1; height: 250px; }
+            .cat-card:nth-child(4) { grid-column: span 2; grid-row: span 1; height: 250px; }
+
+            .flash-sale { flex-direction: column; text-align: center; }
+            .countdown { justify-content: center; }
+            .modal-content { grid-template-columns: 1fr; height: 80vh; overflow-y: auto; }
+            .modal-img { height: 300px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media(max-width: 768px) {
+            .hero-title { font-size: 2.5rem; }
+            .nav-center { display: none; } /* Mobile Menu Logic Simplified */
+            .category-grid { grid-template-columns: 1fr; }
+            .cat-card:nth-child(1), .cat-card:nth-child(2), .cat-card:nth-child(3), .cat-card:nth-child(4) { 
+                grid-column: span 1; grid-row: span 1; height: 250px;
+            }
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Notification Toast -->
+    <div id="toast" style="position: fixed; top: 100px; right: 20px; background: var(--success); color: white; padding: 1rem 2rem; border-radius: 4px; transform: translateX(150%); transition: transform 0.3s; z-index: 3000;">Item Added to Cart!</div>
+
+    <!-- Quick View Modal -->
+    <div class="modal-overlay" id="quickViewModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <div class="modal-img">
+                <img id="modalImg" src="" alt="Product">
+            </div>
+            <div class="modal-details">
+                <h2 id="modalTitle">Product Title</h2>
+                <div class="p-rating">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i> (120 reviews)
+                </div>
+                <div class="modal-price" id="modalPrice">$0.00</div>
+                <p>Experience premium comfort and style with this masterfully crafted item. Made from sustainable materials and designed for the modern lifestyle.</p>
+                
+                <div class="size-selector">
+                    <button class="size-btn">S</button>
+                    <button class="size-btn selected">M</button>
+                    <button class="size-btn">L</button>
+                    <button class="size-btn">XL</button>
+                </div>
+
+                <button class="btn" onclick="addToCartUI(this)">Add to Cart <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <a href="#" class="logo">FootWear<span>Hub</span>.</a>
+        <nav class="nav-center">
+            <a href="#home" class="nav-link active">Home</a>
+            <a href="#shop" class="nav-link">Shop</a>
+            <a href="#flash" class="nav-link">Deals</a>
+            <a href="#blog" class="nav-link">Blog</a>
+            <a href="#contact" class="nav-link">Contact</a>
+        </nav>
+        <div class="nav-icons">
+            <i class="fas fa-search icon-btn"></i>
+            <i class="fas fa-heart icon-btn"></i>
+            <div class="icon-btn" id="cartBtn">
+                <i class="fas fa-shopping-bag"></i>
+                <span class="badge">0</span>
+            </div>
+            <i class="fas fa-bars icon-btn mobile-toggle" style="display: none;"></i>
+        </div>
+    </header>
+
+    <!-- Hero Slider -->
+    <section class="hero swiper heroSwiper" id="home">
+        <div class="swiper-wrapper">
+            <!-- Slide 1 -->
+            <div class="swiper-slide hero-slide" style="background-image: url('https://images.unsplash.com/photo-1556906781-9a412961c28c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');">
+                <div class="overlay"></div>
+                <div class="hero-content">
+                    <span class="hero-subtitle">New Collection 2024</span>
+                    <h1 class="hero-title">Step Into <br> The Future</h1>
+                    <button class="btn">Shop Collection</button>
+                    <button class="btn btn-outline">View Lookbook</button>
+                </div>
+            </div>
+            <!-- Slide 2 -->
+            <div class="swiper-slide hero-slide" style="background-image: url('https://images.unsplash.com/photo-1512374382149-233c42b6a83b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');">
+                <div class="overlay"></div>
+                <div class="hero-content">
+                    <span class="hero-subtitle">Urban Streetwear</span>
+                    <h1 class="hero-title">Redefine <br> Your Style</h1>
+                    <button class="btn">Shop Sneakers</button>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+    </section>
+
+    <!-- Features Strip -->
+    <div class="features-strip">
+        <div class="feature-item">
+            <i class="fas fa-shipping-fast feature-icon"></i>
+            <div class="feature-text">
+                <h4>Free Shipping</h4>
+                <p>On all orders over $100</p>
+            </div>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-shield-alt feature-icon"></i>
+            <div class="feature-text">
+                <h4>Secure Payment</h4>
+                <p>100% protected payments</p>
+            </div>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-undo feature-icon"></i>
+            <div class="feature-text">
+                <h4>30 Day Returns</h4>
+                <p>Money back guarantee</p>
+            </div>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-headset feature-icon"></i>
+            <div class="feature-text">
+                <h4>24/7 Support</h4>
+                <p>Expert customer care</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Categories BENTO GRID -->
+    <section class="section" id="shop">
+        <div class="section-header">
+            <div class="heading-group">
+                <h2>Browse Categories</h2>
+                <p>Find your perfect fit from our curated selection.</p>
+            </div>
+            <a href="#" class="view-all">View All Categories <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="category-grid">
+            <!-- 1. Large Square (2x2) -->
+            <div class="cat-card">
+                <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Sneakers">
+                <div class="cat-content">
+                    <h3>Sneakers</h3>
+                    <p>Urban & Sport</p>
+                </div>
+            </div>
+            <!-- 2. Tall Vertical (1x2) -->
+            <div class="cat-card">
+                <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Women's">
+                <div class="cat-content">
+                    <h3>Women's</h3>
+                    <p>Fashion & Heels</p>
+                </div>
+            </div>
+            <!-- 3. Small Square (1x1) -->
+            <div class="cat-card">
+                <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Men's">
+                <div class="cat-content">
+                    <h3>Men's</h3>
+                    <p>Formal & Casual</p>
+                </div>
+            </div>
+            <!-- 4. Small Square (1x1) -->
+            <div class="cat-card">
+                <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Accessories">
+                <div class="cat-content">
+                    <h3>Accessories</h3>
+                    <p>Bags & Belts</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Flash Sale Section -->
+    <section class="flash-sale" id="flash">
+        <div class="flash-image">
+            <span class="flash-badge">-50% OFF</span>
+            <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Flash Sale Shoe">
+        </div>
+        <div class="flash-content">
+            <h4>Deal of the Week</h4>
+            <h2>Neon Cyber Runner</h2>
+            <p>Experience ultimate comfort with our limited edition Cyber Runner. Engineered for speed and style in the urban jungle.</p>
+            
+            <div class="countdown" id="countdown">
+                <div class="time-block"><span class="time-val" id="days">00</span><span class="time-label">Days</span></div>
+                <div class="time-block"><span class="time-val" id="hours">00</span><span class="time-label">Hours</span></div>
+                <div class="time-block"><span class="time-val" id="minutes">00</span><span class="time-label">Mins</span></div>
+                <div class="time-block"><span class="time-val" id="seconds">00</span><span class="time-label">Secs</span></div>
+            </div>
+            
+            <div class="p-price" style="font-size: 2rem; margin-bottom: 1rem;">$149.00 <span style="text-decoration: line-through; color: gray; font-size: 1.2rem;">$299.00</span></div>
+            <button class="btn">Buy Now</button>
+        </div>
+    </section>
+
+    <!-- Filterable Products SLIDER -->
+    <section class="section" style="position: relative;">
+        <div class="section-header">
+            <div class="heading-group">
+                <h2>Trending Now</h2>
+            </div>
+            <div class="filter-tabs">
+                <button class="tab-btn active">All</button>
+                <button class="tab-btn">New Arrivals</button>
+                <button class="tab-btn">Best Sellers</button>
+            </div>
+        </div>
+
+        <!-- Custom Navigation -->
+        <div class="nav-arrow nav-prev p-prev"><i class="fas fa-chevron-left"></i></div>
+        <div class="nav-arrow nav-next p-next"><i class="fas fa-chevron-right"></i></div>
+
+        <div class="swiper productSwiper">
+            <div class="swiper-wrapper">
+                <!-- Product 1 -->
+                <div class="swiper-slide">
+                    <div class="product-card">
+                        <div class="p-img-container">
+                            <img src="https://images.unsplash.com/photo-1600185365926-3a6d3de3ddaf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Shoe">
+                            <div class="p-actions">
+                                <button class="action-btn" onclick="addToCartUI(this)"><i class="fas fa-shopping-bag"></i></button>
+                                <button class="action-btn" onclick="openModal('Nike Air Jordan', '189.00', this)"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn"><i class="far fa-heart"></i></button>
+                            </div>
+                        </div>
+                        <div class="p-info">
+                            <span class="p-cat">Sneakers</span>
+                            <h3 class="p-title">Nike Air Jordan</h3>
+                            <div class="p-price-row">
+                                <span class="p-price">$189.00</span>
+                                <div class="p-rating"><i class="fas fa-star"></i> 4.9</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="swiper-slide">
+                    <div class="product-card">
+                        <div class="p-img-container">
+                            <img src="https://images.unsplash.com/photo-1560769629-975ec94e6a86?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Shoe">
+                            <div class="p-actions">
+                                <button class="action-btn" onclick="addToCartUI(this)"><i class="fas fa-shopping-bag"></i></button>
+                                <button class="action-btn" onclick="openModal('Urban Loafer', '120.00', this)"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn"><i class="far fa-heart"></i></button>
+                            </div>
+                        </div>
+                        <div class="p-info">
+                            <span class="p-cat">Formal</span>
+                            <h3 class="p-title">Urban Loafer</h3>
+                            <div class="p-price-row">
+                                <span class="p-price">$120.00</span>
+                                <div class="p-rating"><i class="fas fa-star"></i> 4.5</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="swiper-slide">
+                    <div class="product-card">
+                        <div class="p-img-container">
+                            <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Shoe">
+                            <div class="p-actions">
+                                <button class="action-btn" onclick="addToCartUI(this)"><i class="fas fa-shopping-bag"></i></button>
+                                <button class="action-btn" onclick="openModal('Nike Air Max', '145.00', this)"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn"><i class="far fa-heart"></i></button>
+                            </div>
+                        </div>
+                        <div class="p-info">
+                            <span class="p-cat">Running</span>
+                            <h3 class="p-title">Nike Air Max</h3>
+                            <div class="p-price-row">
+                                <span class="p-price">$145.00</span>
+                                <div class="p-rating"><i class="fas fa-star"></i> 4.8</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="swiper-slide">
+                    <div class="product-card">
+                        <div class="p-img-container">
+                            <img src="https://images.unsplash.com/photo-1525966222134-fcfa99d8fe77?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Shoe">
+                            <div class="p-actions">
+                                <button class="action-btn" onclick="addToCartUI(this)"><i class="fas fa-shopping-bag"></i></button>
+                                <button class="action-btn" onclick="openModal('Vans Old Skool', '65.00', this)"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn"><i class="far fa-heart"></i></button>
+                            </div>
+                        </div>
+                        <div class="p-info">
+                            <span class="p-cat">Casual</span>
+                            <h3 class="p-title">Vans Old Skool</h3>
+                            <div class="p-price-row">
+                                <span class="p-price">$65.00</span>
+                                <div class="p-rating"><i class="fas fa-star"></i> 4.7</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Product 5 (Duplicate for slider demo) -->
+                 <div class="swiper-slide">
+                    <div class="product-card">
+                        <div class="p-img-container">
+                            <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Shoe">
+                            <div class="p-actions">
+                                <button class="action-btn" onclick="addToCartUI(this)"><i class="fas fa-shopping-bag"></i></button>
+                                <button class="action-btn" onclick="openModal('Cyber Runner', '150.00', this)"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn"><i class="far fa-heart"></i></button>
+                            </div>
+                        </div>
+                        <div class="p-info">
+                            <span class="p-cat">Limited</span>
+                            <h3 class="p-title">Cyber Runner</h3>
+                            <div class="p-price-row">
+                                <span class="p-price">$150.00</span>
+                                <div class="p-rating"><i class="fas fa-star"></i> 5.0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section testimonials">
+        <div class="section-header" style="justify-content: center;">
+            <div class="heading-group" style="text-align: center;">
+                <h2>What Clients Say</h2>
+                <p>Trusted by thousands of customers worldwide.</p>
+            </div>
+        </div>
+        
+        <div class="swiper testSwiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="test-card">
+                        <i class="fas fa-quote-left quote-icon"></i>
+                        <p>"Absolutely loving the quality of the sneakers. Shipping was incredibly fast, and the packaging felt premium. Will buy again!"</p>
+                        <div class="user-profile">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" class="user-img" alt="User">
+                            <div style="text-align: left;">
+                                <h5>John Doe</h5>
+                                <span style="font-size: 0.8rem; color: var(--accent);">Verified Buyer</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="test-card">
+                        <i class="fas fa-quote-left quote-icon"></i>
+                        <p>"The customer service is unmatched. I had a sizing issue and they sorted it out within 24 hours. The shoes are super comfortable."</p>
+                        <div class="user-profile">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" class="user-img" alt="User">
+                            <div style="text-align: left;">
+                                <h5>Sarah Jenkins</h5>
+                                <span style="font-size: 0.8rem; color: var(--accent);">Verified Buyer</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="test-card">
+                        <i class="fas fa-quote-left quote-icon"></i>
+                        <p>"Finally found a store that balances style and comfort perfectly. The 'Flash Sale' deals are actually legitimate good offers."</p>
+                        <div class="user-profile">
+                            <img src="https://randomuser.me/api/portraits/men/86.jpg" class="user-img" alt="User">
+                            <div style="text-align: left;">
+                                <h5>Mike Ross</h5>
+                                <span style="font-size: 0.8rem; color: var(--accent);">Verified Buyer</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section SLIDER -->
+    <section class="section" id="blog" style="position: relative;">
+        <div class="section-header">
+            <div class="heading-group">
+                <h2>Latest News</h2>
+                <p>Trends, styles, and footwear technology.</p>
+            </div>
+            <!-- Custom Navigation for Blog -->
+            <div style="display: flex; gap: 10px;">
+                <div class="nav-arrow nav-prev b-prev" style="position: static; transform: none;"><i class="fas fa-chevron-left"></i></div>
+                <div class="nav-arrow nav-next b-next" style="position: static; transform: none;"><i class="fas fa-chevron-right"></i></div>
+            </div>
+        </div>
+        
+        <div class="swiper blogSwiper">
+            <div class="swiper-wrapper">
+                <article class="swiper-slide blog-card">
+                    <img src="https://images.unsplash.com/photo-1520006403909-838d6b92c22e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Blog" class="blog-img">
+                    <div class="blog-content">
+                        <span class="blog-date">Oct 12, 2023</span>
+                        <h3 class="blog-title">The Future of Sustainable Footwear</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 1rem;">Exploring how big brands are switching to recycled materials...</p>
+                        <a href="#" class="read-more">Read More</a>
+                    </div>
+                </article>
+                <article class="swiper-slide blog-card">
+                    <img src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Blog" class="blog-img">
+                    <div class="blog-content">
+                        <span class="blog-date">Oct 08, 2023</span>
+                        <h3 class="blog-title">Top 5 Sneaker Trends for 2024</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 1rem;">From chunky soles to retro comebacks, here is what's next...</p>
+                        <a href="#" class="read-more">Read More</a>
+                    </div>
+                </article>
+                <article class="swiper-slide blog-card">
+                    <img src="https://images.unsplash.com/photo-1595341888016-a392ef81b7de?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Blog" class="blog-img">
+                    <div class="blog-content">
+                        <span class="blog-date">Sep 25, 2023</span>
+                        <h3 class="blog-title">How to Clean Your White Sneakers</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 1rem;">Simple home remedies to keep your kicks looking fresh...</p>
+                        <a href="#" class="read-more">Read More</a>
+                    </div>
+                </article>
+                <article class="swiper-slide blog-card">
+                    <img src="https://images.unsplash.com/photo-1516478177764-9fe5bd7e9717?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Blog" class="blog-img">
+                    <div class="blog-content">
+                        <span class="blog-date">Sep 20, 2023</span>
+                        <h3 class="blog-title">Choosing the Right Running Shoe</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 1rem;">Avoid injuries by selecting the perfect fit for your feet...</p>
+                        <a href="#" class="read-more">Read More</a>
+                    </div>
+                </article>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-grid">
+            <div class="f-col">
+                <a href="#" class="logo" style="margin-bottom: 1rem; display: block;">FootWear<span>Hub</span>.</a>
+                <p>The premier destination for luxury footwear and street fashion. We define style through quality.</p>
+                <div style="display: flex; gap: 1rem;">
+                    <i class="fab fa-facebook-f icon-btn"></i>
+                    <i class="fab fa-instagram icon-btn"></i>
+                    <i class="fab fa-twitter icon-btn"></i>
+                </div>
+            </div>
+            <div class="f-col f-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Shop Men</a></li>
+                    <li><a href="#">Shop Women</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="f-col f-links">
+                <h4>Customer Care</h4>
+                <ul>
+                    <li><a href="#">Order Tracking</a></li>
+                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Size Guide</a></li>
+                </ul>
+            </div>
+            <div class="f-col">
+                <h4>Newsletter</h4>
+                <p>Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.</p>
+                <form>
+                    <input type="email" placeholder="Enter your email" class="newsletter-input">
+                    <button type="submit" class="btn" style="width: 100%; padding: 0.8rem;">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2023 FootWearHub. All Rights Reserved. Designed for Excellence.
+        </div>
+    </footer>
+
+    <script>
+        // --- 1. COUNTDOWN TIMER ---
+        const countDownDate = new Date().getTime() + (3 * 24 * 60 * 60 * 1000); // 3 days from now
+
+        const countdownInterval = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = countDownDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Added checks to ensure elements exist before updating
+            const dayEl = document.getElementById("days");
+            if(dayEl) dayEl.innerHTML = String(days).padStart(2, '0');
+            
+            const hourEl = document.getElementById("hours");
+            if(hourEl) hourEl.innerHTML = String(hours).padStart(2, '0');
+            
+            const minEl = document.getElementById("minutes");
+            if(minEl) minEl.innerHTML = String(minutes).padStart(2, '0');
+            
+            const secEl = document.getElementById("seconds");
+            if(secEl) secEl.innerHTML = String(seconds).padStart(2, '0');
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                const cd = document.getElementById("countdown");
+                if(cd) cd.innerHTML = "EXPIRED";
+            }
+        }, 1000);
+
+        // --- 2. SWIPER INIT ---
+        
+        // Hero Swiper with GSAP Animation
+        const heroSwiper = new Swiper('.heroSwiper', {
+            loop: true,
+            effect: 'fade',
+            autoplay: { delay: 5000 },
+            pagination: { el: '.swiper-pagination', clickable: true },
+            on: {
+                // Animate content on slide change
+                slideChangeTransitionStart: function () {
+                    // Hide all content first
+                    gsap.set('.hero-content', { opacity: 0, y: 50 });
+                    
+                    // Animate active slide content
+                    const activeSlide = this.slides[this.activeIndex];
+                    const content = activeSlide.querySelector('.hero-content');
+                    
+                    gsap.to(content, {
+                        opacity: 1,
+                        y: 0,
+                        duration: 1,
+                        ease: "power3.out",
+                        delay: 0.2
+                    });
+                },
+                // Initial load animation
+                init: function() {
+                    gsap.set('.hero-content', { opacity: 0, y: 50 });
+                    const activeSlide = this.slides[this.activeIndex];
+                    const content = activeSlide.querySelector('.hero-content');
+                    
+                    gsap.to(content, {
+                        opacity: 1,
+                        y: 0,
+                        duration: 1,
+                        ease: "power3.out",
+                        delay: 0.5
+                    });
+                }
+            }
+        });
+
+        // Testimonial Swiper
+        const testSwiper = new Swiper('.testSwiper', {
+            loop: true,
+            slidesPerView: 1,
+            spaceBetween: 20,
+            autoplay: { delay: 4000 },
+            breakpoints: {
+                768: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 }
+            }
+        });
+
+        // New Product Slider
+        const productSwiper = new Swiper('.productSwiper', {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            loop: true,
+            pagination: { el: '.swiper-pagination', clickable: true },
+            navigation: {
+                nextEl: '.p-next',
+                prevEl: '.p-prev',
+            },
+            breakpoints: {
+                640: { slidesPerView: 2 },
+                768: { slidesPerView: 3 },
+                1024: { slidesPerView: 4 },
+            }
+        });
+
+        // New Blog Slider
+        const blogSwiper = new Swiper('.blogSwiper', {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            loop: true,
+            pagination: { el: '.swiper-pagination', clickable: true },
+            navigation: {
+                nextEl: '.b-next',
+                prevEl: '.b-prev',
+            },
+            breakpoints: {
+                640: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 },
+            }
+        });
+
+        // --- 3. UI INTERACTIONS ---
+        
+        // Add to Cart Animation
+        let cartCount = 0;
+        const badge = document.querySelector('.badge');
+        const toast = document.getElementById('toast');
+
+        function addToCartUI(btn) {
+            cartCount++;
+            badge.innerText = cartCount;
+            
+            // GSAP Bounce Cart Icon
+            gsap.fromTo("#cartBtn", { scale: 1 }, { scale: 1.2, duration: 0.2, yoyo: true, repeat: 1 });
+            
+            // Show Toast
+            toast.style.transform = "translateX(0)";
+            setTimeout(() => {
+                toast.style.transform = "translateX(150%)";
+            }, 3000);
+
+            // Change button text temporarily if it's the main button
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'Added <i class="fas fa-check"></i>';
+            btn.style.background = 'var(--success)';
+            btn.style.color = 'white';
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = '';
+                btn.style.color = '';
+            }, 2000);
+        }
+
+        // Modal Logic
+        const modal = document.getElementById('quickViewModal');
+        const modalImg = document.getElementById('modalImg');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalPrice = document.getElementById('modalPrice');
+
+        function openModal(title, price, btn) {
+            // Get image from the card that was clicked
+            const cardImg = btn.closest('.product-card').querySelector('img').src;
+            
+            modalImg.src = cardImg;
+            modalTitle.innerText = title;
+            modalPrice.innerText = '$' + price;
+            
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        // Close modal on outside click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Tab selection logic (Visual only for prototype)
+        const tabs = document.querySelectorAll('.tab-btn');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // GSAP animation for grid refresh simulation (targeting swiper wrapper)
+                gsap.fromTo(".productSwiper", {opacity: 0, y: 20}, {opacity: 1, y: 0, duration: 0.5});
+            });
+        });
+
+        // --- 4. SCROLL ANIMATIONS ---
+        gsap.registerPlugin(ScrollTrigger);
+        
+        gsap.utils.toArray('.section').forEach(section => {
+            gsap.from(section.children, {
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top 80%',
+                },
+                y: 50,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.2
+            });
+        });
+
+    </script>
+</body>
+</html>

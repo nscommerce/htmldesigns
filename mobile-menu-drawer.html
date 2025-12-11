@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multi-Step Mobile Menu</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background: #f4f4f4;
+    }
+    .menu-container {
+        width: 100%;
+        max-width: 400px;
+        margin: auto;
+        background: #000;
+        color: #fff;
+        height: 100vh;
+        overflow: hidden;
+        position: relative;
+    }
+    .menu-header {
+        background: #222;
+        padding: 12px;
+        font-weight: bold;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+    .back-icon {
+        position: absolute;
+        left: 10px;
+        cursor: pointer;
+        font-size: 18px;
+    }
+    .menu-step {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 100%;
+        background: #111;
+        transition: left 0.3s ease-in-out;
+        padding: 10px;
+        box-sizing: border-box;
+        overflow-y: auto;
+    }
+    .menu-step.active {
+        left: 0;
+    }
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+    li {
+        background: #222;
+        margin: 5px 0;
+        padding: 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    li:hover {
+        background: #333;
+    }
+    .submenu-icon {
+        font-size: 16px;
+        opacity: 0.6;
+    }
+    /* Collapsible styles */
+    .collapsible {
+        background: #222;
+        border: none;
+        outline: none;
+        padding: 12px;
+        width: 100%;
+        text-align: left;
+        color: #fff;
+        cursor: pointer;
+        border-radius: 5px;
+        margin: 5px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .collapsible.active {
+        background: #333;
+    }
+    .content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        background: #333;
+        margin-bottom: 5px;
+        padding: 0 10px;
+    }
+    .content p {
+        margin: 8px 0;
+        font-size: 14px;
+        color: #ccc;
+    }
+</style>
+</head>
+<body>
+<div class="menu-container">
+
+    <!-- Step 1 -->
+    <div class="menu-step active" id="step1">
+        <ul>
+            <li data-step="step2" data-title="Opties">Opties <span class="submenu-icon">›</span></li>
+            <li data-step="step2" data-title="Toebehoren">Toebehoren <span class="submenu-icon">›</span></li>
+        </ul>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="menu-step" id="step2">
+        <div class="menu-header">
+            <span class="back-icon" data-back="step1">←</span>
+            <span class="header-title">Parent</span>
+        </div>
+        <ul>
+            <li data-step="step3" data-title="Lichtkoepels">Lichtkoepels <span class="submenu-icon">›</span></li>
+            <li data-step="step3" data-title="Wanden">Wanden <span class="submenu-icon">›</span></li>
+            <li data-step="step3" data-title="Deuren">Deuren <span class="submenu-icon">›</span></li>
+            <li data-step="step3" data-title="Goten">Goten <span class="submenu-icon">›</span></li>
+            <li data-step="step3" data-title="Beglazing">Beglazing <span class="submenu-icon">›</span></li>
+            <li data-step="step3" data-title="Materiaal">Materiaal <span class="submenu-icon">›</span></li>
+        </ul>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="menu-step" id="step3">
+        <div class="menu-header">
+            <span class="back-icon" data-back="step2">←</span>
+            <span class="header-title">Child</span>
+        </div>
+        
+        <button class="collapsible">Standaard lichtkoepels <span class="submenu-icon">+</span></button>
+        <div class="content"><p>Details for standaard lichtkoepels...</p></div>
+
+        <button class="collapsible">Lichtkoepels met opstand <span class="submenu-icon">+</span></button>
+        <div class="content"><p>Details for lichtkoepels met opstand...</p></div>
+
+        <button class="collapsible">Dubbel bolle <span class="submenu-icon">+</span></button>
+        <div class="content"><p>Details for dubbel bolle lichtkoepels...</p></div>
+
+        <button class="collapsible">Lichtkoepels met ventilatie <span class="submenu-icon">+</span></button>
+        <div class="content"><p>Details for lichtkoepels met ventilatie...</p></div>
+
+        <button class="collapsible">Lichtkoepels met elektrische bediening <span class="submenu-icon">+</span></button>
+        <div class="content"><p>Details for lichtkoepels met elektrische bediening...</p></div>
+    </div>
+</div>
+
+<style>
+.menu-container { max-width: 400px; background: #000; color: #fff; height: 100vh; position: relative; }
+.menu-header { background: #222; padding: 12px; font-weight: bold; text-align: center; display: flex; align-items: center; justify-content: center; position: relative; }
+.back-icon { position: absolute; left: 10px; cursor: pointer; font-size: 18px; }
+.menu-step { width: 100%; height: 100%; position: absolute; top: 0; left: 100%; background: #111; transition: left 0.3s ease-in-out; padding: 10px; box-sizing: border-box; overflow-y: auto; }
+.menu-step.active { left: 0; }
+ul { list-style: none; padding: 0; }
+li { background: #222; margin: 5px 0; padding: 12px; border-radius: 5px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; }
+li:hover { background: #333; }
+.submenu-icon { font-size: 16px; opacity: 0.6; }
+.collapsible { background: #222; border: none; padding: 12px; width: 100%; text-align: left; color: #fff; cursor: pointer; border-radius: 5px; margin: 5px 0; display: flex; justify-content: space-between; align-items: center; }
+.collapsible.active { background: #333; }
+.content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; background: #333; margin-bottom: 5px; padding: 0 10px; }
+.content p { margin: 8px 0; font-size: 14px; color: #ccc; }
+</style>
+
+<script>
+// Step navigation
+document.querySelectorAll("[data-step]").forEach(item => {
+    item.addEventListener("click", () => {
+        let targetStepId = item.dataset.step;
+        let target = document.getElementById(targetStepId);
+
+        document.querySelectorAll(".menu-step").forEach(step => step.classList.remove("active"));
+        target.classList.add("active");
+
+        let headerTitle = target.querySelector(".header-title");
+        if (headerTitle) {
+            headerTitle.textContent = item.dataset.title || "";
+        }
+    });
+});
+
+// Back button navigation
+document.querySelectorAll(".back-icon").forEach(backBtn => {
+    backBtn.addEventListener("click", () => {
+        let backStepId = backBtn.dataset.back;
+        document.querySelectorAll(".menu-step").forEach(step => step.classList.remove("active"));
+        document.getElementById(backStepId).classList.add("active");
+    });
+});
+
+// Collapsible (fix open/close issue)
+document.querySelectorAll(".collapsible").forEach(btn => {
+    btn.addEventListener("click", function() {
+        let content = this.nextElementSibling;
+        let isOpen = this.classList.contains("active");
+
+        // Close all
+        document.querySelectorAll(".collapsible").forEach(c => {
+            c.classList.remove("active");
+            c.querySelector(".submenu-icon").textContent = "+";
+        });
+        document.querySelectorAll(".content").forEach(c => c.style.maxHeight = null);
+
+        // Toggle current if it was closed
+        if (!isOpen) {
+            this.classList.add("active");
+            this.querySelector(".submenu-icon").textContent = "−";
+            content.style.maxHeight = content.scrollHeight + "px";
+        }
+    });
+});
+</script>
+
+</body>
+</html>
