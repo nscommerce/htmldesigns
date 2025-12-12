@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All 20 Bento Grid Layouts</title>
+    <!-- GSAP Core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <!-- GSAP ScrollTrigger for scroll animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        /* =========================================
+           1. RESET & VARIABLES
+           ========================================= */
+        :root {
+            --bg-body: #050505;
+            --bg-card: #141414;
+            --bg-card-hover: #1f1f1f;
+            --accent: #6366f1;
+            --text-main: #ffffff;
+            --text-sub: #e4e4e7; /* Lighter for readability on images */
+            --gap: 16px;
+            --radius: 24px;
+            --transition: 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        /* =========================================
+           2. HEADERS & SECTION TITLES
+           ========================================= */
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            z-index: 10;
+        }
+
+        h1 {
+            font-weight: 800;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-sub);
+            font-size: 1.1rem;
+            opacity: 0.7;
+        }
+
+        .layout-section {
+            width: 100%;
+            max-width: 1100px;
+            margin-bottom: 120px; /* Space between layouts */
+        }
+
+        .layout-title {
+            font-size: 1.5rem;
+            margin-bottom: 24px;
+            color: var(--accent);
+            opacity: 0.9;
+            border-left: 4px solid var(--accent);
+            padding-left: 16px;
+        }
+
+        /* =========================================
+           3. BENTO CONTAINER BASE
+           ========================================= */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: minmax(180px, auto); /* Slightly taller for images */
+            gap: var(--gap);
+            width: 100%;
+            perspective: 1000px;
+        }
+
+        /* =========================================
+           4. BENTO ITEMS STYLING
+           ========================================= */
+        .card {
+            background-color: var(--bg-card);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: var(--radius);
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; /* Push text to bottom */
+            cursor: pointer;
+            transform-style: preserve-3d;
+            will-change: transform;
+            /* Initial state for scroll trigger */
+            opacity: 0; 
+            transform: translateY(30px);
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* Dark Gradient Overlay for text readability */
+        .card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.85) 100%);
+            z-index: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .content {
+            z-index: 2; /* Sit above overlay */
+            position: relative;
+            transform: translateZ(20px);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            color: white;
+        }
+        
+        .card p {
+            color: var(--text-sub);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .card:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.7);
+            z-index: 10;
+        }
+        
+        /* Slight zoom on background image on hover */
+        .card:hover {
+            background-size: 110%; /* We can't animate background-size smoothly easily without generic bg, but this is a simple fallback */
+        }
+
+        /* Highlight Colors */
+        .item-1 .highlight { color: #FF6B6B; }
+        .item-2 .highlight { color: #4ECDC4; }
+        .item-3 .highlight { color: #FFE66D; }
+        .item-4 .highlight { color: #1A535C; }
+        
+        /* =========================================
+           5. THE 20 LAYOUTS CSS
+           ========================================= */
+        
+        /* Layout 1: Classic Hero Left */
+        .layout-1 .item-1 { grid-column: span 2; grid-row: span 2; }
+        .layout-1 .item-2 { grid-column: span 1; grid-row: span 1; }
+        .layout-1 .item-3 { grid-column: span 1; grid-row: span 2; }
+        .layout-1 .item-4 { grid-column: span 1; grid-row: span 1; }
+        .layout-1 .item-5 { grid-column: span 2; grid-row: span 1; }
+        .layout-1 .item-6 { grid-column: span 1; grid-row: span 1; }
+        .layout-1 .item-7 { grid-column: span 1; grid-row: span 1; }
+        .layout-1 .item-8 { display: none; } 
+
+        /* Layout 2: Full Header */
+        .layout-2 .item-1 { grid-column: span 4; grid-row: span 1; }
+        .layout-2 .item-2 { grid-column: span 1; grid-row: span 2; }
+        .layout-2 .item-3 { grid-column: span 2; grid-row: span 1; }
+        .layout-2 .item-4 { grid-column: span 1; grid-row: span 1; }
+        .layout-2 .item-5 { grid-column: span 1; grid-row: span 1; }
+        .layout-2 .item-6 { grid-column: span 2; grid-row: span 1; }
+        .layout-2 .item-7 { display: none; }
+        .layout-2 .item-8 { display: none; }
+
+        /* Layout 3: Sidebar Left */
+        .layout-3 .item-1 { grid-column: span 1; grid-row: span 3; }
+        .layout-3 .item-2 { grid-column: span 2; grid-row: span 1; }
+        .layout-3 .item-3 { grid-column: span 1; grid-row: span 1; }
+        .layout-3 .item-4 { grid-column: span 3; grid-row: span 1; }
+        .layout-3 .item-5 { grid-column: span 1; grid-row: span 1; }
+        .layout-3 .item-6 { grid-column: span 1; grid-row: span 1; }
+        .layout-3 .item-7 { grid-column: span 1; grid-row: span 1; }
+        .layout-3 .item-8 { display: none; }
+
+        /* Layout 4: Central Focus */
+        .layout-4 .item-1 { grid-column: span 1; grid-row: span 1; }
+        .layout-4 .item-2 { grid-column: span 2; grid-row: span 1; }
+        .layout-4 .item-3 { grid-column: span 1; grid-row: span 1; }
+        .layout-4 .item-4 { grid-column: span 1; grid-row: span 2; }
+        .layout-4 .item-5 { grid-column: span 2; grid-row: span 2; border: 2px solid var(--accent); }
+        .layout-4 .item-6 { grid-column: span 1; grid-row: span 2; }
+        .layout-4 .item-7 { grid-column: span 2; grid-row: span 1; }
+        .layout-4 .item-8 { grid-column: span 2; grid-row: span 1; }
+
+        /* Layout 5: Mosaic Density */
+        .layout-5 .item-1 { grid-column: span 1; grid-row: span 1; }
+        .layout-5 .item-2 { grid-column: span 1; grid-row: span 1; }
+        .layout-5 .item-3 { grid-column: span 1; grid-row: span 1; }
+        .layout-5 .item-4 { grid-column: span 1; grid-row: span 1; }
+        .layout-5 .item-5 { grid-column: span 2; grid-row: span 2; }
+        .layout-5 .item-6 { grid-column: span 1; grid-row: span 2; }
+        .layout-5 .item-7 { grid-column: span 1; grid-row: span 1; }
+        .layout-5 .item-8 { grid-column: span 1; grid-row: span 1; }
+
+        /* Layout 6: The Staircase */
+        .layout-6 .item-1 { grid-column: span 2; grid-row: span 1; }
+        .layout-6 .item-2 { grid-column: span 1; grid-row: span 1; }
+        .layout-6 .item-3 { grid-column: span 1; grid-row: span 1; }
+        .layout-6 .item-4 { grid-column: span 1; grid-row: span 1; }
+        .layout-6 .item-5 { grid-column: span 2; grid-row: span 1; }
+        .layout-6 .item-6 { grid-column: span 1; grid-row: span 1; }
+        .layout-6 .item-7 { grid-column: span 1; grid-row: span 1; }
+        .layout-6 .item-8 { grid-column: span 1; grid-row: span 1; }
+        
+        /* Layout 7: Equal Quarters */
+        .layout-7 .item-1 { grid-column: span 2; grid-row: span 2; }
+        .layout-7 .item-2 { grid-column: span 2; grid-row: span 2; }
+        .layout-7 .item-3 { grid-column: span 2; grid-row: span 2; }
+        .layout-7 .item-4 { grid-column: span 2; grid-row: span 2; }
+        .layout-7 .item-5, .layout-7 .item-6, .layout-7 .item-7, .layout-7 .item-8 { display: none; }
+
+        /* Layout 8: Sidebar Right */
+        .layout-8 .item-1 { grid-column: span 3; grid-row: span 1; }
+        .layout-8 .item-2 { grid-column: span 1; grid-row: span 3; }
+        .layout-8 .item-3 { grid-column: span 1; grid-row: span 1; }
+        .layout-8 .item-4 { grid-column: span 2; grid-row: span 1; }
+        .layout-8 .item-5 { grid-column: span 3; grid-row: span 1; }
+        .layout-8 .item-6, .layout-8 .item-7, .layout-8 .item-8 { display: none; }
+
+        /* Layout 9: Vertical Pillars */
+        .layout-9 .item-1 { grid-column: span 1; grid-row: span 3; }
+        .layout-9 .item-2 { grid-column: span 1; grid-row: span 1; }
+        .layout-9 .item-3 { grid-column: span 1; grid-row: span 3; }
+        .layout-9 .item-4 { grid-column: span 1; grid-row: span 1; }
+        .layout-9 .item-5 { grid-column: span 1; grid-row: span 2; }
+        .layout-9 .item-6 { grid-column: span 1; grid-row: span 2; }
+        .layout-9 .item-7, .layout-9 .item-8 { display: none; }
+
+        /* Layout 10: The Cross */
+        .layout-10 .item-1 { grid-column: span 1; grid-row: span 1; }
+        .layout-10 .item-2 { grid-column: span 2; grid-row: span 1; }
+        .layout-10 .item-3 { grid-column: span 1; grid-row: span 1; }
+        .layout-10 .item-4 { grid-column: span 1; grid-row: span 2; }
+        .layout-10 .item-5 { grid-column: span 2; grid-row: span 1; }
+        .layout-10 .item-6 { grid-column: span 1; grid-row: span 2; }
+        .layout-10 .item-7 { grid-column: span 1; grid-row: span 1; }
+        .layout-10 .item-8 { grid-column: span 2; grid-row: span 1; }
+
+        /* Layout 11: Feature Split */
+        .layout-11 .item-1 { grid-column: span 2; grid-row: span 2; }
+        .layout-11 .item-2 { grid-column: span 1; grid-row: span 1; }
+        .layout-11 .item-3 { grid-column: span 1; grid-row: span 1; }
+        .layout-11 .item-4 { grid-column: span 1; grid-row: span 1; }
+        .layout-11 .item-5 { grid-column: span 1; grid-row: span 1; }
+        .layout-11 .item-6 { grid-column: span 2; grid-row: span 2; }
+        .layout-11 .item-7, .layout-11 .item-8 { display: none; }
+
+        /* Layout 12: Checkerboard */
+        .layout-12 .item-1 { grid-column: span 2; grid-row: span 1; }
+        .layout-12 .item-2 { grid-column: span 2; grid-row: span 1; }
+        .layout-12 .item-3 { grid-column: span 1; grid-row: span 1; }
+        .layout-12 .item-4 { grid-column: span 1; grid-row: span 1; }
+        .layout-12 .item-5 { grid-column: span 1; grid-row: span 1; }
+        .layout-12 .item-6 { grid-column: span 1; grid-row: span 1; }
+        .layout-12 .item-7 { grid-column: span 2; grid-row: span 1; }
+        .layout-12 .item-8 { grid-column: span 2; grid-row: span 1; }
+
+        /* Layout 13: Spiral */
+        .layout-13 .item-1 { grid-column: span 3; grid-row: span 2; }
+        .layout-13 .item-2 { grid-column: span 1; grid-row: span 1; }
+        .layout-13 .item-3 { grid-column: span 1; grid-row: span 1; }
+        .layout-13 .item-4 { grid-column: span 1; grid-row: span 1; }
+        .layout-13 .item-5 { grid-column: span 1; grid-row: span 1; }
+        .layout-13 .item-6 { grid-column: span 2; grid-row: span 1; }
+        .layout-13 .item-7, .layout-13 .item-8 { display: none; }
+
+        /* Layout 14: Bottom Heavy */
+        .layout-14 .item-1 { grid-column: span 1; grid-row: span 1; }
+        .layout-14 .item-2 { grid-column: span 1; grid-row: span 1; }
+        .layout-14 .item-3 { grid-column: span 1; grid-row: span 1; }
+        .layout-14 .item-4 { grid-column: span 1; grid-row: span 1; }
+        .layout-14 .item-5 { grid-column: span 2; grid-row: span 2; }
+        .layout-14 .item-6 { grid-column: span 2; grid-row: span 2; }
+        .layout-14 .item-7, .layout-14 .item-8 { display: none; }
+
+        /* Layout 15: The "H" */
+        .layout-15 .item-1 { grid-column: span 1; grid-row: span 3; }
+        .layout-15 .item-2 { grid-column: span 2; grid-row: span 1; }
+        .layout-15 .item-3 { grid-column: span 2; grid-row: span 1; }
+        .layout-15 .item-4 { grid-column: span 2; grid-row: span 1; }
+        .layout-15 .item-5 { grid-column: span 1; grid-row: span 3; }
+        .layout-15 .item-6, .layout-15 .item-7, .layout-15 .item-8 { display: none; }
+
+        /* Layout 16: Asymmetrical Horizontal */
+        .layout-16 .item-1 { grid-column: span 3; grid-row: span 1; }
+        .layout-16 .item-2 { grid-column: span 1; grid-row: span 1; }
+        .layout-16 .item-3 { grid-column: span 1; grid-row: span 1; }
+        .layout-16 .item-4 { grid-column: span 3; grid-row: span 1; }
+        .layout-16 .item-5 { grid-column: span 2; grid-row: span 1; }
+        .layout-16 .item-6 { grid-column: span 2; grid-row: span 1; }
+        .layout-16 .item-7, .layout-16 .item-8 { display: none; }
+
+        /* Layout 17: Corner Anchors */
+        .layout-17 .item-1 { grid-column: span 1; grid-row: span 1; }
+        .layout-17 .item-2 { grid-column: span 2; grid-row: span 1; }
+        .layout-17 .item-3 { grid-column: span 1; grid-row: span 1; }
+        .layout-17 .item-4 { grid-column: span 2; grid-row: span 2; }
+        .layout-17 .item-5 { grid-column: span 2; grid-row: span 2; }
+        .layout-17 .item-6 { grid-column: span 1; grid-row: span 1; }
+        .layout-17 .item-7 { grid-column: span 2; grid-row: span 1; }
+        .layout-17 .item-8 { grid-column: span 1; grid-row: span 1; }
+
+        /* Layout 18: The Zipper */
+        .layout-18 .item-1 { grid-column: span 1; grid-row: span 2; }
+        .layout-18 .item-2 { grid-column: span 2; grid-row: span 1; }
+        .layout-18 .item-3 { grid-column: span 1; grid-row: span 2; }
+        .layout-18 .item-4 { grid-column: span 2; grid-row: span 1; }
+        .layout-18 .item-5 { grid-column: span 1; grid-row: span 2; }
+        .layout-18 .item-6 { grid-column: span 2; grid-row: span 1; }
+        .layout-18 .item-7 { grid-column: span 1; grid-row: span 2; }
+        .layout-18 .item-8 { display: none; }
+
+        /* Layout 19: Panorama */
+        .layout-19 .item-1 { grid-column: span 4; grid-row: span 2; }
+        .layout-19 .item-2 { grid-column: span 1; grid-row: span 1; }
+        .layout-19 .item-3 { grid-column: span 1; grid-row: span 1; }
+        .layout-19 .item-4 { grid-column: span 1; grid-row: span 1; }
+        .layout-19 .item-5 { grid-column: span 1; grid-row: span 1; }
+        .layout-19 .item-6, .layout-19 .item-7, .layout-19 .item-8 { display: none; }
+
+        /* Layout 20: Fragmented Chaos */
+        .layout-20 .item-1 { grid-column: span 1; grid-row: span 1; }
+        .layout-20 .item-2 { grid-column: span 1; grid-row: span 2; }
+        .layout-20 .item-3 { grid-column: span 1; grid-row: span 1; }
+        .layout-20 .item-4 { grid-column: span 1; grid-row: span 1; }
+        .layout-20 .item-5 { grid-column: span 2; grid-row: span 1; }
+        .layout-20 .item-6 { grid-column: span 1; grid-row: span 2; }
+        .layout-20 .item-7 { grid-column: span 1; grid-row: span 1; }
+        .layout-20 .item-8 { grid-column: span 2; grid-row: span 1; }
+
+        /* =========================================
+           6. RESPONSIVE
+           ========================================= */
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+                display: flex;
+                flex-direction: column;
+            }
+            .card {
+                min-height: 200px;
+                width: 100% !important;
+                grid-column: auto !important;
+                grid-row: auto !important;
+                display: flex !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Bento Grid Collection</h1>
+        <p class="subtitle">Scroll to explore 20 unique grid layout variations</p>
+    </header>
+
+    <!-- Main Container to hold all layouts -->
+    <div id="all-layouts-wrapper"></div>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 1. DATA: Definitions for the layouts
+        const layouts = [
+            "Hero Left", "Full Header", "Sidebar Left", "Central Focus", "Mosaic Density",
+            "The Staircase", "Equal Quarters", "Sidebar Right", "Vertical Pillars", "The Cross",
+            "Feature Split", "Checkerboard", "Spiral", "Bottom Heavy", "The 'H'",
+            "Asymmetrical", "Corner Anchors", "The Zipper", "Panorama", "Fragmented"
+        ];
+
+        // 2. TEMPLATE: The internal HTML of the cards
+        // Using high quality unsplash images for backgrounds
+        const cardContent = `
+            <div class="card item-1" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800')">
+                <div class="content"><h3>Analytics</h3><p>Real-time data <span class="highlight">analysis</span>.</p></div>
+            </div>
+            <div class="card item-2" style="background-image: url('https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&q=80&w=800')">
+                <div class="content"><h3>Revenue</h3><p>Monthly <span class="highlight">growth</span> report.</p></div>
+            </div>
+            <div class="card item-3" style="background-image: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800')">
+                <div class="content"><h3>Users</h3><p>Active <span class="highlight">members</span>.</p></div>
+            </div>
+            <div class="card item-4" style="background-image: url('https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&q=80&w=800')">
+                <div class="content"><h3>Security</h3><p>System <span class="highlight">status</span>.</p></div>
+            </div>
+            <div class="card item-5" style="background-image: url('https://images.unsplash.com/photo-1533750349088-cd871a92f312?auto=format&fit=crop&q=80&w=800')">
+                <div class="content"><h3>Marketing</h3><p>Campaign <span class="highlight">tracking</span>.</p></div>
+            </div>
+            <div class="card item-6" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800')">
+                <div class="content"><h3>Cloud</h3><p>Server <span class="highlight">uptime</span>.</p></div>
+            </div>
+            <div class="card item-7" style="background-image: url('https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&q=80&w=800')">
+                <div class="content"><h3>Design</h3><p>Asset <span class="highlight">library</span>.</p></div>
+            </div>
+            <div class="card item-8" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800')">
+                <div class="content"><h3>Settings</h3><p>Global <span class="highlight">preferences</span>.</p></div>
+            </div>
+        `;
+
+        const wrapper = document.getElementById('all-layouts-wrapper');
+
+        // 3. GENERATION: Create all 20 layout sections
+        layouts.forEach((name, index) => {
+            const layoutNum = index + 1;
+            
+            // Create Section Wrapper
+            const section = document.createElement('div');
+            section.className = 'layout-section';
+            
+            // Create Title
+            const title = document.createElement('h2');
+            title.className = 'layout-title';
+            title.innerText = `#${layoutNum} - ${name}`;
+            section.appendChild(title);
+
+            // Create Grid Container
+            const gridDiv = document.createElement('div');
+            gridDiv.className = `grid-container layout-${layoutNum}`;
+            gridDiv.innerHTML = cardContent; // Inject cards
+            section.appendChild(gridDiv);
+
+            // Append to main wrapper
+            wrapper.appendChild(section);
+        });
+
+        // 4. ANIMATION: Initialize GSAP interactions
+
+        // A. 3D Tilt on Hover (Applied to all cards)
+        // We use event delegation since elements are dynamic or lots of them
+        // Actually, since we generate synchronously, we can query them.
+        setTimeout(() => {
+            document.querySelectorAll('.card').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -10;
+                    const rotateY = ((x - centerX) / centerX) * 10;
+
+                    gsap.to(card, {
+                        duration: 0.5,
+                        rotateX: rotateX,
+                        rotateY: rotateY,
+                        scale: 1.02,
+                        transformPerspective: 1000,
+                        ease: "power2.out"
+                    });
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    gsap.to(card, {
+                        duration: 0.5,
+                        rotateX: 0,
+                        rotateY: 0,
+                        scale: 1,
+                        ease: "power2.out"
+                    });
+                });
+            });
+
+            // B. Scroll Trigger Entrance Animation
+            document.querySelectorAll('.grid-container').forEach(grid => {
+                gsap.to(grid.querySelectorAll('.card'), {
+                    scrollTrigger: {
+                        trigger: grid,
+                        start: "top 85%", // Animation starts when top of grid hits 85% of viewport height
+                        toggleActions: "play none none none"
+                    },
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    stagger: 0.05,
+                    ease: "power3.out"
+                });
+            });
+        }, 100);
+
+    </script>
+</body>
+</html>
