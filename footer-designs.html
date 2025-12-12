@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20 Premium Shopify Footer Layouts</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Space+Grotesk:wght@300;500;700&family=Syne:wght@700;800&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- GLOBAL RESET & UTILITIES --- */
+        :root {
+            --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+            --ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: #f0f0f0; color: #1a1a1a; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        a { text-decoration: none; color: inherit; transition: all 0.3s var(--ease-out); display: inline-block; }
+        ul { list-style: none; }
+        input, button { border: none; outline: none; font-family: inherit; }
+        img { max-width: 100%; display: block; }
+        
+        .showcase-header { text-align: center; padding: 100px 20px; background: #050505; color: #fff; margin-bottom: 0; position: relative; overflow: hidden; }
+        .showcase-header h1 { font-family: 'Syne', sans-serif; font-size: 4rem; margin-bottom: 20px; font-weight: 800; background: linear-gradient(to right, #fff, #999); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .showcase-header p { opacity: 0.6; font-size: 1.1rem; max-width: 600px; margin: 0 auto; line-height: 1.6; }
+
+        .footer-wrapper { width: 100%; position: relative; margin-bottom: 0; }
+        .footer-label { 
+            background: #000; color: #fff; padding: 8px 16px; 
+            font-size: 10px; font-weight: 700; position: absolute; top: 0; left: 0; z-index: 100; 
+            text-transform: uppercase; letter-spacing: 2px; border-bottom-right-radius: 8px;
+        }
+
+        /* Common Grid/Flex Utils */
+        .container { max-width: 1300px; margin: 0 auto; padding: 0 40px; }
+        .row { display: flex; flex-wrap: wrap; margin: 0 -20px; }
+        .col { padding: 0 20px; flex: 1; }
+        .col-3 { width: 25%; flex: 0 0 25%; }
+        .col-4 { width: 33.33%; flex: 0 0 33.33%; }
+        .col-5 { width: 41.66%; flex: 0 0 41.66%; }
+        .col-6 { width: 50%; flex: 0 0 50%; }
+        .col-7 { width: 58.33%; flex: 0 0 58.33%; }
+        .col-12 { width: 100%; flex: 0 0 100%; }
+        
+        @media(max-width: 991px) {
+            .col-3, .col-4 { width: 50%; flex: 0 0 50%; margin-bottom: 40px; }
+            .col-5, .col-7 { width: 100%; flex: 0 0 100%; margin-bottom: 40px; }
+        }
+        @media(max-width: 768px) {
+            .col-3, .col-4, .col-6 { width: 100%; flex: 0 0 100%; }
+            .row { flex-direction: column; }
+            .container { padding: 0 20px; }
+        }
+
+        /* --- FOOTER 1: The Modern Minimalist (Updated) --- */
+        .f1 { background: #fff; padding: 100px 0 60px; color: #111; position: relative; }
+        .f1::before { content:''; position: absolute; top:0; left:50%; transform: translateX(-50%); width: 90%; height: 1px; background: #eee; }
+        .f1-brand { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800; margin-bottom: 25px; letter-spacing: -1px; }
+        .f1-desc { color: #666; line-height: 1.7; margin-bottom: 40px; max-width: 280px; font-size: 15px; }
+        .f1-title { font-family: 'Outfit', sans-serif; font-weight: 600; margin-bottom: 25px; font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; color: #000; }
+        .f1-links li { margin-bottom: 15px; }
+        .f1-links a { color: #555; font-size: 15px; position: relative; }
+        .f1-links a::before { content: ''; position: absolute; left: -15px; top: 50%; transform: translateY(-50%); width: 6px; height: 6px; background: #000; border-radius: 50%; opacity: 0; transition: 0.3s; }
+        .f1-links a:hover { color: #000; transform: translateX(10px); }
+        .f1-links a:hover::before { opacity: 1; left: -10px; }
+        .f1-bottom { margin-top: 80px; display: flex; justify-content: space-between; align-items: center; color: #999; font-size: 12px; font-weight: 500; border-top: 1px solid #f5f5f5; padding-top: 30px; }
+
+        /* --- FOOTER 2: The Luxury Dark (Updated) --- */
+        .f2 { background: #0b0b0b; color: #e5e5e5; padding: 120px 0 60px; font-family: 'Outfit', sans-serif; }
+        .f2 h4 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 30px; color: #fff; font-style: italic; }
+        .f2-links li { margin-bottom: 18px; }
+        .f2-links a { color: #888; font-size: 14px; letter-spacing: 0.5px; }
+        .f2-links a:hover { color: #fff; letter-spacing: 1px; }
+        .f2-input-wrapper { position: relative; border-bottom: 1px solid #333; padding-bottom: 10px; margin-top: 20px; transition: 0.3s; }
+        .f2-input-wrapper:focus-within { border-bottom-color: #fff; }
+        .f2-input { width: 100%; background: transparent; color: #fff; padding: 10px 0; font-size: 16px; }
+        .f2-btn { position: absolute; right: 0; bottom: 10px; background: transparent; color: #fff; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; cursor: pointer; opacity: 0.7; }
+        .f2-btn:hover { opacity: 1; }
+        .f2-social { display: flex; gap: 20px; margin-top: 40px; }
+        .f2-social a { width: 45px; height: 45px; border: 1px solid #333; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: #888; }
+        .f2-social a:hover { border-color: #fff; color: #fff; transform: rotate(360deg); }
+
+        /* --- FOOTER 3: The Art Deco Centered (Updated) --- */
+        .f3 { background: #1a1e21; color: #d4af37; padding: 100px 0; text-align: center; border-top: 4px solid #d4af37; }
+        .f3-container { max-width: 800px; margin: 0 auto; border: 1px solid rgba(212, 175, 55, 0.2); padding: 60px; position: relative; }
+        .f3-container::before { content: ''; position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px; border: 1px solid rgba(212, 175, 55, 0.1); pointer-events: none; }
+        .f3-logo { font-family: 'Playfair Display', serif; font-size: 48px; margin-bottom: 40px; letter-spacing: 2px; text-transform: uppercase; }
+        .f3-nav { display: flex; justify-content: center; gap: 40px; margin-bottom: 50px; flex-wrap: wrap; }
+        .f3-nav a { font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: #fff; opacity: 0.8; }
+        .f3-nav a:hover { color: #d4af37; opacity: 1; }
+        .f3-divider { width: 50px; height: 1px; background: #d4af37; margin: 0 auto 40px; }
+        .f3-social { font-size: 24px; gap: 30px; display: flex; justify-content: center; }
+        .f3-social i { transition: 0.3s; cursor: pointer; }
+        .f3-social i:hover { color: #fff; transform: translateY(-5px); }
+
+        /* --- FOOTER 4: The Mesh Gradient (Updated) --- */
+        .f4 { background: #000; position: relative; overflow: hidden; color: #fff; padding: 100px 0; }
+        .f4-bg { position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 50% 50%, rgba(76, 29, 149, 0.4), transparent 60%), radial-gradient(circle at 80% 20%, rgba(219, 39, 119, 0.3), transparent 50%); filter: blur(60px); z-index: 1; }
+        .f4 .container { position: relative; z-index: 2; }
+        .f4-glass-card { background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); padding: 60px; border-radius: 30px; }
+        .f4 h3 { font-family: 'Space Grotesk', sans-serif; font-size: 28px; margin-bottom: 20px; background: linear-gradient(to right, #fff, #aaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .f4-links a { display: block; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); color: #ccc; font-size: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .f4-links a::after { content: '→'; opacity: 0; transform: translateX(-10px); transition: 0.3s; }
+        .f4-links a:hover { color: #fff; padding-left: 10px; border-bottom-color: rgba(255,255,255,0.3); }
+        .f4-links a:hover::after { opacity: 1; transform: translateX(0); }
+        
+        /* --- FOOTER 5: The Big Typo Parallax (Updated) --- */
+        .f5 { background: #e8e8e3; padding: 120px 0 80px; overflow: hidden; position: relative; }
+        .f5-big-text { font-family: 'Syne', sans-serif; font-size: 18vw; line-height: 0.8; font-weight: 800; color: #d6d6ce; text-transform: uppercase; white-space: nowrap; position: absolute; top: 10%; left: 0; z-index: 0; pointer-events: none; mix-blend-mode: multiply; }
+        .f5 .container { position: relative; z-index: 1; }
+        .f5-top-row { display: flex; justify-content: flex-end; margin-bottom: 150px; }
+        .f5-nav-group { margin-left: 80px; }
+        .f5-nav-group h5 { font-size: 14px; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; color: #888; }
+        .f5-nav-group a { display: block; font-size: 18px; margin-bottom: 12px; font-weight: 500; color: #111; }
+        .f5-nav-group a:hover { color: #555; text-decoration: underline; text-underline-offset: 4px; }
+        .f5-brand-large { font-size: 40px; font-weight: 900; letter-spacing: -1px; }
+
+        /* --- FOOTER 6: The Bento Grid (Updated) --- */
+        .f6 { background: #f3f4f6; padding: 80px 0; font-family: 'Inter', sans-serif; }
+        .f6-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: auto auto; gap: 20px; }
+        .f6-card { background: #fff; padding: 40px; border-radius: 24px; transition: 0.3s; box-shadow: 0 4px 20px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; }
+        .f6-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .f6-card.large { grid-row: span 2; background: #111; color: #fff; }
+        .f6-card h3 { font-size: 24px; font-weight: 600; margin-bottom: 20px; }
+        .f6-card ul li { margin-bottom: 12px; }
+        .f6-card a { color: #666; font-weight: 500; }
+        .f6-card a:hover { color: #000; }
+        .f6-card.large a { color: #888; }
+        .f6-card.large a:hover { color: #fff; }
+        .f6-input { background: #333; border: none; padding: 15px; border-radius: 12px; width: 100%; color: #fff; margin-top: auto; }
+        @media(max-width: 900px) { .f6-grid { grid-template-columns: 1fr; } }
+
+        /* --- FOOTER 7: The Editorial Image (Updated) --- */
+        .f7 { position: relative; color: #fff; padding: 140px 0; text-align: center; background: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') center/cover no-repeat; }
+        .f7::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: grayscale(100%) contrast(1.2); }
+        .f7 .container { position: relative; z-index: 2; }
+        .f7 h2 { font-family: 'Playfair Display', serif; font-size: 5rem; line-height: 1; margin-bottom: 30px; font-style: italic; }
+        .f7 p { font-size: 1.2rem; margin-bottom: 50px; font-weight: 300; letter-spacing: 1px; }
+        .f7-form { display: inline-flex; border-bottom: 1px solid #fff; padding-bottom: 5px; min-width: 400px; justify-content: space-between; }
+        .f7-input { background: transparent; color: #fff; font-size: 18px; width: 80%; }
+        .f7-input::placeholder { color: rgba(255,255,255,0.7); }
+        .f7-btn { background: #fff; color: #000; border-radius: 50px; padding: 10px 25px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .f7-btn:hover { transform: scale(1.05); }
+
+        /* --- FOOTER 8: Neo-Brutalist Soft (Updated) --- */
+        .f8 { background: #ffebef; padding: 80px 0; color: #1a1a1a; font-family: 'Space Grotesk', sans-serif; border-top: 3px solid #1a1a1a; }
+        .f8-badge { display: inline-block; background: #c2f0fc; border: 2px solid #1a1a1a; padding: 5px 15px; border-radius: 50px; font-weight: 700; margin-bottom: 20px; box-shadow: 4px 4px 0 #1a1a1a; }
+        .f8 h3 { font-size: 32px; font-weight: 700; margin-bottom: 20px; }
+        .f8-links { display: flex; flex-wrap: wrap; gap: 15px; }
+        .f8-tag { background: #fff; border: 2px solid #1a1a1a; padding: 8px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; box-shadow: 4px 4px 0 rgba(0,0,0,0.1); }
+        .f8-tag:hover { box-shadow: 2px 2px 0 #1a1a1a; transform: translate(2px, 2px); background: #ffdfba; }
+        .f8-socials a { width: 50px; height: 50px; background: #fff; border: 2px solid #1a1a1a; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; margin-right: 15px; font-size: 20px; transition: 0.2s; box-shadow: 4px 4px 0 #1a1a1a; }
+        .f8-socials a:hover { transform: translate(2px, 2px); box-shadow: 0 0 0 transparent; background: #c2f0fc; }
+
+        /* --- FOOTER 9: The Split Asymmetrical (Updated) --- */
+        .f9 { background: #fff; padding: 100px 0 0; overflow: hidden; }
+        .f9-wrapper { display: flex; flex-wrap: wrap; }
+        .f9-left { background: #111; color: #fff; width: 40%; padding: 80px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+        .f9-left::after { content: ''; position: absolute; right: -20px; top: 50%; width: 40px; height: 40px; background: #111; transform: rotate(45deg); }
+        .f9-right { width: 60%; padding: 80px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+        .f9 h2 { font-size: 3rem; font-family: 'Syne', sans-serif; line-height: 1.1; margin-bottom: 40px; }
+        .f9-btn { display: inline-block; border: 1px solid #fff; padding: 15px 40px; border-radius: 50px; transition: 0.3s; font-weight: 500; }
+        .f9-btn:hover { background: #fff; color: #000; }
+        .f9-col h4 { font-size: 14px; font-weight: 700; text-transform: uppercase; margin-bottom: 25px; letter-spacing: 1px; }
+        .f9-col a { display: block; margin-bottom: 12px; color: #555; font-size: 15px; }
+        .f9-col a:hover { color: #000; transform: translateX(5px); }
+        @media(max-width: 900px) { .f9-left, .f9-right { width: 100%; padding: 60px 40px; } .f9-left::after { display: none; } }
+
+        /* --- FOOTER 10: The Floating Map (Updated) --- */
+        .f10 { background: #1f2937; padding: 100px 0 60px; color: #fff; position: relative; }
+        .f10-card { background: #111827; border-radius: 20px; overflow: hidden; display: flex; box-shadow: 0 20px 50px rgba(0,0,0,0.3); border: 1px solid #374151; }
+        .f10-info { padding: 60px; width: 50%; }
+        .f10-map { width: 50%; min-height: 400px; position: relative; filter: grayscale(100%) invert(100%); }
+        .f10-map iframe { width: 100%; height: 100%; border: 0; opacity: 0.6; }
+        .f10 h3 { font-size: 32px; margin-bottom: 10px; font-family: 'Outfit', sans-serif; }
+        .f10 p.subtitle { color: #9ca3af; margin-bottom: 40px; }
+        .f10-contact { margin-top: 40px; }
+        .f10-contact-row { display: flex; align-items: center; margin-bottom: 25px; padding: 15px; background: #1f2937; border-radius: 12px; transition: 0.3s; }
+        .f10-contact-row:hover { background: #374151; transform: translateX(10px); }
+        .f10-icon { font-size: 20px; margin-right: 20px; color: #60a5fa; }
+        @media(max-width: 768px) { .f10-card { flex-direction: column; } .f10-info, .f10-map { width: 100%; } }
+
+        /* --- FOOTER 11: The Mobile First App (Updated) --- */
+        .f11 { background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%); padding: 100px 0; text-align: center; color: #0f172a; position: relative; overflow: hidden; }
+        .f11-circle { position: absolute; width: 600px; height: 600px; border-radius: 50%; background: linear-gradient(135deg, #bae6fd 0%, rgba(255,255,255,0) 60%); top: -200px; right: -200px; z-index: 0; opacity: 0.6; }
+        .f11 .container { position: relative; z-index: 1; }
+        .f11 h2 { font-size: 3.5rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 20px; font-family: 'Inter', sans-serif; }
+        .f11 p { font-size: 1.25rem; color: #475569; margin-bottom: 50px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .f11-badges { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .f11-badge { background: #000; color: #fff; padding: 12px 24px; border-radius: 12px; display: flex; align-items: center; gap: 12px; transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .f11-badge:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.2); background: #1e293b; }
+        .f11-badge-text span { display: block; font-size: 10px; opacity: 0.8; text-align: left; }
+        .f11-badge-text strong { display: block; font-size: 18px; font-weight: 600; line-height: 1.2; }
+
+        /* --- FOOTER 12: The Editorial Serif (Updated) --- */
+        .f12 { background: #fdfbf7; padding: 120px 0; font-family: 'Playfair Display', serif; color: #4a4a4a; text-align: center; border-top: 1px solid #e5e5e5; }
+        .f12-logo { font-size: 80px; font-style: italic; margin-bottom: 10px; line-height: 1; }
+        .f12-tagline { font-family: 'Inter', sans-serif; font-size: 14px; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 60px; color: #999; }
+        .f12-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; max-width: 1000px; margin: 0 auto; border-top: 1px solid #e5e5e5; border-bottom: 1px solid #e5e5e5; padding: 40px 0; }
+        .f12-col a { display: block; font-size: 20px; margin-bottom: 15px; color: #4a4a4a; font-style: italic; transition: 0.3s; }
+        .f12-col a:hover { color: #000; transform: skewX(-10deg); }
+        .f12-copy { margin-top: 60px; font-family: 'Inter', sans-serif; font-size: 12px; color: #bbb; }
+        @media(max-width: 768px) { .f12-grid { grid-template-columns: 1fr 1fr; } }
+
+        /* --- FOOTER 13: High Contrast Brutalist (Updated) --- */
+        .f13 { background: #000; color: #ccff00; padding: 80px 40px; font-family: 'Space Grotesk', sans-serif; border-bottom: 20px solid #ccff00; }
+        .f13-header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #ccff00; padding-bottom: 40px; margin-bottom: 60px; }
+        .f13-brand { font-size: 6rem; font-weight: 700; line-height: 0.8; letter-spacing: -4px; }
+        .f13-nav { display: flex; gap: 60px; }
+        .f13-nav ul { }
+        .f13-nav li { margin-bottom: 10px; }
+        .f13-nav a { font-size: 24px; text-transform: uppercase; font-weight: 700; position: relative; }
+        .f13-nav a::before { content: '>'; position: absolute; left: -25px; opacity: 0; transition: 0.2s; }
+        .f13-nav a:hover::before { opacity: 1; left: -20px; }
+        .f13-marquee { white-space: nowrap; overflow: hidden; margin-top: 40px; font-size: 100px; font-weight: 700; opacity: 0.1; color: #fff; }
+        
+        /* --- FOOTER 14: Frosted Glass Overlay (Updated) --- */
+        .f14 { background: url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') center/cover fixed; padding: 120px 0; position: relative; }
+        .f14-overlay { background: rgba(0,0,0,0.4); position: absolute; inset: 0; }
+        .f14 .container { position: relative; z-index: 2; display: flex; justify-content: center; }
+        .f14-glass-box { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.2); padding: 80px 100px; border-radius: 40px; text-align: center; color: #fff; max-width: 800px; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
+        .f14 h3 { font-size: 40px; font-weight: 700; margin-bottom: 20px; }
+        .f14 p { font-size: 18px; margin-bottom: 40px; opacity: 0.9; }
+        .f14-links { display: flex; justify-content: center; gap: 30px; }
+        .f14-links a { border: 1px solid rgba(255,255,255,0.4); padding: 12px 30px; border-radius: 30px; transition: 0.3s; }
+        .f14-links a:hover { background: #fff; color: #000; }
+
+        /* --- FOOTER 15: The Side-Stack (Updated) --- */
+        .f15 { background: #fff; padding: 100px 0; border-top: 1px solid #111; }
+        .f15-layout { display: flex; align-items: stretch; height: 100%; border-left: 1px solid #111; border-right: 1px solid #111; }
+        .f15-brand-box { flex: 0 0 300px; border-right: 1px solid #111; padding: 40px; display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: 900; background: #f9f9f9; writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); letter-spacing: 5px; }
+        .f15-content { flex: 1; padding: 60px; display: flex; justify-content: space-around; flex-wrap: wrap; }
+        .f15-col h5 { font-size: 14px; text-transform: uppercase; margin-bottom: 20px; font-weight: 700; letter-spacing: 1px; }
+        .f15-col a { display: block; font-size: 16px; margin-bottom: 10px; color: #666; }
+        .f15-col a:hover { color: #000; padding-left: 5px; }
+        @media(max-width: 768px) { .f15-layout { flex-direction: column; } .f15-brand-box { writing-mode: horizontal-tb; transform: none; border-right: none; border-bottom: 1px solid #111; padding: 40px 20px; } }
+
+        /* --- FOOTER 16: The Iconography Focus (Updated) --- */
+        .f16 { background: #111; padding: 100px 0 60px; text-align: center; color: #fff; }
+        .f16-social-grid { display: flex; justify-content: center; gap: 20px; margin-bottom: 60px; }
+        .f16-card { width: 100px; height: 100px; background: #222; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 32px; transition: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); border: 1px solid #333; color: #888; }
+        .f16-card:hover { transform: translateY(-15px) scale(1.1); background: #fff; color: #000; box-shadow: 0 10px 30px rgba(255,255,255,0.2); }
+        .f16-bottom-nav { display: flex; justify-content: center; gap: 40px; font-family: 'Space Grotesk', sans-serif; text-transform: uppercase; font-size: 14px; letter-spacing: 2px; }
+        .f16-bottom-nav a { color: #666; }
+        .f16-bottom-nav a:hover { color: #fff; }
+
+        /* --- FOOTER 17: The Floating Card (Updated) --- */
+        .f17 { background: #eef2f6; padding: 80px 20px; }
+        .f17-card { background: #fff; max-width: 1100px; margin: 0 auto; border-radius: 40px; padding: 80px; box-shadow: 0 30px 60px rgba(17, 24, 39, 0.05); }
+        .f17-top { display: flex; justify-content: space-between; align-items: center; padding-bottom: 60px; border-bottom: 1px dashed #d1d5db; margin-bottom: 60px; }
+        .f17 h3 { font-size: 32px; font-weight: 700; margin-bottom: 10px; color: #111827; }
+        .f17 p { color: #6b7280; }
+        .f17-cta { background: #111827; color: #fff; padding: 15px 35px; border-radius: 12px; font-weight: 600; transition: 0.3s; box-shadow: 0 10px 20px rgba(17, 24, 39, 0.2); }
+        .f17-cta:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(17, 24, 39, 0.3); }
+        .f17-cols { display: flex; gap: 60px; }
+        .f17-col strong { display: block; margin-bottom: 20px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #9ca3af; }
+        .f17-col a { display: block; margin-bottom: 12px; font-weight: 500; color: #374151; }
+        .f17-col a:hover { color: #2563eb; }
+        @media(max-width: 768px) { .f17-top, .f17-cols { flex-direction: column; align-items: flex-start; } .f17-cols { gap: 30px; } }
+
+        /* --- FOOTER 18: Cyberpunk Neon (Updated) --- */
+        .f18 { background: #050505; color: #e0e0e0; padding: 100px 0; border-top: 1px solid #222; position: relative; overflow: hidden; }
+        .f18::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, #00ffcc, transparent); }
+        .f18-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; position: relative; z-index: 2; }
+        .f18 h4 { font-family: 'Space Grotesk', sans-serif; color: #fff; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 2px; font-size: 18px; }
+        .f18 li { margin-bottom: 12px; }
+        .f18 a { color: #666; transition: 0.2s; font-family: 'Courier New', monospace; }
+        .f18 a:hover { color: #00ffcc; text-shadow: 0 0 8px #00ffcc; padding-left: 10px; }
+        .f18 a::before { content: '>'; margin-right: 5px; color: #00ffcc; opacity: 0; transition: 0.2s; }
+        .f18 a:hover::before { opacity: 1; }
+        .f18-input { background: rgba(0, 255, 204, 0.05); border: 1px solid #333; color: #00ffcc; padding: 15px; width: 100%; font-family: 'Courier New', monospace; transition: 0.3s; }
+        .f18-input:focus { border-color: #00ffcc; box-shadow: 0 0 15px rgba(0,255,204, 0.2); }
+
+        /* --- FOOTER 19: Trust & Security (Updated) --- */
+        .f19 { background: #282c34; color: #abb2bf; padding: 80px 0; }
+        .f19-row { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #3e4451; padding-bottom: 40px; margin-bottom: 40px; }
+        .f19-brand { font-size: 24px; color: #fff; font-weight: 700; }
+        .f19-badges { display: flex; gap: 15px; }
+        .f19-badge { background: #3e4451; padding: 8px 12px; border-radius: 6px; font-size: 20px; color: #fff; }
+        .f19-bottom { display: flex; justify-content: space-between; font-size: 14px; }
+        .f19-contact-link { display: inline-flex; align-items: center; gap: 10px; color: #fff; font-weight: 500; margin-right: 30px; }
+        .f19-contact-link i { color: #98c379; }
+
+        /* --- FOOTER 20: The Corporate Clean (Updated) --- */
+        .f20 { background: #fff; padding: 50px 0; border-top: 5px solid #0056b3; box-shadow: 0 -10px 30px rgba(0,0,0,0.03); }
+        .f20-container { display: flex; justify-content: space-between; align-items: center; }
+        .f20-left { display: flex; align-items: center; gap: 30px; }
+        .f20-brand { font-weight: 900; font-size: 24px; color: #0056b3; letter-spacing: -1px; }
+        .f20-nav a { font-weight: 600; font-size: 14px; margin-right: 25px; color: #333; }
+        .f20-nav a:hover { color: #0056b3; }
+        .f20-right { font-size: 13px; color: #888; display: flex; align-items: center; gap: 20px; }
+        .f20-lang { border: 1px solid #eee; padding: 5px 10px; border-radius: 4px; font-weight: 600; color: #333; cursor: pointer; }
+
+    </style>
+</head>
+<body>
+
+<header class="showcase-header">
+    <h1>20 Premium Footer Layouts</h1>
+    <p>Enhanced designs featuring modern typography, refined color palettes, and GSAP interaction animations.</p>
+</header>
+
+<!-- Footer 1 -->
+<div class="footer-wrapper">
+    <div class="footer-label">#1 Modern Minimalist</div>
+    <footer class="f1 footer-design">
+        <div class="container">
+            <div class="row">
+                <div class="col col-4">
+                    <div class="f1-brand">AESTHETIC.</div>
+                    <p class="f1-desc">Curated essentials for the conscious consumer. Designed in Stockholm, enjoyed worldwide.</p>
+                </div>
+                <div class="col col-3">
+                    <div class="f1-title">Collections</div>
+                    <ul class="f1-links">
+                        <li><a href="#">New Arrivals</a></li>
+                        <li><a href="#">Sustainable Basics</a></li>
+                        <li><a href="#">Objects</a></li>
+                        <li><a href="#">Editorial</a></li>
+                    </ul>
+                </div>
+                <div class="col col-3">
+                    <div class="f1-title">Company</div>
+                    <ul class="f1-links">
+                        <li><a href="#">Our Philosophy</a></li>
+                        <li><a href="#">Stores</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Sustainability</a></li>
+                    </ul>
+                </div>
+                <div class="col col-3">
+                    <div class="f1-title">Connect</div>
+                    <ul class="f1-links">
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">Newsletter</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="f1-bottom">
+                <span>&copy; 2023 Aesthetic Inc.</span>
+                <div style="display: flex; gap: 20px;">
+                    <span>Privacy Policy</span>
+                    <span>Terms & Conditions</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- Footer 2 -->
+<div class="footer-wrapper">
+    <div class="footer-label">#2 Luxury Dark</div>
+    <footer class="f2 footer-design">
+        <div class="container">
+            <div class="row">
+                <div class="col col-3">
+                    <h4>Maison</h4>
+                    <ul class="f2-links">
+                        <li><a href="#">About the House</a></li>
+                        <li><a href="#">Artisanat</a></li>
+                        <li><a href="#">Fashion Shows</a></li>
+                        <li><a href="#">News</a></li>
+                    </ul>
+                </div>
+                <div class="col col-3">
+                    <h4>Services</h4>
+                    <ul class="f2-links">
+                        <li><a href="#">Boutique Services</a></li>
+                        <li><a href="#">Care Instructions</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Legal</a></li>
+                    </ul>
+                </div>
+                <div class="col col-6">
+                    <h4>Newsletter</h4>
+                    <p style="color:#888; font-size: 14px; margin-bottom: 15px;">Subscribe to receive updates from the House.</p>
+                    <div class="f2-input-wrapper">
+                        <input type="email" placeholder="E-mail address" class="f2-input">
+                        <button class="f2-btn">Subscribe</button>
+                    </div>
+                    <div class="f2-social">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- Footer 3 -->
+<div class="footer-wrapper">
+    <div class="footer-label">#3 Art Deco Centered</div>
+    <footer class="f3 footer-design">
+        <div class="container">
+            <div class="f3-container">
+                <div class="f3-logo">Gatsby & Co.</div>
+                <div class="f3-divider"></div>
+                <nav class="f3-nav">
+                    <a href="#">The Estate</a>
+                    <a href="#">Collections</a>
+                    <a href="#">Concierge</a>
+                    <a href="#">Events</a>
+                    <a href="#">Press</a>
+                </nav>
+                <div class="f3-social">
+                    <i class="fab fa-pinterest-p"></i>
+                    <i class="fab fa-instagram"></i>
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <p style="margin-top:40px; font-size:11px; opacity:0.5; letter-spacing:1px; text-transform:uppercase;">&copy; 2023 Gatsby. Excellence since 1922.</p>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- Footer 4 -->
+<div class="footer-wrapper">
+    <div class="footer-label">#4 Mesh Gradient Glass</div>
+    <footer class="f4 footer-design">
+        <div class="f4-bg"></div>
+        <div class="container">
+            <div class="f4-glass-card">
+                <div class="row">
+                    <div class="col col-5">
+                        <h3>Future Labs.</h3>
+                        <p style="color: rgba(255,255,255,0.7); line-height: 1.6; max-width: 350px;">
+                            Building the next generation of digital experiences. Join us on the journey to the metaverse.
+                        </p>
+                    </div>
+                    <div class="col col-3">
+                        <div style="margin-bottom: 20px; font-weight: 700; text-transform: uppercase; font-size: 12px; letter-spacing: 2px; color: rgba(255,255,255,0.5);">Explore</div>
+                        <div class="f4-links">
+                            <a href="#">Solutions</a>
+                            <a href="#">Case Studies</a>
+                            <a href="#">API Docs</a>
+                        </div>
+                    </div>
+                    <div class="col col-4">
+                        <div style="margin-bottom: 20px; font-weight: 700; text-transform: uppercase; font-size: 12px; letter-spacing: 2px; color: rgba(255,255,255,0.5);">Social</div>
+                        <div class="f4-links">
+                            <a href="#">Discord Community</a>
+                            <a href="#">Twitter / X</a>
+                            <a href="#">GitHub</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- Footer 5 -->
+<div class="footer-wrapper">
+    <div class="footer-label">#5 Big Typo Parallax</div>
+    <footer class="f5 footer-design">
+        <div class="f5-big-text">Lookbook</div>
+        <div class="container">
+            <div class="f5-top-row">
+                 <div class="f5-nav-group">
+                    <h5>Shop</h5>
+                    <a href="#">Men</a>
+                    <a href="#">Women</a>
+                    <a href="#">Accessories</a>
+                </div>
+                <div class="f5-nav-group">
+                    <h5>About</h5>
+                    <a href="#">Studio</a>
+                    <a href="#">Clients</a>
+                    <a href="#">Contact</a>
+                </div>
+                <div class="f5-nav-group">
+                    <h5>Social</h5>
+                    <a href="#">Ig.</a>
+                    <a href="#">Fb.</a>
+                    <a href="#">Li.</a>
+                </div>
+            </div>
+            <div class="f5-brand-large">STUDIO™</div>
+        </div>
+    </footer>
+</div>
+
+<!-- Footer 6 -->
+<div class="footer-wrapper">
+    <div class="footer-label">#6 Bento Grid</div>
+    <footer class="f6 footer-design">
+        <div class="container">
+            <div class="f6-grid">
+                <div class="f6-card large">
+                    <div>
+                        <h3>Join the Club</h3>
+                        <p style="color: #aaa; margin-bottom: 20px;">Get exclusive access to drops and discounts.</p>
+                    </div>
+                    <form onsubmit="event.preventDefault()">
+                        <input type="email" placeholder="Enter email address" class="f6-input">
+                    </form>
+                </div>
+                <div class="f6-card">
+                    <h3>Shop</h3>
+                    <ul>
+                        <li><a href="#">New In</a></li>
+                        <li><a href="#">Clothing</a></li>
+                        <li><a href="#">Shoes</a></li>
+                    </ul>
+                </div>
+                <div class="f6-card">
+                    <h3>Help</h3>
+                    <ul>
+                        <li><a href="#">Shipping</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="f6-card" style="grid-column: span 2;">
+                    <div style="display:flex; justify-content: space-between; align-items: center;">
+                        <h3>Socials</h3>
+                        <div style="display:flex; gap:15px;">
+                            <a href="#"><i class="fab fa-instagram" style="font-size:24px;"></i></a>
+                            <a href="#"><i class="fab fa-twitter" style="font-size:24px;"></i></a>
+                        </div>
+                    </div>
+                    <p style="color:#666; margin-top:10px;">Follow us for daily inspiration.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- Footer 7 -->
+<div class="footer-wrapper">
+    <div class="footer-label">#7 Editorial Image</div>
+    <footer class="f7 footer-design">
+        <div class="container">
+            <h2>The Sunday Club</h2>
+            <p>Slow living, curated goods, and stories from the makers.</p>
+            <form class="f7-form" onsubmit="event.preventDefault()">
+                <input type="email" placeholder="Your email address" class="f7-input">
+                <button class="f7-btn">Subscribe</button>
+            </form>
+            <div style="margin-top: 60px; font-size: 14px; letter-spacing: 2px; text-transform: uppercase;">
+                <a href="#" style="margin: 0 20px;">Read Journal</a>
+                <a href="#" style="margin: 0 20px;">Shop Collection</a>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- Footer 8 -->
+<div class="footer-wrapper">
+    <div class="footer-label">#8 Neo-Brutalist Soft</div>
+    <footer class="f8 footer-design">
+        <div class="container">
+            <div class="row">
+                <div class="col col-6">
+                    <div class="f8-badge">POPULAR NOW</div>
+                    <h3>Trends that matter.</h3>
+                    <p style="max-width: 400px; margin-bottom: 30px; font-size: 18px; line-height: 1.6;">
+                        We track the coolest items so you don't have to.
+                    </p>
+                    <div class="f8-socials">
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-discord"></i></a>
+                    </div>
+                </div>
+                <div class="col col-6">
+                    <div class="f8-links">
+                        <div class="f8-tag">#Streetwear</div>
+                        <div class="f8-tag">#Vintage</div>
+                        <div class="f8-tag">#Y2K</div>
+                        <div class="f8-tag">#Sneakers</div>
+                        <div class="f8-tag">#Accessories</div>
+                        <div class="f8-tag">#LimitedEdition</div>
+                        <div class="f8-tag">#Collabs</div>
+                        <div class="f8-tag">#Sale</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- Footer 9 -->
+<div class="footer-wrapper">
+    <div class="footer-label">#9 Split Asymmetrical</div>
+    <footer class="f9 footer-design">
+        <div class="f9-wrapper">
+            <div class="f9-left">
+                <div>
+                    <h2>Start your<br>journey.</h2>
+                    <p style="opacity: 0.7; font-size: 18px;">Premium gear for the ambitious.</p>
+                </div>
+                <div>
+                    <a href="#" class="f9-btn">Get Started</a>
+                    <p style="margin-top: 30px; font-size: 12px; opacity: 0.5;">&copy; 2023 Journey Co.</p>
+                </div>
+            </div>
+            <div class="f9-right">
+                <div class="f9-col">
+                    <h4>Explore</h4>
+                    <a href="#">About</a>
+                    <a href="#">Services</a>
+                    <a href="#">Pricing</a>
+                    <a href="#">Blog</a>
+                </div>
+                <div class="f9-col">
+                    <h4>Resources</h4>
+                    <a href="#">Documentation</a>
+                    <a href="#">API</a>
+                    <a href="#">Community</a>
+                    <a href="#">Help Center</a>
+                </div>
+                 <div class="f9-col">
+                    <h4>Legal</h4>
+                    <a href="#">Terms</a>
+                    <a href="#">Privacy</a>
+                    <a href="#">Security</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- Footer 10 -->
+<div class="footer-wrapper">
+    <div class="footer-label">#10 Floating Map Card</div>
+    <footer class="f10 footer-design">
+        <div class="container">
+            <div class="f10-card">
+                <div class="f10-info">
+                    <h3>Find Us</h3>
+                    <p class="subtitle">Visit our flagship store in the heart of the city.</p>
+                    
+                    <div class="f10-contact">
+                        <div class="f10-contact-row">
+                            <i class="fas fa-map-pin f10-icon"></i>
+                            <div>
+                                <strong style="display:block; margin-bottom:5px;">Address</strong>
+                                <span style="color:#9ca3af; font-size:14px;">123 Innovation Dr, Tech City, CA 90210</span>
+                            </div>
+                        </div>
+                        <div class="f10-contact-row">
+                            <i class="fas fa-envelope f10-icon"></i>
+                            <div>
+                                <strong style="display:block; margin-bottom:5px;">Email</strong>
+                                <span style="color:#9ca3af; font-size:14px;">hello@flagship.store</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="f10-map">
+                     <!-- Using an iframe for "real" feel placeholder -->
+                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.184126372557!2d-73.98773128459413!3d40.75797467932688!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25855c6480299%3A0x55194ec5a1ae072e!2sTimes%20Square!5e0!3m2!1sen!2sus!4v1626359518063!5m2!1sen!2sus" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- Footer 11 -->
+<div class="footer-wrapper">
+    <div class="footer-label">#11 Mobile App Focus</div>
+    <footer class="f11 footer-design">
+        <div class="f11-circle"></div>
+        <div class="container">
+            <h2>Experience Seamless Shopping</h2>
+            <p>Download our top-rated app for exclusive deals, early access drops, and lightning-fast checkout.</p>
+            <div class="f11-badges">
+                <a href="#" class="f11-badge">
+                    <i class="fab fa-apple" style="font-size: 30px;"></i>
+                    <div class="f11-badge-text">
+                        <span>Download on the</span>
+                        <strong>App Store</strong>
+                    </div>
+                </a>
+                <a href="#" class="f11-badge">
+                    <i class="fab fa-google-play" style="font-size: 26px;"></i>
+                    <div class="f11-badge-text">
+                        <span>GET IT ON</span>
+                        <strong>Google Play</strong>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- Footer 12 -->
+<div class="footer-wrapper">
+    <div class="footer-label">#12 Editorial Serif</div>
+    <footer class="f12 footer-design">
+        <div class="container">
+            <div class="f12-logo">Vogue.</div>
+            <div class="f12-tagline">Fashion • Beauty • Culture</div>
+            <div class="f12-grid">
+                <div class="f12-col">
+                    <a href="#">Runway</a>
+                    <a href="#">Street Style</a>
+                </div>
+                <div class="f12-col">
+                    <a href="#">Celebrity</a>
+                    <a href="#">Culture</a>
+                </div>
+                <div class="f12-col">
+                    <a href="#">Weddings</a>
+                    <a href="#">Living</a>
+                </div>
+                <div class="f12-col">
+                    <a href="#">Video</a>
+                    <a href="#">Vogue Club</a>
+                </div>
+            </div>
+            <div class="f12-copy">
+                &copy; 2023 Condé Nast. All rights reserved. Use of this site constitutes acceptance of our User Agreement.
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- Footer 13 -->
+<div class="footer-wrapper">
+    <div class="footer-label">#13 High Contrast Brutalist</div>
+    <footer class="f13 footer-design">
+        <div class="f13-header">
+            <div class="f13-brand">RAW<br>MODE</div>
+            <nav class="f13-nav">
+                <ul>
+                    <li><a href="#">Catalog_01</a></li>
+                    <li><a href="#">Catalog_02</a></li>
+                    <li><a href="#">Archive</a></li>
+                </ul>
+                <ul>
+                    <li><a href="#">Studio</a></li>
+                    <li><a href="#">Manifesto</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+             <div style="font-size: 14px; max-width: 300px;">
+                 WE BUILD BRANDS FOR THE BOLD. NO COMPROMISES. PURE AESTHETICS.
+             </div>
+             <div style="font-size: 12px;">EST. 2023 // BERLIN</div>
+        </div>
+        <div class="f13-marquee">
+            DESIGN IS CHAOS DESIGN IS CHAOS DESIGN IS CHAOS
+        </div>
+    </footer>
+</div>
+
+<!-- Footer 14 -->
+<div class="footer-wrapper">
+    <div class="footer-label">#14 Frosted Overlay</div>
+    <footer class="f14 footer-design">
+        <div class="f14-overlay"></div>
+        <div class="container">
+            <div class="f14-glass-box">
+                <h3>The Great Outdoors</h3>
+                <p>Gear up for your next expedition. Quality that withstands the elements.</p>
+                <div class="f14-links">
+                    <a href="#">Shop Men</a>
+                    <a href="#">Shop Women</a>
+                    <a href="#">Shop Gear</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- Footer 15 -->
+<div class="footer-wrapper">
+    <div class="footer-label">#15 Side Stack</div>
+    <footer class="f15 footer-design">
+        <div class="container" style="max-width: 1000px;">
+            <div class="f15-layout">
+                <div class="f15-brand-box">
+                    VERTICAL
+                </div>
+                <div class="f15-content">
+                    <div class="f15-col">
+                        <h5>Products</h5>
+                        <a href="#">Furniture</a>
+                        <a href="#">Lighting</a>
+                        <a href="#">Decor</a>
+                        <a href="#">Outdoor</a>
+                    </div>
+                    <div class="f15-col">
+                        <h5>Company</h5>
+                        <a href="#">Our Story</a>
+                        <a href="#">Designers</a>
+                        <a href="#">Sustainability</a>
+                    </div>
+                    <div class="f15-col">
+                        <h5>Customer</h5>
+                        <a href="#">Order Status</a>
+                        <a href="#">Shipping</a>
+                        <a href="#">Returns</a>
+                    </div>
+                    <div class="f15-col" style="width: 100%; margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px;">
+                         <small style="color:#999;">&copy; 2023 Vertical Design Group.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- Footer 16 -->
+<div class="footer-wrapper">
+    <div class="footer-label">#16 Iconography Focus</div>
+    <footer class="f16 footer-design">
+        <div class="container">
+            <h3 style="margin-bottom: 50px; font-weight: 300;">Follow the movement.</h3>
+            <div class="f16-social-grid">
+                <a href="#" class="f16-card"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="f16-card"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="f16-card"><i class="fab fa-tiktok"></i></a>
+                <a href="#" class="f16-card"><i class="fab fa-youtube"></i></a>
+                <a href="#" class="f16-card"><i class="fab fa-spotify"></i></a>
+            </div>
+            <div class="f16-bottom-nav">
+                <a href="#">About</a>
+                <span style="color:#333;">/</span>
+                <a href="#">Contact</a>
+                <span style="color:#333;">/</span>
+                <a href="#">Press</a>
+                <span style="color:#333;">/</span>
+                <a href="#">Careers</a>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- Footer 17 -->
+<div class="footer-wrapper">
+    <div class="footer-label">#17 Floating Card</div>
+    <footer class="f17 footer-design">
+        <div class="f17-card">
+            <div class="f17-top">
+                <div>
+                    <h3>Need help with your order?</h3>
+                    <p>Our support team is available 24/7 to assist you.</p>
+                </div>
+                <a href="#" class="f17-cta">Contact Support</a>
+            </div>
+            <div class="f17-cols">
+                <div class="f17-col">
+                    <strong>Shop</strong>
+                    <a href="#">All Products</a>
+                    <a href="#">New Arrivals</a>
+                    <a href="#">Featured</a>
+                </div>
+                <div class="f17-col">
+                    <strong>Support</strong>
+                    <a href="#">FAQ</a>
+                    <a href="#">Shipping & Returns</a>
+                    <a href="#">Warranty</a>
+                </div>
+                <div class="f17-col">
+                    <strong>Company</strong>
+                    <a href="#">About Us</a>
+                    <a href="#">Careers</a>
+                    <a href="#">Partners</a>
+                </div>
+                 <div class="f17-col" style="margin-left: auto;">
+                    <strong>App</strong>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/2560px-Google_Play_Store_badge_EN.svg.png" style="width: 120px; margin-bottom: 10px;" alt="Play Store">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Download_on_the_App_Store_Badge.svg/2560px-Download_on_the_App_Store_Badge.svg.png" style="width: 120px;" alt="App Store">
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- Footer 18 -->
+<div class="footer-wrapper">
+    <div class="footer-label">#18 Cyberpunk Neon</div>
+    <footer class="f18 footer-design">
+        <div class="container">
+            <div class="f18-grid">
+                <div>
+                    <h4>Protocol</h4>
+                    <ul>
+                        <li><a href="#">Network_Status</a></li>
+                        <li><a href="#">Nodes</a></li>
+                        <li><a href="#">Encryption</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Access</h4>
+                    <ul>
+                        <li><a href="#">Login</a></li>
+                        <li><a href="#">Register_Key</a></li>
+                        <li><a href="#">Verify</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Update_Log</h4>
+                    <p style="margin-bottom: 15px; font-size: 12px; font-family: 'Courier New', monospace; color: #888;">Enter email to receive daily patches.</p>
+                    <input type="text" class="f18-input" placeholder="user@net.local">
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- Footer 19 -->
+<div class="footer-wrapper">
+    <div class="footer-label">#19 Trust & Security</div>
+    <footer class="f19 footer-design">
+        <div class="container">
+            <div class="f19-row">
+                <div class="f19-brand">SecureShop.</div>
+                <div class="f19-badges">
+                    <div class="f19-badge"><i class="fab fa-cc-visa"></i></div>
+                    <div class="f19-badge"><i class="fab fa-cc-mastercard"></i></div>
+                    <div class="f19-badge"><i class="fab fa-cc-amex"></i></div>
+                    <div class="f19-badge"><i class="fab fa-paypal"></i></div>
+                    <div class="f19-badge"><i class="fab fa-apple-pay"></i></div>
+                </div>
+            </div>
+            <div class="f19-bottom">
+                <div>
+                    &copy; 2023 SecureShop LLC. All transactions are encrypted.
+                </div>
+                <div>
+                    <a href="#" class="f19-contact-link"><i class="fas fa-check-circle"></i> Verified Business</a>
+                    <a href="#" class="f19-contact-link"><i class="fas fa-lock"></i> SSL Secure</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- Footer 20 -->
+<div class="footer-wrapper">
+    <div class="footer-label">#20 Corporate Clean</div>
+    <footer class="f20 footer-design">
+        <div class="container">
+            <div class="f20-container">
+                <div class="f20-left">
+                    <div class="f20-brand">Enterprise.</div>
+                    <nav class="f20-nav">
+                        <a href="#">Solutions</a>
+                        <a href="#">Platform</a>
+                        <a href="#">Resources</a>
+                        <a href="#">Pricing</a>
+                    </nav>
+                </div>
+                <div class="f20-right">
+                    <div class="f20-lang">EN <i class="fas fa-chevron-down" style="font-size: 10px; margin-left: 5px;"></i></div>
+                    <span>&copy; 2023 Enterprise Corp.</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+
+<!-- GSAP Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Initial Header Animation
+    gsap.from(".showcase-header h1", {
+        y: 100,
+        opacity: 0,
+        duration: 1.2,
+        ease: "power4.out"
+    });
+    gsap.from(".showcase-header p", {
+        y: 20,
+        opacity: 0,
+        duration: 1,
+        delay: 0.3,
+        ease: "power2.out"
+    });
+
+    // Animate each footer as it comes into view
+    const footers = document.querySelectorAll('.footer-design');
+
+    footers.forEach((footer, index) => {
+        let animationType = index % 5; 
+        
+        let tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: footer,
+                start: "top 80%",
+                toggleActions: "play none none reverse"
+            }
+        });
+
+        if (animationType === 0) {
+            // Elegant Fade Up with Stagger
+            tl.from(footer.querySelectorAll(".container > *"), {
+                y: 60,
+                opacity: 0,
+                duration: 1,
+                stagger: 0.15,
+                ease: "power3.out"
+            });
+        } else if (animationType === 1) {
+            // Side Reveal
+            tl.from(footer.querySelectorAll(".col, .f10-info, .f10-map"), {
+                x: -50,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: "power2.out"
+            });
+        } else if (animationType === 2) {
+            // Scale Up
+            tl.from(footer.querySelector(".container"), {
+                scale: 0.92,
+                opacity: 0,
+                duration: 0.8,
+                ease: "power2.out"
+            });
+        } else if (animationType === 3) {
+            // Complex Stagger
+            tl.from(footer.querySelectorAll("h2, h3, h4, a, li"), {
+                y: 30,
+                opacity: 0,
+                duration: 0.6,
+                stagger: 0.03,
+                ease: "back.out(1.2)"
+            });
+        } else {
+            // 3D Tilt Effect
+            tl.from(footer, {
+                opacity: 0,
+                y: 100,
+                duration: 1,
+                ease: "circ.out"
+            });
+        }
+    });
+
+    // Parallax effect for F5 Big Typography
+    const f5Text = document.querySelector('.f5-big-text');
+    if(f5Text){
+        gsap.to(f5Text, {
+            xPercent: -30,
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".f5",
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 1,
+            }
+        });
+    }
+
+    // Gradient movement for F4
+    const f4Bg = document.querySelector('.f4-bg');
+    if(f4Bg) {
+        gsap.to(f4Bg, {
+            rotation: 360,
+            duration: 20,
+            repeat: -1,
+            ease: "none"
+        });
+    }
+
+    // Marquee for F13
+    const marquee = document.querySelector('.f13-marquee');
+    if(marquee) {
+        gsap.to(marquee, {
+            xPercent: -50,
+            duration: 10,
+            ease: "none",
+            repeat: -1
+        });
+    }
+
+</script>
+
+</body>
+</html>
