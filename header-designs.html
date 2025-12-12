@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High-End Shopify Headers - Animated</title>
+    
+    <!-- External Fonts for Premium Look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;900&family=Playfair+Display:ital,wght@0,400;1,400&family=Space+Grotesk:wght@400;700&family=Syne:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* --- GLOBAL RESET & UTILITIES --- */
+        :root {
+            --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+            --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: #e6e6e6; 
+            padding-bottom: 300px; 
+            overflow-x: hidden;
+        }
+        a { text-decoration: none; color: inherit; cursor: pointer; }
+        ul { list-style: none; }
+        
+        .demo-label {
+            padding: 40px 0 10px;
+            text-align: center;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #888;
+            margin-top: 20px;
+        }
+
+        .header-wrapper {
+            width: 100%;
+            background: white;
+            position: relative;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.05);
+        }
+        
+        /* Helper for button hover fills */
+        .btn-fill {
+            position: relative; overflow: hidden;
+        }
+        .btn-fill span { position: relative; z-index: 2; }
+        .btn-fill::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 1; transform: scaleY(0); transform-origin: bottom;
+            transition: transform 0.4s var(--ease-out-expo);
+        }
+        .btn-fill:hover::before { transform: scaleY(1); }
+        .btn-fill:hover { color: white !important; }
+
+    </style>
+</head>
+<body>
+
+<!-- =========================================
+     01. THE "SYNE" AVANT-GARDE
+     Description: Big typography, curtain reveal, sticky blend mode
+========================================== -->
+<div class="demo-label">01. Avant-Garde Minimal</div>
+<header id="h1" class="header-wrapper h1-container">
+    <div class="h1-inner">
+        <div class="h1-logo">AESTHETE</div>
+        <nav class="h1-nav">
+            <a href="#" class="h1-link"><span>Index</span></a>
+            <a href="#" class="h1-link"><span>Catalog</span></a>
+            <a href="#" class="h1-link"><span>Journal</span></a>
+        </nav>
+        <div class="h1-cta btn-fill">Let's Talk</div>
+    </div>
+</header>
+
+<style>
+    .h1-container { 
+        padding: 20px 40px; 
+        background: #f4f0eb; 
+        height: 100px; 
+        display: flex; align-items: center;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    .h1-inner { width: 100%; display: flex; justify-content: space-between; align-items: baseline; }
+    .h1-logo { 
+        font-family: 'Syne', sans-serif; 
+        font-weight: 800; 
+        font-size: 2.5rem; 
+        letter-spacing: -1px;
+        color: #1a1a1a;
+    }
+    .h1-nav { display: flex; gap: 40px; }
+    .h1-link { 
+        font-family: 'Inter', sans-serif; 
+        font-size: 0.9rem; 
+        text-transform: uppercase; 
+        letter-spacing: 1px;
+        position: relative;
+        overflow: hidden;
+        padding: 5px 0;
+    }
+    /* Hover Stagger Text Effect */
+    .h1-link span { display: block; transition: transform 0.4s var(--ease-out-expo); }
+    .h1-link::after {
+        content: attr(data-text); 
+        position: absolute; top: 100%; left: 0; 
+        width: 100%; 
+        transition: transform 0.4s var(--ease-out-expo);
+    }
+    
+    .h1-cta {
+        border: 1px solid #1a1a1a;
+        padding: 12px 28px;
+        border-radius: 40px;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: color 0.3s;
+    }
+</style>
+
+<!-- =========================================
+     02. THE "HYPEBEAST" SCROLLER
+     Description: Infinite marquee, brutalist borders, neon hover
+========================================== -->
+<div class="demo-label">02. Streetwear Brutalist</div>
+<header id="h2" class="header-wrapper h2-container">
+    <div class="h2-marquee-wrap">
+        <div class="h2-marquee">
+            <span>NEW COLLECTION DROPPING SOON /// WORLDWIDE SHIPPING AVAILABLE /// </span>
+            <span>NEW COLLECTION DROPPING SOON /// WORLDWIDE SHIPPING AVAILABLE /// </span>
+        </div>
+    </div>
+    <div class="h2-main">
+        <div class="h2-left">
+            <div class="h2-burger">
+                <span></span><span></span>
+            </div>
+            <a href="#">SHOP</a>
+        </div>
+        <div class="h2-logo">UN/REAL</div>
+        <div class="h2-right">
+            <a href="#">CART (0)</a>
+        </div>
+    </div>
+</header>
+
+<style>
+    .h2-container { background: #000; color: #fff; font-family: 'Space Grotesk', sans-serif; }
+    .h2-marquee-wrap { border-bottom: 1px solid #333; overflow: hidden; white-space: nowrap; padding: 8px 0; background: #111; }
+    .h2-marquee { display: inline-block; font-size: 0.75rem; color: #ccff00; letter-spacing: 1px; }
+    
+    .h2-main { display: flex; height: 80px; align-items: center; justify-content: space-between; padding: 0 40px; }
+    .h2-logo { font-size: 2rem; font-weight: 700; letter-spacing: -2px; mix-blend-mode: difference; }
+    
+    .h2-left, .h2-right { display: flex; align-items: center; gap: 30px; font-weight: 700; font-size: 0.9rem; }
+    
+    .h2-burger { width: 30px; height: 14px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; }
+    .h2-burger span { width: 100%; height: 2px; background: white; transition: 0.3s; }
+    .h2-burger:hover span:nth-child(1) { width: 70%; }
+    .h2-burger:hover span:nth-child(2) { width: 100%; }
+    
+    .h2-left a:hover, .h2-right a:hover { color: #ccff00; text-shadow: 0 0 10px rgba(204, 255, 0, 0.5); }
+</style>
+
+<!-- =========================================
+     03. THE "GLASS" FLOATING DOCK
+     Description: Mac-OS style dock, blur, icon scale
+========================================== -->
+<div class="demo-label">03. Floating Glass OS</div>
+<div style="background: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop') center/cover; padding: 60px 20px; text-align: center;">
+    <header id="h3" class="h3-dock">
+        <a href="#" class="h3-item"><i class="ri-store-2-line"></i></a>
+        <a href="#" class="h3-item"><i class="ri-search-line"></i></a>
+        <div class="h3-logo">LUMA</div>
+        <a href="#" class="h3-item"><i class="ri-user-line"></i></a>
+        <a href="#" class="h3-item">
+            <i class="ri-shopping-bag-line"></i>
+            <span class="h3-badge">2</span>
+        </a>
+    </header>
+</div>
+
+<style>
+    .h3-dock {
+        display: inline-flex;
+        align-items: center;
+        gap: 15px;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        padding: 12px 25px;
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        transition: width 0.4s ease;
+    }
+    .h3-logo {
+        font-family: 'Inter', sans-serif; font-weight: 900; color: white; margin: 0 20px; font-size: 1.2rem;
+        letter-spacing: 1px;
+    }
+    .h3-item {
+        color: white; font-size: 1.4rem; position: relative; width: 40px; height: 40px;
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 50%;
+        transition: background 0.3s, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .h3-item:hover { background: rgba(255,255,255,0.2); transform: scale(1.2) translateY(-5px); }
+    .h3-badge {
+        position: absolute; top: 0; right: 0; background: #ff4757; color: white;
+        font-size: 0.6rem; width: 16px; height: 16px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center; font-weight: bold;
+    }
+</style>
+
+<!-- =========================================
+     04. THE "EDITORIAL" MEGA
+     Description: Serif fonts, large image dropdown (implied), elegant lines
+========================================== -->
+<div class="demo-label">04. Editorial Mega Menu</div>
+<header id="h4" class="header-wrapper h4-container">
+    <div class="h4-top">
+        <div class="h4-socials">
+            <i class="ri-instagram-line"></i>
+            <i class="ri-twitter-x-line"></i>
+        </div>
+        <div class="h4-announce">Winter Sale is Live - Up to 50% Off</div>
+        <div class="h4-lang">EN / USD</div>
+    </div>
+    <div class="h4-main">
+        <div class="h4-logo">The Post.</div>
+        <nav class="h4-nav">
+            <a href="#" class="h4-link">New Arrivals</a>
+            <a href="#" class="h4-link">Designers</a>
+            <a href="#" class="h4-link">Clothing</a>
+            <a href="#" class="h4-link">Shoes</a>
+        </nav>
+        <div class="h4-actions">
+            <i class="ri-search-line"></i>
+            <i class="ri-shopping-basket-2-line"></i>
+        </div>
+    </div>
+    <!-- Mega Menu Dropdown Container (Hidden by default) -->
+    <div class="h4-mega">
+        <div class="h4-mega-col">
+            <h4>Featured</h4>
+            <a href="#">Best Sellers</a>
+            <a href="#">New This Week</a>
+            <a href="#">Coming Soon</a>
+        </div>
+        <div class="h4-mega-img"></div>
+    </div>
+</header>
+
+<style>
+    .h4-container { background: #fffbf8; color: #2c2c2c; }
+    .h4-top { 
+        display: flex; justify-content: space-between; padding: 10px 40px; 
+        font-size: 0.75rem; border-bottom: 1px solid #e5e0db; color: #666; font-family: 'Inter', sans-serif;
+    }
+    .h4-main { padding: 25px 40px; display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 2; background: #fffbf8; }
+    .h4-logo { font-family: 'Playfair Display', serif; font-size: 2rem; font-style: italic; font-weight: 700; }
+    .h4-nav { display: flex; gap: 35px; }
+    .h4-link { 
+        font-family: 'Inter', sans-serif; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px;
+        position: relative; padding-bottom: 5px;
+    }
+    .h4-link::before {
+        content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background: currentColor;
+        transform: scaleX(0); transform-origin: right; transition: transform 0.4s var(--ease-out-expo);
+    }
+    .h4-link:hover::before { transform: scaleX(1); transform-origin: left; }
+    
+    .h4-actions i { font-size: 1.2rem; margin-left: 20px; cursor: pointer; transition: transform 0.2s; }
+    .h4-actions i:hover { transform: scale(1.1); }
+
+    /* Visual only for demo */
+    .h4-mega { 
+        height: 0; overflow: hidden; background: #fffbf8; border-bottom: 1px solid #e5e0db;
+        display: flex; padding: 0 40px; opacity: 0;
+    }
+</style>
+
+<!-- =========================================
+     05. THE "FULL SCREEN" CURTAIN
+     Description: Hamburger triggers full screen takeover
+========================================== -->
+<div class="demo-label">05. Full Screen Interaction</div>
+<header id="h5" class="header-wrapper h5-container">
+    <div class="h5-bar">
+        <div class="h5-logo">CANVAS</div>
+        <div class="h5-trigger-wrap" id="h5-trigger">
+            <div class="h5-lines">
+                <span class="l1"></span><span class="l2"></span>
+            </div>
+            <span class="h5-label">MENU</span>
+        </div>
+    </div>
+    
+    <div class="h5-curtain">
+        <div class="h5-curtain-inner">
+            <a href="#" class="h5-big-link">Home</a>
+            <a href="#" class="h5-big-link">Shop</a>
+            <a href="#" class="h5-big-link">About</a>
+            <a href="#" class="h5-big-link">Contact</a>
+        </div>
+        <div class="h5-socials">
+            <span>IG</span> <span>FB</span> <span>YT</span>
+        </div>
+    </div>
+</header>
+
+<style>
+    .h5-container { height: 80px; position: relative; z-index: 50; }
+    .h5-bar { 
+        display: flex; justify-content: space-between; align-items: center; padding: 0 40px; 
+        height: 100%; background: #fff; position: relative; z-index: 60;
+    }
+    .h5-logo { font-weight: 900; letter-spacing: 4px; font-size: 1.4rem; }
+    
+    .h5-trigger-wrap { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .h5-lines { width: 24px; height: 14px; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
+    .h5-lines span { width: 100%; height: 2px; background: #000; transition: transform 0.3s; }
+    .h5-label { font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; }
+
+    .h5-curtain {
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background: #111; color: white; z-index: 55;
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
+        clip-path: circle(0% at 95% 5%); /* Start hidden top right */
+        pointer-events: none;
+        transition: clip-path 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+    .h5-container.active .h5-curtain { clip-path: circle(150% at 95% 5%); pointer-events: all; }
+    .h5-container.active .l1 { transform: rotate(45deg) translate(4px, 5px); background: #000; }
+    .h5-container.active .l2 { transform: rotate(-45deg) translate(4px, -5px); background: #000; }
+    
+    .h5-big-link { font-size: 4rem; font-weight: 900; margin: 10px 0; opacity: 0; transform: translateY(50px); transition: color 0.3s; }
+    .h5-big-link:hover { color: #555; -webkit-text-stroke: 1px white; }
+    .h5-socials { position: absolute; bottom: 40px; display: flex; gap: 20px; opacity: 0; }
+</style>
+
+<!-- =========================================
+     06. THE "MINIMAL" STACK
+     Description: Logo top center, nav bottom center, sleek
+========================================== -->
+<div class="demo-label">06. Architectural Stack</div>
+<header id="h6" class="header-wrapper h6-container">
+    <div class="h6-top">
+        <div class="h6-logo">
+            <span class="char">M</span><span class="char">O</span><span class="char">D</span><span class="char">U</span><span class="char">S</span>
+        </div>
+    </div>
+    <div class="h6-divider"></div>
+    <div class="h6-bottom">
+        <a href="#" class="h6-pill">Furniture</a>
+        <a href="#" class="h6-pill">Lighting</a>
+        <a href="#" class="h6-pill">Objects</a>
+        <a href="#" class="h6-pill">Art</a>
+    </div>
+    <div class="h6-abs-right">Cart (0)</div>
+</header>
+
+<style>
+    .h6-container { padding: 40px 0 20px; text-align: center; font-family: 'Inter', sans-serif; }
+    .h6-logo { font-size: 3rem; font-weight: 900; letter-spacing: 10px; display: inline-block; overflow: hidden; }
+    .h6-logo .char { display: inline-block; transform: translateY(100%); }
+    
+    .h6-divider { width: 40px; height: 2px; background: #000; margin: 20px auto; }
+    
+    .h6-bottom { display: flex; justify-content: center; gap: 10px; }
+    .h6-pill { 
+        padding: 8px 20px; border-radius: 20px; border: 1px solid transparent; 
+        font-size: 0.85rem; text-transform: uppercase; color: #555; transition: 0.3s;
+    }
+    .h6-pill:hover { border-color: #ddd; background: #fafafa; color: #000; }
+    .h6-abs-right { position: absolute; top: 30px; right: 40px; font-weight: 600; font-size: 0.9rem; }
+</style>
+
+<!-- =========================================
+     07. THE "SEARCH" FOCUS
+     Description: Large search bar integrated, utility focused
+========================================== -->
+<div class="demo-label">07. Search Utility</div>
+<header id="h7" class="header-wrapper h7-container">
+    <div class="h7-logo">ARCHIVE.</div>
+    <div class="h7-search-wrap">
+        <i class="ri-search-line"></i>
+        <input type="text" placeholder="Search the archive...">
+    </div>
+    <div class="h7-tools">
+        <div class="h7-item">Log In</div>
+        <div class="h7-btn">Subscribe</div>
+    </div>
+</header>
+
+<style>
+    .h7-container { display: flex; align-items: center; padding: 20px 40px; gap: 40px; border-bottom: 1px solid #eee; }
+    .h7-logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; }
+    
+    .h7-search-wrap { 
+        flex: 1; background: #f4f4f4; border-radius: 8px; padding: 12px 20px; 
+        display: flex; align-items: center; gap: 10px; color: #777; transition: box-shadow 0.3s;
+    }
+    .h7-search-wrap:focus-within { box-shadow: 0 0 0 2px #000; background: #fff; }
+    .h7-search-wrap input { background: transparent; border: none; outline: none; width: 100%; font-family: 'Inter', sans-serif; font-size: 1rem; }
+    
+    .h7-tools { display: flex; align-items: center; gap: 20px; font-weight: 500; font-size: 0.9rem; }
+    .h7-btn { background: #000; color: white; padding: 10px 24px; border-radius: 6px; cursor: pointer; transition: transform 0.2s; }
+    .h7-btn:hover { transform: translateY(-2px); }
+</style>
+
+<!-- =========================================
+     08. THE "ORGANIC" WAVE
+     Description: Soft curves, pastel, gentle motion
+========================================== -->
+<div class="demo-label">08. Organic Soft</div>
+<header id="h8" class="header-wrapper h8-container">
+    <svg class="h8-wave" viewBox="0 0 1440 120" preserveAspectRatio="none">
+        <path fill="#e8f5e9" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"></path>
+    </svg>
+    <div class="h8-content">
+        <div class="h8-nav">
+            <a href="#">About</a>
+            <a href="#">Story</a>
+        </div>
+        <div class="h8-logo"><i class="ri-plant-fill"></i> BLOOM</div>
+        <div class="h8-nav">
+            <a href="#">Shop</a>
+            <a href="#">Care</a>
+        </div>
+    </div>
+</header>
+
+<style>
+    .h8-container { background: white; position: relative; height: 120px; }
+    .h8-wave { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+    .h8-content { 
+        position: relative; z-index: 2; display: flex; justify-content: center; align-items: center; 
+        gap: 60px; padding-top: 10px;
+    }
+    .h8-logo { 
+        font-family: 'Playfair Display', serif; font-size: 2rem; color: #2e7d32; 
+        display: flex; flex-direction: column; align-items: center;
+        background: white; width: 80px; height: 80px; justify-content: center; border-radius: 50%;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    .h8-nav a { font-size: 0.9rem; color: #555; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
+    .h8-nav a:hover { color: #2e7d32; }
+</style>
+
+<!-- =========================================
+     09. THE "TECH" NEON
+     Description: Dark mode, glowing borders, futuristic
+========================================== -->
+<div class="demo-label">09. Cyber Tech</div>
+<header id="h9" class="header-wrapper h9-container">
+    <div class="h9-glow-line"></div>
+    <div class="h9-logo">CYBER_SYS</div>
+    <nav class="h9-nav">
+        <a href="#" data-text="Modules">Modules</a>
+        <a href="#" data-text="Systems">Systems</a>
+        <a href="#" data-text="Access">Access</a>
+    </nav>
+    <div class="h9-status">
+        <span class="dot"></span> ONLINE
+    </div>
+</header>
+
+<style>
+    .h9-container { background: #050505; color: #00f3ff; padding: 25px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #111; overflow: hidden; }
+    .h9-glow-line { position: absolute; top: 0; left: 0; height: 1px; width: 100%; background: linear-gradient(90deg, transparent, #00f3ff, transparent); transform: translateX(-100%); animation: h9-scan 4s infinite ease-in-out; }
+    @keyframes h9-scan { 0% { transform: translateX(-100%); } 50% { transform: translateX(100%); } 100% { transform: translateX(100%); } }
+    
+    .h9-logo { font-family: 'Space Grotesk', monospace; font-size: 1.5rem; letter-spacing: 2px; text-shadow: 0 0 10px rgba(0, 243, 255, 0.5); }
+    
+    .h9-nav { display: flex; gap: 40px; }
+    .h9-nav a { position: relative; font-family: monospace; text-transform: uppercase; color: rgba(255,255,255,0.7); transition: 0.3s; }
+    .h9-nav a:hover { color: #00f3ff; text-shadow: 0 0 8px #00f3ff; }
+    
+    .h9-status { display: flex; align-items: center; gap: 8px; font-size: 0.7rem; color: #00f3ff; border: 1px solid #00f3ff; padding: 5px 10px; border-radius: 4px; }
+    .h9-status .dot { width: 6px; height: 6px; background: #00f3ff; border-radius: 50%; box-shadow: 0 0 6px #00f3ff; animation: pulse 1s infinite; }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+</style>
+
+<!-- =========================================
+     10. THE "APP" BAR
+     Description: Compact, mobile-first aesthetic for desktop
+========================================== -->
+<div class="demo-label">10. Modern App Bar</div>
+<header id="h10" class="header-wrapper h10-wrap">
+    <div class="h10-bar">
+        <a href="#" class="h10-icon active"><i class="ri-home-5-line"></i></a>
+        <a href="#" class="h10-icon"><i class="ri-search-2-line"></i></a>
+        <div class="h10-add">
+            <i class="ri-add-line"></i>
+        </div>
+        <a href="#" class="h10-icon"><i class="ri-heart-3-line"></i></a>
+        <a href="#" class="h10-icon"><i class="ri-user-3-line"></i></a>
+    </div>
+</header>
+
+<style>
+    .h10-wrap { background: transparent; display: flex; justify-content: center; padding: 20px 0; pointer-events: none; }
+    .h10-bar { 
+        pointer-events: auto;
+        background: #222; color: #999;
+        display: flex; gap: 30px; align-items: center; 
+        padding: 15px 30px; border-radius: 50px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+    .h10-icon { font-size: 1.4rem; transition: color 0.3s, transform 0.2s; }
+    .h10-icon:hover { color: white; transform: translateY(-2px); }
+    .h10-icon.active { color: white; }
+    
+    .h10-add { 
+        background: white; color: black; width: 45px; height: 45px; border-radius: 50%; 
+        display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+        transform: translateY(-50%); margin-top: 15px; border: 4px solid #f4f4f4;
+        cursor: pointer; transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .h10-add:hover { transform: translateY(-55%) scale(1.1) rotate(90deg); }
+</style>
+
+<!-- SCRIPTS: GSAP ANIMATION LOGIC -->
+<script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    // --- 01. Avant-Garde Reveal ---
+    // Stagger the letters of the logo? No, stagger the links
+    const h1Links = document.querySelectorAll('.h1-link span');
+    gsap.from(h1Links, {
+        yPercent: 100,
+        duration: 1,
+        stagger: 0.1,
+        ease: "power4.out",
+        delay: 0.2
+    });
+    gsap.from(".h1-logo", { opacity: 0, x: -20, duration: 1, ease: "power2.out" });
+    gsap.from(".h1-cta", { scale: 0.8, opacity: 0, duration: 0.8, delay: 0.5, ease: "back.out(1.7)" });
+
+
+    // --- 02. Marquee Loop ---
+    gsap.to(".h2-marquee", {
+        xPercent: -50,
+        repeat: -1,
+        duration: 10,
+        ease: "none"
+    });
+
+
+    // --- 03. Floating Dock Entrance ---
+    gsap.from("#h3", {
+        y: 50,
+        opacity: 0,
+        duration: 1.2,
+        ease: "elastic.out(1, 0.7)",
+        delay: 0.2
+    });
+    const h3Items = document.querySelectorAll(".h3-item");
+    h3Items.forEach((item) => {
+        item.addEventListener("mouseenter", () => {
+            gsap.to(item, { scale: 1.2, y: -5, duration: 0.3, ease: "back.out(2)" });
+        });
+        item.addEventListener("mouseleave", () => {
+            gsap.to(item, { scale: 1, y: 0, duration: 0.3 });
+        });
+    });
+
+
+    // --- 04. Editorial Reveal ---
+    const h4Tl = gsap.timeline();
+    h4Tl.from(".h4-logo", { opacity: 0, y: 20, duration: 1, ease: "power3.out" })
+        .from(".h4-link", { opacity: 0, y: 10, stagger: 0.1, duration: 0.8 }, "-=0.5");
+
+
+    // --- 05. Full Screen Menu Logic ---
+    const h5Trigger = document.getElementById('h5-trigger');
+    const h5Container = document.getElementById('h5');
+    const h5Links = document.querySelectorAll('.h5-big-link');
+    const h5Socials = document.querySelector('.h5-socials');
+    
+    let isMenuOpen = false;
+
+    h5Trigger.addEventListener('click', () => {
+        isMenuOpen = !isMenuOpen;
+        h5Container.classList.toggle('active');
+        
+        if (isMenuOpen) {
+            // Animate items IN
+            gsap.to(h5Links, { 
+                y: 0, opacity: 1, stagger: 0.1, duration: 0.8, delay: 0.3, ease: "power3.out" 
+            });
+            gsap.to(h5Socials, { opacity: 1, duration: 0.5, delay: 0.8 });
+        } else {
+            // Animate items OUT
+            gsap.to(h5Links, { 
+                y: 50, opacity: 0, duration: 0.3 
+            });
+            gsap.to(h5Socials, { opacity: 0, duration: 0.3 });
+        }
+    });
+
+
+    // --- 06. Stacked Logo Reveal ---
+    const h6Chars = document.querySelectorAll('.h6-logo .char');
+    gsap.to(h6Chars, {
+        y: 0,
+        stagger: 0.05,
+        duration: 0.8,
+        ease: "power4.out",
+        scrollTrigger: { trigger: "#h6", start: "top 80%" }
+    });
+    gsap.from(".h6-divider", { width: 0, duration: 1, ease: "power2.inOut", delay: 0.5 });
+
+
+    // --- 08. Organic Wave Motion ---
+    gsap.to(".h8-wave path", {
+        attr: { d: "M0,64L80,55C160,46,320,28,480,32C640,36,800,60,960,65C1120,70,1280,50,1360,45L1440,40L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z" },
+        duration: 3,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
+    });
+    gsap.from(".h8-logo", { scale: 0, rotation: -180, duration: 1.5, ease: "elastic.out(1, 0.5)", scrollTrigger: "#h8" });
+
+
+    // --- 10. App Bar Pop ---
+    gsap.from(".h10-bar", { y: 50, opacity: 0, duration: 0.8, ease: "back.out(1.5)", delay: 0.5 });
+    
+</script>
+
+</body>
+</html>
