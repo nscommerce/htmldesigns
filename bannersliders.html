@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>21 Pro Banner Sliders</title>
+    
+    <!-- External Libraries -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600;800&family=Righteous&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- GLOBAL RESET & UTILITIES --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #050505; color: #fff; overflow-x: hidden; }
+        
+        /* Section setup */
+        section {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid #333;
+        }
+
+        /* Common Swiper Styles */
+        .swiper { width: 100%; height: 100%; }
+        .swiper-slide { position: relative; overflow: hidden; display: flex; }
+        
+        img { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* Common Typography */
+        h2 { margin-bottom: 0.5rem; line-height: 1; }
+        p { margin-bottom: 1.5rem; line-height: 1.6; max-width: 500px; }
+        
+        /* Common Button */
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: #fff;
+            color: #000;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            z-index: 10;
+        }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 0%; height: 100%;
+            background: #000;
+            z-index: -1;
+            transition: width 0.3s ease;
+        }
+        .btn:hover::before { width: 100%; }
+        .btn:hover { color: #fff; }
+
+        /* Full banner link wrapper */
+        .banner-link {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 5;
+            cursor: pointer;
+        }
+
+        /* Responsive Global Overrides */
+        @media(max-width: 768px) {
+            h2 { font-size: 2.5rem !important; }
+            p { font-size: 1rem !important; max-width: 90% !important; }
+            .btn { padding: 12px 30px; font-size: 0.9rem; }
+        }
+
+        /* --- SECTION 1: THE SHUTTER --- */
+        #section-1 { font-family: 'Poppins', sans-serif; }
+        #section-1 .swiper-slide { justify-content: center; align-items: center; }
+        #section-1 .bg-img { position: absolute; inset: 0; z-index: 1; transform: scale(1.1); }
+        #section-1 .overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.3); z-index: 2; }
+        #section-1 .shutter-container { position: absolute; inset: 0; z-index: 3; display: flex; pointer-events: none; }
+        #section-1 .shutter { flex: 1; background: #111; height: 100%; transform-origin: top; }
+        #section-1 .content { position: relative; z-index: 4; text-align: center; color: white; mix-blend-mode: overlay; padding: 0 20px; }
+        #section-1 h2 { font-size: 5rem; font-weight: 800; text-transform: uppercase; letter-spacing: -2px; }
+        
+        @media(max-width: 768px) { #section-1 h2 { font-size: 3rem; } }
+
+        /* --- SECTION 2: THE KINETIC --- */
+        #section-2 { font-family: 'Oswald', sans-serif; }
+        #section-2 .swiper-slide { background: #fff; color: #111; }
+        #section-2 .split-container { display: flex; width: 100%; height: 100%; }
+        #section-2 .text-col { width: 40%; padding: 80px; display: flex; flex-direction: column; justify-content: center; background: #f0f0f0; position: relative; z-index: 2; }
+        #section-2 .img-col { width: 60%; position: relative; overflow: hidden; }
+        #section-2 h2 { font-size: 4rem; text-transform: uppercase; line-height: 0.9; margin-bottom: 20px; color: #000; }
+        #section-2 .btn { background: #000; color: #fff; border: none; }
+        
+        @media(max-width: 768px) { 
+            #section-2 .split-container { flex-direction: column-reverse; } 
+            #section-2 .text-col, #section-2 .img-col { width: 100%; height: 50%; } 
+        }
+
+        /* --- SECTION 3: THE CARD STACK --- */
+        #section-3 { font-family: 'Poppins', sans-serif; perspective: 1000px; }
+        #section-3 .bg-blur { position: absolute; inset: 0; z-index: 1; filter: blur(20px) brightness(0.4); }
+        #section-3 .swiper { overflow: visible; padding: 50px 0; }
+        #section-3 .card-inner { width: 80%; height: 80%; background: #222; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); display: flex; position: relative; }
+        #section-3 .card-img { width: 50%; height: 100%; }
+        #section-3 .card-content { width: 50%; padding: 60px; display: flex; flex-direction: column; justify-content: center; background: linear-gradient(135deg, #2a2a2a, #1a1a1a); }
+        #section-3 h2 { font-size: 3rem; color: #fff; }
+        
+        @media(max-width: 768px) { 
+            #section-3 .card-inner { flex-direction: column; width: 90%; height: 90%; } 
+            #section-3 .card-img, #section-3 .card-content { width: 100%; height: 50%; } 
+        }
+
+        /* --- SECTION 4: THE GEOMETRIC --- */
+        #section-4 { font-family: 'Oswald', sans-serif; }
+        #section-4 .bg-wrap { position: absolute; top: 0; left: 0; width: 100%; height: 100%; clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%); }
+        #section-4 .content-box { position: absolute; bottom: 10%; left: 5%; z-index: 10; background: #fff; padding: 40px; max-width: 500px; color: #000; }
+        #section-4 h2 { font-size: 3.5rem; text-transform: uppercase; letter-spacing: -1px; }
+        #section-4 .btn { background: #000; color: #fff; margin-top: 10px; }
+        
+        @media(max-width: 768px) { 
+            #section-4 .content-box { bottom: 0; left: 0; width: 100%; max-width: 100%; background: rgba(255,255,255,0.95); } 
+        }
+
+        /* --- SECTION 5: FASHION OVERLAP --- */
+        #section-5 { background: #fff; color: #000; font-family: 'Playfair Display', serif; }
+        #section-5 .swiper-slide { display: block; }
+        #section-5 .big-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 15vw; opacity: 0.1; white-space: nowrap; pointer-events: none; z-index: 1; font-style: italic; }
+        #section-5 .main-img-wrap { position: absolute; top: 15%; right: 15%; width: 35%; height: 70%; z-index: 2; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.3); }
+        #section-5 .floating-content { position: absolute; bottom: 20%; left: 10%; z-index: 3; background: rgba(255,255,255,0.9); padding: 40px; border: 1px solid #000; }
+        
+        @media(max-width: 768px) { 
+            #section-5 .main-img-wrap { width: 80%; height: 50%; right: 10%; top: 10%; } 
+            #section-5 .floating-content { bottom: 5%; left: 5%; right: 5%; padding: 25px; } 
+        }
+
+        /* --- SECTION 6: GLITCH --- */
+        #section-6 { font-family: 'Courier New', monospace; background: #000; }
+        #section-6 .bg-img { opacity: 0.7; filter: contrast(1.2) saturate(1.2); }
+        #section-6 .glitch-box { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 2px solid #0ff; padding: 50px; background: rgba(0,0,0,0.8); text-align: center; box-shadow: 10px 10px 0 #f0f; z-index: 10; }
+        #section-6 .btn { background: transparent; border: 1px solid #0ff; color: #0ff; }
+        #section-6 .btn:hover { background: #0ff; color: #000; box-shadow: 0 0 20px #0ff; }
+
+        /* --- SECTION 7: MINIMAL ZOOM --- */
+        #section-7 { font-family: 'Helvetica Neue', sans-serif; }
+        #section-7 .swiper-slide { justify-content: flex-start; }
+        #section-7 .bg-img { width: 100%; height: 100%; transform: scale(1); transition: transform 0.5s; }
+        #section-7 .content-panel { position: absolute; left: 0; top: 0; width: 40%; height: 100%; background: rgba(255,255,255,0.95); z-index: 2; display: flex; flex-direction: column; justify-content: center; padding: 60px; }
+        #section-7 .btn { background: transparent; border: 1px solid #111; color: #111; padding: 10px 30px; }
+        
+        @media(max-width: 768px) { #section-7 .content-panel { width: 100%; height: 45%; bottom: 0; top: auto; padding: 30px; } }
+
+        /* --- SECTION 8: FRUITY POP --- */
+        #section-8 { font-family: 'Righteous', cursive; transition: background-color 1s ease; }
+        #section-8 .swiper-slide { justify-content: center; align-items: center; overflow: hidden; background: transparent; }
+        #section-8 .bg-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 25vw; color: rgba(255,255,255,0.2); z-index: 1; white-space: nowrap; pointer-events: none; line-height: 0.8; }
+        #section-8 .product-container { position: relative; z-index: 10; width: 400px; height: 400px; max-width: 80vw; max-height: 40vh; display: flex; justify-content: center; align-items: center; }
+        #section-8 .product-img { width: 100%; height: auto; border-radius: 20px; transform: rotate(-15deg); }
+        #section-8 .floater { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.3); z-index: 5; }
+        #section-8 .f1 { width: 50px; height: 50px; top: 20%; left: 20%; } 
+        #section-8 .f2 { width: 80px; height: 80px; bottom: 20%; right: 20%; }
+        #section-8 .info-box { position: absolute; bottom: 50px; left: 50px; z-index: 20; text-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        
+        @media(max-width: 768px) { 
+            #section-8 .bg-text { font-size: 30vw; } 
+            #section-8 .info-box { bottom: 30px; left: 20px; right: 20px; text-align: center; } 
+            #section-8 .product-container { margin-bottom: 100px; } 
+        }
+
+        /* --- SECTION 9: ARCHITECTURAL GRID --- */
+        #section-9 { font-family: 'Oswald', sans-serif; }
+        #section-9 .swiper-slide { background: #111; }
+        #section-9 .grid-container { position: absolute; inset: 0; display: flex; }
+        #section-9 .grid-col { flex: 1; height: 100%; overflow: hidden; position: relative; }
+        #section-9 .grid-img-inner { position: absolute; top: 0; width: 100vw; height: 100%; object-fit: cover; }
+        #section-9 .content-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; text-align: center; background: #fff; padding: 40px 60px; }
+        #section-9 .btn { border: 2px solid #000; background: transparent; color: #000; margin-top: 20px; }
+        
+        @media(max-width: 768px) { #section-9 .content-center { width: 90%; padding: 30px; } }
+
+        /* --- SECTION 10: CURSOR FOLLOWER --- */
+        #section-10 { font-family: 'Poppins', sans-serif; cursor: none; }
+        #section-10 .custom-cursor { position: fixed; width: 40px; height: 40px; border: 2px solid #fff; border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s, background 0.3s; mix-blend-mode: difference; }
+        #section-10 .swiper-slide { align-items: center; padding: 0 10%; }
+        #section-10 .bg-wrapper { position: absolute; top: 0; left: 0; width: 120%; height: 120%; margin-left: -10%; margin-top: -10%; z-index: 1; }
+        #section-10 .content-layer { position: relative; z-index: 2; mix-blend-mode: difference; }
+        #section-10.hovered .custom-cursor { width: 80px; height: 80px; background: #fff; mix-blend-mode: normal; opacity: 0.5; }
+        
+        @media (hover: none) { #section-10 { cursor: auto; } #section-10 .custom-cursor { display: none; } }
+
+        /* --- SECTION 11: ULTIMATE FRUITY --- */
+        #section-11 { font-family: 'Righteous', cursive; background-color: #f5e1da; overflow: hidden; }
+        #section-11 .ripple-circle { position: absolute; top: 50%; left: 50%; width: 10px; height: 10px; background: #fff; border-radius: 50%; transform: translate(-50%, -50%) scale(0); z-index: 1; pointer-events: none; }
+        #section-11 .swiper-slide { display: flex; justify-content: center; align-items: center; background: transparent; }
+        #section-11 .big-bg-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 35vw; line-height: 0.8; color: #fff; opacity: 0.3; white-space: nowrap; z-index: 2; pointer-events: none; }
+        #section-11 .product-can { position: relative; z-index: 5; height: 65vh; width: auto; filter: drop-shadow(0 30px 40px rgba(0,0,0,0.4)); transform-origin: center center; }
+        #section-11 .fruit-slice { position: absolute; z-index: 4; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2)); width: 150px; height: auto; }
+        #section-11 .slice-1 { top: 15%; left: 20%; transform: rotate(-15deg); } 
+        #section-11 .slice-2 { bottom: 20%; right: 20%; transform: rotate(30deg); }
+        #section-11 .content-layer { position: absolute; bottom: 50px; left: 50px; z-index: 10; color: #fff; }
+        #section-11 h2 { font-size: 4rem; text-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        #section-11 .btn-fruity { margin-top: 20px; background: #fff; color: #333; border-radius: 50px; padding: 15px 40px; font-weight: 800; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        
+        @media(max-width: 768px) { 
+            #section-11 .product-can { height: 45vh; } 
+            #section-11 .big-bg-text { font-size: 40vw; } 
+            #section-11 .content-layer { bottom: 30px; left: 20px; right: 20px; text-align: center; } 
+        }
+
+        /* --- SECTION 12: BENTO GRID --- */
+        #section-12 { font-family: 'Space Grotesk', sans-serif; background: #000; }
+        #section-12 .swiper-slide { padding: 40px; display: block; box-sizing: border-box; }
+        #section-12 .bento-container {
+            display: grid; 
+            grid-template-columns: 2fr 1fr 1fr; 
+            grid-template-rows: 1fr 1fr; 
+            gap: 20px; 
+            height: 100%; width: 100%;
+        }
+        #section-12 .bento-cell {
+            background: #1a1a1a;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            padding: 30px;
+            opacity: 0; transform: scale(0.9); /* Anim start */
+        }
+        #section-12 .cell-main { grid-column: 1 / 2; grid-row: 1 / 3; display: flex; flex-direction: column; justify-content: flex-end; }
+        #section-12 .cell-img { grid-column: 2 / 4; grid-row: 1 / 2; }
+        #section-12 .cell-stat { grid-column: 2 / 3; grid-row: 2 / 3; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: #333; }
+        #section-12 .cell-action { grid-column: 3 / 4; grid-row: 2 / 3; display: flex; justify-content: center; align-items: center; background: #e74c3c; cursor: pointer; transition: 0.3s; }
+        #section-12 .cell-action:hover { background: #c0392b; }
+        #section-12 h2 { font-size: 4rem; line-height: 1; margin-bottom: 20px; }
+        #section-12 img { width: 100%; height: 100%; object-fit: cover; }
+        
+        @media(max-width: 768px) {
+            #section-12 .swiper-slide { padding: 10px; }
+            #section-12 .bento-container { grid-template-columns: 1fr; grid-template-rows: repeat(4, auto); }
+            #section-12 .cell-main { grid-column: 1; grid-row: 1; height: 300px; }
+            #section-12 .cell-img { grid-column: 1; grid-row: 2; height: 200px; }
+            #section-12 .cell-stat { grid-column: 1; grid-row: 3; height: 150px; }
+            #section-12 .cell-action { grid-column: 1; grid-row: 4; height: 100px; }
+            #section-12 h2 { font-size: 2.5rem; }
+        }
+
+        /* --- SECTION 13: CREATIVE GRID (Collage) --- */
+        #section-13 { background: #f0f0f0; color: #000; font-family: 'Poppins', sans-serif; }
+        #section-13 .collage-wrapper {
+            position: relative; width: 100%; height: 100%;
+        }
+        #section-13 .c-img {
+            position: absolute; border: 5px solid #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.1); opacity: 0;
+        }
+        #section-13 .c1 { width: 30%; height: 50%; top: 10%; left: 10%; z-index: 1; }
+        #section-13 .c2 { width: 25%; height: 40%; top: 40%; left: 35%; z-index: 2; }
+        #section-13 .c3 { width: 35%; height: 60%; top: 20%; right: 5%; z-index: 3; }
+        #section-13 .c-text {
+            position: absolute; bottom: 10%; left: 5%; z-index: 4; background: #fff; padding: 30px;
+            opacity: 0; transform: translateY(20px);
+        }
+        
+        @media(max-width: 768px) {
+            #section-13 .c1 { width: 60%; height: 30%; left: 5%; top: 5%; }
+            #section-13 .c2 { display: none; }
+            #section-13 .c3 { width: 70%; height: 40%; right: 5%; top: 30%; }
+        }
+
+        /* --- SECTION 14: SLICED COLUMNS --- */
+        #section-14 .swiper-slide { background: #000; }
+        #section-14 .slice-col {
+            width: 20%; height: 100%; position: relative; overflow: hidden; transform: translateY(100%);
+        }
+        #section-14 .slice-img {
+            position: absolute; top: 0; width: 100vw; height: 100%; object-fit: cover;
+        }
+        #section-14 .slice-content {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+            z-index: 10; text-align: center;
+        }
+
+        /* --- SECTION 15: CIRCULAR REVEAL --- */
+        #section-15 .swiper-slide { 
+            clip-path: circle(0% at 50% 50%); /* Start hidden */
+            background: #222; 
+        }
+        #section-15 .content-center {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;
+        }
+
+        /* --- SECTION 16: TYPOGRAPHY GIANT --- */
+        #section-16 { font-family: 'Oswald', sans-serif; overflow: hidden; }
+        #section-16 .swiper-slide { justify-content: flex-start; align-items: center; }
+        #section-16 .parallax-bg {
+            position: absolute; width: 120%; height: 120%; left: -10%; top: -10%; object-fit: cover;
+        }
+        #section-16 .giant-text {
+            font-size: 15vw; line-height: 1; color: transparent; -webkit-text-stroke: 2px #fff;
+            position: relative; z-index: 2; white-space: nowrap; margin-left: 50px;
+        }
+        #section-16 .small-card {
+            position: absolute; right: 10%; top: 30%; width: 300px; padding: 30px; background: #fff; color: #000; z-index: 3;
+        }
+        
+        @media(max-width: 768px) { 
+            #section-16 .giant-text { font-size: 25vw; white-space: normal; word-break: break-all; }
+            #section-16 .small-card { bottom: 20px; top: auto; width: 90%; right: 5%; }
+        }
+
+        /* --- SECTION 17: SOFT BLUR --- */
+        #section-17 .swiper-slide { justify-content: center; align-items: center; }
+        #section-17 .blur-bg {
+            position: absolute; width: 100%; height: 100%; filter: blur(20px) brightness(0.7); transform: scale(1.1);
+        }
+        #section-17 .sharp-img {
+            width: 500px; height: 600px; z-index: 2; box-shadow: 0 30px 60px rgba(0,0,0,0.5); opacity: 0;
+        }
+        #section-17 .text-overlay {
+            position: absolute; z-index: 3; text-align: center;
+        }
+
+        /* --- SECTION 18: PERSPECTIVE TILT --- */
+        #section-18 { background: #111; perspective: 1500px; overflow: hidden; }
+        #section-18 .swiper { overflow: visible; }
+        #section-18 .tilt-card {
+            width: 70%; height: 70%; margin: 5% auto;
+            transform-style: preserve-3d;
+            background: #fff; color: #000;
+            display: flex;
+        }
+        #section-18 .tilt-img { width: 50%; height: 100%; object-fit: cover; }
+        #section-18 .tilt-info { width: 50%; padding: 50px; display: flex; flex-direction: column; justify-content: center; }
+        
+        @media(max-width: 768px) { #section-18 .tilt-card { flex-direction: column; width: 90%; height: 80%; } #section-18 .tilt-img, #section-18 .tilt-info { width: 100%; height: 50%; } }
+
+        /* --- SECTION 19: DUAL SYNC --- */
+        #section-19 { display: flex; }
+        #section-19 .left-slider { width: 40%; height: 100%; background: #000; }
+        #section-19 .right-slider { width: 60%; height: 100%; }
+        #section-19 .left-content { height: 100%; display: flex; flex-direction: column; justify-content: center; padding: 60px; }
+        
+        @media(max-width: 768px) { #section-19 { flex-direction: column-reverse; } #section-19 .left-slider, #section-19 .right-slider { width: 100%; height: 50%; } }
+
+        /* --- SECTION 20: ACCORDION --- */
+        #section-20 .acc-container { display: flex; width: 100%; height: 100%; }
+        #section-20 .acc-item {
+            flex: 1; height: 100%; position: relative; overflow: hidden; transition: flex 0.5s ease; cursor: pointer; border-right: 1px solid rgba(255,255,255,0.1);
+        }
+        #section-20 .acc-item:hover { flex: 3; }
+        #section-20 .acc-bg { position: absolute; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6); transition: 0.5s; }
+        #section-20 .acc-item:hover .acc-bg { filter: brightness(1); }
+        #section-20 .acc-text {
+            position: absolute; bottom: 40px; left: 40px; white-space: nowrap;
+            opacity: 0.7; transition: 0.5s; transform-origin: left;
+        }
+        #section-20 .acc-item:hover .acc-text { opacity: 1; transform: scale(1.1); }
+        
+        @media(max-width: 768px) { #section-20 .acc-container { flex-direction: column; } #section-20 .acc-item { border-bottom: 1px solid rgba(255,255,255,0.1); border-right: none; } }
+
+        /* --- SECTION 21: MOSAIC FLIP --- */
+        #section-21 { perspective: 1000px; }
+        #section-21 .mosaic-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 1fr);
+            width: 100%; height: 100%;
+        }
+        #section-21 .mosaic-tile {
+            position: relative; overflow: hidden; transform-style: preserve-3d;
+            backface-visibility: hidden;
+            background: #222;
+        }
+        #section-21 .tile-inner { width: 100%; height: 100%; object-fit: cover; }
+        
+    </style>
+</head>
+<body>
+
+    <!-- 1. SHUTTER -->
+    <section id="section-1">
+        <div class="swiper swiper1">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="bg-img"><img src="https://picsum.photos/1920/1080?random=1" alt="Nature"></div>
+                    <div class="overlay"></div>
+                    <div class="shutter-container"><div class="shutter"></div><div class="shutter"></div><div class="shutter"></div><div class="shutter"></div><div class="shutter"></div></div>
+                    <div class="content"><h2>Wilderness</h2><p>Explore the untouched beauty.</p><a class="btn">Discover</a></div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="bg-img"><img src="https://picsum.photos/1920/1080?random=2" alt="City"></div>
+                    <div class="overlay"></div>
+                    <div class="shutter-container"><div class="shutter"></div><div class="shutter"></div><div class="shutter"></div><div class="shutter"></div><div class="shutter"></div></div>
+                    <div class="content"><h2>Urban Life</h2><p>The city rhythm.</p><a class="btn">View</a></div>
+                </div>
+            </div>
+            <div class="swiper-button-next"></div><div class="swiper-button-prev"></div>
+        </div>
+    </section>
+
+    <!-- 2. KINETIC -->
+    <section id="section-2">
+        <div class="swiper swiper2">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="split-container">
+                        <div class="text-col">
+                            <span class="subtitle">Collection 2025</span>
+                            <h2>Modern <br>Aesthetics</h2>
+                            <p>Redefining style with bold choices and minimal lines.</p>
+                            <a href="#" class="btn">Shop Now</a>
+                        </div>
+                        <div class="img-col">
+                            <img src="https://picsum.photos/1000/1000?random=3" alt="Fashion">
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="split-container">
+                        <div class="text-col">
+                            <span class="subtitle">Exclusive</span>
+                            <h2>Bold <br>Architecture</h2>
+                            <p>Structures that defy gravity and expectations.</p>
+                            <a href="#" class="btn">Read Article</a>
+                        </div>
+                        <div class="img-col">
+                            <img src="https://picsum.photos/1000/1000?random=4" alt="Building">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-button-prev" style="color: #000; left: 40px;"></div>
+            <div class="swiper-button-next" style="color: #000; right: 40px;"></div>
+        </div>
+    </section>
+
+    <!-- 3. CARD STACK -->
+    <section id="section-3">
+        <div class="bg-blur" id="bg-blur-3">
+             <img src="https://picsum.photos/1920/1080?random=5" id="blur-img-target">
+        </div>
+        <div class="swiper swiper3">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="card-inner">
+                        <div class="card-img"><img src="https://picsum.photos/800/800?random=5" alt="Tech"></div>
+                        <div class="card-content">
+                            <span class="highlight">01. INNOVATION</span>
+                            <h2>Virtual Reality</h2>
+                            <p>Step into a new dimension of immersive experiences.</p>
+                            <a href="#" class="btn">Enter World</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="card-inner">
+                        <div class="card-img"><img src="https://picsum.photos/800/800?random=6" alt="Code"></div>
+                        <div class="card-content">
+                            <span class="highlight">02. DEVELOPMENT</span>
+                            <h2>Clean Code</h2>
+                            <p>Building the foundation of the digital future.</p>
+                            <a href="#" class="btn">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </section>
+
+    <!-- 4. GEOMETRIC -->
+    <section id="section-4">
+        <div class="swiper swiper4">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <a href="#" class="banner-link"></a>
+                    <div class="bg-wrap"><img src="https://picsum.photos/1920/1080?random=7" alt="Sport"></div>
+                    <div class="content-box">
+                        <h2>Push Limits</h2>
+                        <p>Endurance tests for the elite athlete.</p>
+                        <span class="btn">Start Training</span>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <a href="#" class="banner-link"></a>
+                    <div class="bg-wrap"><img src="https://picsum.photos/1920/1080?random=8" alt="Gym"></div>
+                    <div class="content-box">
+                        <h2>No Excuses</h2>
+                        <p>Your journey to greatness begins today.</p>
+                        <span class="btn">Join Club</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. FASHION -->
+    <section id="section-5">
+        <div class="swiper swiper5">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="big-text">ELEGANCE</div>
+                    <div class="main-img-wrap"><img src="https://picsum.photos/800/1200?random=9" alt="Model"></div>
+                    <div class="floating-content">
+                        <h2>Summer Collection</h2>
+                        <p>Lightweight fabrics for the heat.</p>
+                        <a href="#" class="btn" style="background: #000; color: #fff;">Shop Look</a>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="big-text">VINTAGE</div>
+                    <div class="main-img-wrap"><img src="https://picsum.photos/800/1200?random=10" alt="Model"></div>
+                    <div class="floating-content">
+                        <h2>Winter Classics</h2>
+                        <p>Timeless coats and scarves.</p>
+                        <a href="#" class="btn" style="background: #000; color: #fff;">View Catalog</a>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </section>
+
+    <!-- 6. GLITCH -->
+    <section id="section-6">
+        <div class="swiper swiper6">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="bg-img"><img src="https://picsum.photos/1920/1080?random=11" alt="Cyber"></div>
+                    <div class="glitch-box">
+                        <h2>System Failure</h2>
+                        <p>Unauthorized access detected.</p>
+                        <button class="btn">Reboot System</button>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="bg-img"><img src="https://picsum.photos/1920/1080?random=12" alt="Neon"></div>
+                    <div class="glitch-box">
+                        <h2>Night City</h2>
+                        <p>The lights never go out here.</p>
+                        <button class="btn">Enter City</button>
+                    </div>
+                </div>
+            </div>
+             <div class="swiper-pagination"></div>
+        </div>
+    </section>
+
+    <!-- 7. MINIMAL -->
+    <section id="section-7">
+        <div class="swiper swiper7">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="bg-img"><img src="https://picsum.photos/1920/1080?random=13" alt="Clean"></div>
+                    <div class="content-panel">
+                        <h2>Pure Design</h2>
+                        <div class="line"></div>
+                        <p>Focus on what matters most. Remove the clutter.</p>
+                        <a href="#" class="btn">Read Manifesto</a>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="bg-img"><img src="https://picsum.photos/1920/1080?random=14" alt="White"></div>
+                    <div class="content-panel">
+                        <h2>White Space</h2>
+                        <div class="line"></div>
+                        <p>Allowing your content to breathe.</p>
+                        <a href="#" class="btn">View Projects</a>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination" style="bottom: 20px; left: 20px; width: auto; color: #111;"></div>
+        </div>
+    </section>
+
+    <!-- 8. FRUITY POP -->
+    <section id="section-8" style="background-color: #ff9800;">
+        <div class="swiper swiper8">
+            <div class="swiper-wrapper">
+                <!-- Slide 1: Orange -->
+                <div class="swiper-slide" data-color="#ff9800">
+                    <div class="bg-text">ORANGE</div>
+                    <div class="product-container">
+                        <img class="product-img" src="https://picsum.photos/500/500?random=20" alt="Orange Drink">
+                    </div>
+                    <div class="floater f1"></div><div class="floater f2"></div><div class="floater f3"></div>
+                    <div class="info-box">
+                        <h2>Fresh Squeeze</h2>
+                        <p>100% Organic Orange Juice. No added sugar.</p>
+                        <a href="#" class="btn" style="color:#ff9800">Taste It</a>
+                    </div>
+                </div>
+                <!-- Slide 2: Berry -->
+                <div class="swiper-slide" data-color="#9c27b0">
+                    <div class="bg-text">BERRY</div>
+                    <div class="product-container">
+                        <img class="product-img" src="https://picsum.photos/500/500?random=21" alt="Berry Drink">
+                    </div>
+                    <div class="floater f1"></div><div class="floater f2"></div>
+                    <div class="info-box">
+                        <h2>Berry Blast</h2>
+                        <p>A mix of strawberries, blueberries and raspberries.</p>
+                        <a href="#" class="btn" style="color:#9c27b0">Drink Up</a>
+                    </div>
+                </div>
+                <!-- Slide 3: Lime -->
+                <div class="swiper-slide" data-color="#4caf50">
+                    <div class="bg-text">LIME</div>
+                    <div class="product-container">
+                        <img class="product-img" src="https://picsum.photos/500/500?random=22" alt="Lime Drink">
+                    </div>
+                    <div class="floater f1"></div><div class="floater f3"></div>
+                    <div class="info-box">
+                        <h2>Twisted Lime</h2>
+                        <p>Sour, sweet, and incredibly refreshing.</p>
+                        <a href="#" class="btn" style="color:#4caf50">Get Fresh</a>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-button-next" style="color:#fff;"></div>
+            <div class="swiper-button-prev" style="color:#fff;"></div>
+        </div>
+    </section>
+
+    <!-- 9. GRID REVEAL -->
+    <section id="section-9">
+        <div class="swiper swiper9">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="grid-container">
+                        <!-- 4 Columns of the same image -->
+                        <div class="grid-col"><img class="grid-img-inner" src="https://picsum.photos/1920/1080?random=23" style="left: 0;"></div>
+                        <div class="grid-col"><img class="grid-img-inner" src="https://picsum.photos/1920/1080?random=23" style="left: -25vw;"></div>
+                        <div class="grid-col"><img class="grid-img-inner" src="https://picsum.photos/1920/1080?random=23" style="left: -50vw;"></div>
+                        <div class="grid-col"><img class="grid-img-inner" src="https://picsum.photos/1920/1080?random=23" style="left: -75vw;"></div>
+                    </div>
+                    <div class="content-center">
+                        <h2>Structure</h2>
+                        <button class="btn">View Blueprint</button>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="grid-container">
+                        <div class="grid-col"><img class="grid-img-inner" src="https://picsum.photos/1920/1080?random=24" style="left: 0;"></div>
+                        <div class="grid-col"><img class="grid-img-inner" src="https://picsum.photos/1920/1080?random=24" style="left: -25vw;"></div>
+                        <div class="grid-col"><img class="grid-img-inner" src="https://picsum.photos/1920/1080?random=24" style="left: -50vw;"></div>
+                        <div class="grid-col"><img class="grid-img-inner" src="https://picsum.photos/1920/1080?random=24" style="left: -75vw;"></div>
+                    </div>
+                    <div class="content-center">
+                        <h2>Design</h2>
+                        <button class="btn">View Sketches</button>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </section>
+
+    <!-- 10. CURSOR -->
+    <section id="section-10">
+        <div class="custom-cursor" id="cursor"></div>
+        <div class="swiper swiper10">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="bg-wrapper"><img src="https://picsum.photos/1920/1080?random=25" alt="Portfolio"></div>
+                    <div class="content-layer">
+                        <span class="meta">PHOTOGRAPHY</span>
+                        <h2>Capturing <br>Moments</h2>
+                        <a href="#" class="btn">See Gallery</a>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="bg-wrapper"><img src="https://picsum.photos/1920/1080?random=26" alt="Portfolio 2"></div>
+                    <div class="content-layer">
+                        <span class="meta">DESIGN</span>
+                        <h2>Creating <br>Experiences</h2>
+                        <a href="#" class="btn">Case Studies</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 11. ULTIMATE FRUITY -->
+    <section id="section-11">
+        <!-- Ripple Effect Element -->
+        <div class="ripple-circle"></div>
+
+        <div class="swiper swiper11">
+            <div class="swiper-wrapper">
+                
+                <!-- Slide 1: Pear -->
+                <div class="swiper-slide" data-bg="#c6e377">
+                    <div class="big-bg-text">PEAR</div>
+                    <img src="https://picsum.photos/400/800?random=30" class="product-can" alt="Pear Soda">
+                    <img src="https://picsum.photos/200/200?random=31" class="fruit-slice slice-1" alt="Slice">
+                    <img src="https://picsum.photos/200/200?random=32" class="fruit-slice slice-2" alt="Slice">
+                    <div class="content-layer">
+                        <span class="flavor-tag">Natural Fizz</span>
+                        <h2>Crisp Pear</h2>
+                        <a href="#" class="btn btn-fruity" style="color: #6a8a1a;">Taste It</a>
+                    </div>
+                </div>
+
+                <!-- Slide 2: Apple -->
+                <div class="swiper-slide" data-bg="#ff6b6b">
+                    <div class="big-bg-text">APPLE</div>
+                    <img src="https://picsum.photos/400/800?random=33" class="product-can" alt="Apple Soda">
+                    <img src="https://picsum.photos/200/200?random=34" class="fruit-slice slice-1" alt="Slice">
+                    <img src="https://picsum.photos/200/200?random=35" class="fruit-slice slice-2" alt="Slice">
+                    <div class="content-layer">
+                        <span class="flavor-tag">Orchard Fresh</span>
+                        <h2>Red Apple</h2>
+                        <a href="#" class="btn btn-fruity" style="color: #c0392b;">Grab One</a>
+                    </div>
+                </div>
+
+                <!-- Slide 3: Exotic -->
+                <div class="swiper-slide" data-bg="#4ecdc4">
+                    <div class="big-bg-text">EXOTIC</div>
+                    <img src="https://picsum.photos/400/800?random=36" class="product-can" alt="Exotic Soda">
+                    <img src="https://picsum.photos/200/200?random=37" class="fruit-slice slice-1" alt="Slice">
+                    <img src="https://picsum.photos/200/200?random=38" class="fruit-slice slice-2" alt="Slice">
+                    <div class="content-layer">
+                        <span class="flavor-tag">Tropical Vibes</span>
+                        <h2>Blue Lagoon</h2>
+                        <a href="#" class="btn btn-fruity" style="color: #1abc9c;">Dive In</a>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Navigation -->
+            <div class="swiper-button-next" style="color: #fff;"></div>
+            <div class="swiper-button-prev" style="color: #fff;"></div>
+        </div>
+    </section>
+
+    <!-- 12. BENTO GRID SLIDER -->
+    <section id="section-12">
+        <div class="swiper swiper12">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="bento-container">
+                        <div class="bento-cell cell-main">
+                            <h2>Dashboard<br>Design</h2>
+                            <p>Intuitive interfaces for complex data.</p>
+                        </div>
+                        <div class="bento-cell cell-img"><img src="https://picsum.photos/800/600?random=40" alt="UI"></div>
+                        <div class="bento-cell cell-stat"><h3>+400%</h3><p>Growth</p></div>
+                        <div class="bento-cell cell-action"><span>View Case</span></div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="bento-container">
+                        <div class="bento-cell cell-main">
+                            <h2>Mobile<br>First</h2>
+                            <p>Optimized for every device.</p>
+                        </div>
+                        <div class="bento-cell cell-img"><img src="https://picsum.photos/800/600?random=41" alt="Mobile"></div>
+                        <div class="bento-cell cell-stat"><h3>50k</h3><p>Downloads</p></div>
+                        <div class="bento-cell cell-action"><span>Download</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-button-next" style="color:#fff"></div>
+            <div class="swiper-button-prev" style="color:#fff"></div>
+        </div>
+    </section>
+
+    <!-- 13. CREATIVE GRID (Collage) -->
+    <section id="section-13">
+        <div class="swiper swiper13">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="collage-wrapper">
+                        <img class="c-img c1" src="https://picsum.photos/600/800?random=42">
+                        <img class="c-img c2" src="https://picsum.photos/600/800?random=43">
+                        <img class="c-img c3" src="https://picsum.photos/600/800?random=44">
+                        <div class="c-text"><h2>Travel Diaries</h2><p>Collecting moments.</p></div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="collage-wrapper">
+                        <img class="c-img c1" src="https://picsum.photos/600/800?random=45">
+                        <img class="c-img c2" src="https://picsum.photos/600/800?random=46">
+                        <img class="c-img c3" src="https://picsum.photos/600/800?random=47">
+                        <div class="c-text"><h2>Urban Stories</h2><p>Life in the metro.</p></div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-button-next" style="color:#000"></div>
+            <div class="swiper-button-prev" style="color:#000"></div>
+        </div>
+    </section>
+
+    <!-- 14. SLICED COLUMNS -->
+    <section id="section-14">
+        <div class="swiper swiper14">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                     <div class="slice-col"><img class="slice-img" style="left: 0" src="https://picsum.photos/1920/1080?random=48"></div>
+                     <div class="slice-col"><img class="slice-img" style="left: -20vw" src="https://picsum.photos/1920/1080?random=48"></div>
+                     <div class="slice-col"><img class="slice-img" style="left: -40vw" src="https://picsum.photos/1920/1080?random=48"></div>
+                     <div class="slice-col"><img class="slice-img" style="left: -60vw" src="https://picsum.photos/1920/1080?random=48"></div>
+                     <div class="slice-col"><img class="slice-img" style="left: -80vw" src="https://picsum.photos/1920/1080?random=48"></div>
+                     <div class="slice-content"><h2>Fragmented</h2></div>
+                </div>
+                <div class="swiper-slide">
+                     <div class="slice-col"><img class="slice-img" style="left: 0" src="https://picsum.photos/1920/1080?random=49"></div>
+                     <div class="slice-col"><img class="slice-img" style="left: -20vw" src="https://picsum.photos/1920/1080?random=49"></div>
+                     <div class="slice-col"><img class="slice-img" style="left: -40vw" src="https://picsum.photos/1920/1080?random=49"></div>
+                     <div class="slice-col"><img class="slice-img" style="left: -60vw" src="https://picsum.photos/1920/1080?random=49"></div>
+                     <div class="slice-col"><img class="slice-img" style="left: -80vw" src="https://picsum.photos/1920/1080?random=49"></div>
+                     <div class="slice-content"><h2>Reassembled</h2></div>
+                </div>
+            </div>
+            <div class="swiper-button-next"></div><div class="swiper-button-prev"></div>
+        </div>
+    </section>
+
+    <!-- 15. CIRCULAR REVEAL -->
+    <section id="section-15">
+        <div class="swiper swiper15">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <img src="https://picsum.photos/1920/1080?random=50">
+                    <div class="content-center"><h2>Focus</h2><p>Center your vision.</p></div>
+                </div>
+                <div class="swiper-slide">
+                    <img src="https://picsum.photos/1920/1080?random=51">
+                    <div class="content-center"><h2>Expand</h2><p>Broaden horizons.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 16. TYPOGRAPHY GIANT -->
+    <section id="section-16">
+        <div class="swiper swiper16">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <img class="parallax-bg" src="https://picsum.photos/1920/1080?random=52" data-swiper-parallax="50%">
+                    <h2 class="giant-text" data-swiper-parallax="-300">ADVENTURE</h2>
+                    <div class="small-card"><h3>Visit Alps</h3><p>Snowy peaks await you.</p></div>
+                </div>
+                <div class="swiper-slide">
+                    <img class="parallax-bg" src="https://picsum.photos/1920/1080?random=53" data-swiper-parallax="50%">
+                    <h2 class="giant-text" data-swiper-parallax="-300">EXPLORE</h2>
+                    <div class="small-card"><h3>Deep Ocean</h3><p>Dive into the blue.</p></div>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </section>
+
+    <!-- 17. SOFT BLUR -->
+    <section id="section-17">
+        <div class="swiper swiper17">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <img class="blur-bg" src="https://picsum.photos/1920/1080?random=54">
+                    <img class="sharp-img" src="https://picsum.photos/800/1000?random=54">
+                    <div class="text-overlay"><h2>Dreamy</h2></div>
+                </div>
+                <div class="swiper-slide">
+                    <img class="blur-bg" src="https://picsum.photos/1920/1080?random=55">
+                    <img class="sharp-img" src="https://picsum.photos/800/1000?random=55">
+                    <div class="text-overlay"><h2>Ethereal</h2></div>
+                </div>
+            </div>
+            <div class="swiper-button-next"></div><div class="swiper-button-prev"></div>
+        </div>
+    </section>
+
+    <!-- 18. PERSPECTIVE TILT -->
+    <section id="section-18">
+        <div class="swiper swiper18">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="tilt-card" id="tilt1">
+                        <img class="tilt-img" src="https://picsum.photos/800/800?random=56">
+                        <div class="tilt-info"><h2>3D Space</h2><p>Interactive depth perception.</p></div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="tilt-card" id="tilt2">
+                        <img class="tilt-img" src="https://picsum.photos/800/800?random=57">
+                        <div class="tilt-info"><h2>Motion</h2><p>Reacts to your movement.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 19. DUAL SYNC -->
+    <section id="section-19">
+        <div class="swiper left-slider">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><div class="left-content"><h2>Dark Mode</h2><p>Sleek and professional.</p></div></div>
+                <div class="swiper-slide"><div class="left-content"><h2>Light Mode</h2><p>Clean and airy.</p></div></div>
+            </div>
+        </div>
+        <div class="swiper right-slider">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img src="https://picsum.photos/1000/1000?random=58"></div>
+                <div class="swiper-slide"><img src="https://picsum.photos/1000/1000?random=59"></div>
+            </div>
+             <div class="swiper-pagination"></div>
+        </div>
+    </section>
+
+    <!-- 20. ACCORDION (No Swiper needed, CSS Hover) -->
+    <section id="section-20">
+        <div class="acc-container">
+            <div class="acc-item">
+                <img class="acc-bg" src="https://picsum.photos/800/1200?random=60">
+                <div class="acc-text"><h2>Portrait</h2></div>
+            </div>
+            <div class="acc-item">
+                <img class="acc-bg" src="https://picsum.photos/800/1200?random=61">
+                <div class="acc-text"><h2>Landscape</h2></div>
+            </div>
+            <div class="acc-item">
+                <img class="acc-bg" src="https://picsum.photos/800/1200?random=62">
+                <div class="acc-text"><h2>Abstract</h2></div>
+            </div>
+            <div class="acc-item">
+                <img class="acc-bg" src="https://picsum.photos/800/1200?random=63">
+                <div class="acc-text"><h2>Nature</h2></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 21. MOSAIC FLIP -->
+    <section id="section-21">
+        <div class="mosaic-grid">
+            <!-- 8 Tiles grid -->
+            <div class="mosaic-tile"><img class="tile-inner" src="https://picsum.photos/400/400?random=64"></div>
+            <div class="mosaic-tile"><img class="tile-inner" src="https://picsum.photos/400/400?random=65"></div>
+            <div class="mosaic-tile"><img class="tile-inner" src="https://picsum.photos/400/400?random=66"></div>
+            <div class="mosaic-tile"><img class="tile-inner" src="https://picsum.photos/400/400?random=67"></div>
+            <div class="mosaic-tile"><img class="tile-inner" src="https://picsum.photos/400/400?random=68"></div>
+            <div class="mosaic-tile"><img class="tile-inner" src="https://picsum.photos/400/400?random=69"></div>
+            <div class="mosaic-tile"><img class="tile-inner" src="https://picsum.photos/400/400?random=70"></div>
+            <div class="mosaic-tile"><img class="tile-inner" src="https://picsum.photos/400/400?random=71"></div>
+        </div>
+        <!-- Simple overlay to trigger reset/change for demo -->
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10;">
+            <button class="btn" onclick="flipMosaic()">Flip Grid</button>
+        </div>
+    </section>
+
+    <script>
+        // --- 1. SHUTTER ANIMATION ---
+        new Swiper('.swiper1', {
+            loop: true, speed: 1200,
+            navigation: { nextEl: '#section-1 .swiper-button-next', prevEl: '#section-1 .swiper-button-prev' },
+            pagination: { el: '#section-1 .swiper-pagination', clickable: true },
+            on: {
+                slideChangeTransitionStart: function() {
+                    const slide = this.slides[this.activeIndex];
+                    const shutters = slide.querySelectorAll('.shutter');
+                    const text = slide.querySelectorAll('.content > *');
+                    gsap.set(shutters, { scaleY: 1 });
+                    gsap.set(text, { y: 50, opacity: 0 });
+                    gsap.to(shutters, { scaleY: 0, duration: 0.8, stagger: 0.05, ease: 'power2.inOut' });
+                    gsap.to(text, { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, delay: 0.5 });
+                }
+            }
+        });
+
+        // --- 2. KINETIC PARALLAX ---
+        new Swiper('.swiper2', {
+            loop: true, speed: 1000,
+            navigation: { nextEl: '#section-2 .swiper-button-next', prevEl: '#section-2 .swiper-button-prev' },
+            on: {
+                slideChangeTransitionStart: function() {
+                    const slide = this.slides[this.activeIndex];
+                    const img = slide.querySelector('.img-col img');
+                    const text = slide.querySelector('.text-col');
+                    gsap.fromTo(img, { scale: 1.5, y: -100 }, { scale: 1, y: 0, duration: 1.2, ease: 'power3.out' });
+                    gsap.fromTo(text, { y: 100, opacity: 0 }, { y: 0, opacity: 1, duration: 1, delay: 0.2 });
+                    gsap.fromTo(slide.querySelectorAll('h2, p, .btn'), { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, delay: 0.4 });
+                }
+            }
+        });
+
+        // --- 3. 3D CARD STACK ---
+        new Swiper('.swiper3', {
+            effect: 'cards', grabCursor: true, pagination: { el: '#section-3 .swiper-pagination' },
+            on: {
+                slideChange: function() {
+                    const src = this.slides[this.activeIndex].querySelector('img').src;
+                    gsap.to('#blur-img-target', { opacity: 0, duration: 0.2, onComplete: () => {
+                        document.getElementById('blur-img-target').src = src;
+                        gsap.to('#blur-img-target', { opacity: 1, duration: 0.5 });
+                    }});
+                }
+            }
+        });
+
+        // --- 4. GEOMETRIC CLIP ---
+        new Swiper('.swiper4', {
+            loop: true, speed: 1000, autoplay: { delay: 4000 },
+            on: {
+                slideChangeTransitionStart: function() {
+                    const slide = this.slides[this.activeIndex];
+                    const bg = slide.querySelector('.bg-wrap');
+                    const content = slide.querySelector('.content-box');
+                    gsap.set(bg, { clipPath: 'polygon(0 0, 0 0, 0 100%, 0% 100%)' });
+                    gsap.set(content, { x: -50, opacity: 0 });
+                    gsap.to(bg, { clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0% 100%)', duration: 1.2, ease: 'power4.out' });
+                    gsap.to(content, { x: 0, opacity: 1, duration: 0.8, delay: 0.6 });
+                }
+            }
+        });
+
+        // --- 5. FASHION OVERLAP ---
+        new Swiper('.swiper5', {
+            loop: true, speed: 1200, pagination: { el: '#section-5 .swiper-pagination', clickable: true },
+            on: {
+                slideChangeTransitionStart: function() {
+                    const slide = this.slides[this.activeIndex];
+                    const bigText = slide.querySelector('.big-text');
+                    const img = slide.querySelector('.main-img-wrap');
+                    const card = slide.querySelector('.floating-content');
+                    gsap.fromTo(bigText, { x: 200, opacity: 0 }, { x: 0, opacity: 0.1, duration: 1.5 });
+                    gsap.fromTo(img, { x: 100, opacity: 0 }, { x: 0, opacity: 1, duration: 1, delay: 0.2 });
+                    gsap.fromTo(card, { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, delay: 0.6 });
+                }
+            }
+        });
+
+        // --- 6. NEON GLITCH ---
+        new Swiper('.swiper6', {
+            effect: 'fade', loop: true, pagination: { el: '#section-6 .swiper-pagination' },
+            on: {
+                slideChangeTransitionStart: function() {
+                    const slide = this.slides[this.activeIndex];
+                    const box = slide.querySelector('.glitch-box');
+                    gsap.fromTo(box, { opacity: 0, scale: 0.9, skewX: 20 }, { opacity: 1, scale: 1, skewX: 0, duration: 0.5, ease: "elastic.out(1, 0.5)" });
+                }
+            }
+        });
+
+        // --- 7. MINIMAL ZOOM ---
+        new Swiper('.swiper7', {
+            loop: true, speed: 1500, pagination: { el: '#section-7 .swiper-pagination', type: 'fraction' },
+            on: {
+                slideChangeTransitionStart: function() {
+                    const slide = this.slides[this.activeIndex];
+                    const img = slide.querySelector('.bg-img');
+                    const panel = slide.querySelector('.content-panel');
+                    gsap.fromTo(img, { scale: 1.2 }, { scale: 1, duration: 10 });
+                    gsap.fromTo(panel, { x: -100, opacity: 0 }, { x: 0, opacity: 1, duration: 1 });
+                    gsap.fromTo(panel.querySelectorAll('h2, .line, p, a'), { x: -20, opacity: 0 }, { x: 0, opacity: 1, stagger: 0.1, delay: 0.5 });
+                }
+            }
+        });
+
+        // --- 8. FRUITY POP (Simple) ---
+        new Swiper('.swiper8', {
+            speed: 800,
+            navigation: { nextEl: '#section-8 .swiper-button-next', prevEl: '#section-8 .swiper-button-prev' },
+            on: {
+                slideChange: function() {
+                    const color = this.slides[this.activeIndex].dataset.color;
+                    gsap.to('#section-8', { backgroundColor: color, duration: 0.8 });
+                },
+                slideChangeTransitionStart: function() {
+                    const slide = this.slides[this.activeIndex];
+                    const product = slide.querySelector('.product-img');
+                    const bgText = slide.querySelector('.bg-text');
+                    const floaters = slide.querySelectorAll('.floater');
+                    const info = slide.querySelector('.info-box');
+
+                    gsap.fromTo(product, { rotate: -45, scale: 0.5, opacity: 0 }, { rotate: -15, scale: 1, opacity: 1, duration: 1, ease: 'back.out(1.7)' });
+                    gsap.fromTo(bgText, { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 0.2, duration: 1 });
+                    gsap.fromTo(floaters, { y: 100, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.1, duration: 1, ease: 'back.out' });
+                    gsap.fromTo(info, { x: -50, opacity: 0 }, { x: 0, opacity: 1, duration: 0.8, delay: 0.3 });
+                }
+            }
+        });
+
+        // --- 9. ARCHITECTURAL GRID ---
+        new Swiper('.swiper9', {
+            loop: true, speed: 1200,
+            on: {
+                slideChangeTransitionStart: function() {
+                    const slide = this.slides[this.activeIndex];
+                    const cols = slide.querySelectorAll('.grid-col');
+                    gsap.fromTo(cols, { height: '0%' }, { height: '100%', stagger: { amount: 0.5, from: 'edges' }, duration: 1, ease: 'power3.inOut' });
+                    gsap.fromTo(slide.querySelector('.content-center'), { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, delay: 0.8 });
+                }
+            }
+        });
+
+        // --- 10. CURSOR FOLLOWER ---
+        const s10 = new Swiper('.swiper10', {
+            loop: true, speed: 1000
+        });
+        
+        // Custom Cursor Logic
+        const section10 = document.getElementById('section-10');
+        const cursor = document.getElementById('cursor');
+        
+        // Only add mousemove event if the device supports hover
+        if (window.matchMedia("(hover: hover)").matches) {
+             section10.addEventListener('mousemove', (e) => {
+                const rect = section10.getBoundingClientRect();
+                gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
+                
+                // Parallax Effect
+                const moveX = (e.clientX - rect.left - rect.width/2) / 20;
+                const moveY = (e.clientY - rect.top - rect.height/2) / 20;
+                const activeSlide = document.querySelector('#section-10 .swiper-slide-active .bg-wrapper');
+                if(activeSlide) gsap.to(activeSlide, { x: moveX, y: moveY, duration: 0.5 });
+            });
+            
+            section10.querySelectorAll('a, h2').forEach(el => {
+                el.addEventListener('mouseenter', () => section10.classList.add('hovered'));
+                el.addEventListener('mouseleave', () => section10.classList.remove('hovered'));
+            });
+        }
+
+        // --- 11. ULTIMATE FRUITY SLIDER (Ripple Logic) ---
+        new Swiper('.swiper11', {
+            speed: 1000,
+            allowTouchMove: true,
+            navigation: { nextEl: '#section-11 .swiper-button-next', prevEl: '#section-11 .swiper-button-prev' },
+            on: {
+                slideChangeTransitionStart: function() {
+                    const section = document.getElementById('section-11');
+                    const ripple = section.querySelector('.ripple-circle');
+                    const activeSlide = this.slides[this.activeIndex];
+                    const prevSlide = this.slides[this.previousIndex];
+                    const nextColor = activeSlide.dataset.bg;
+                    
+                    // 1. RIPPLE EFFECT
+                    gsap.set(ripple, { backgroundColor: nextColor, scale: 0, opacity: 1 });
+                    
+                    gsap.to(ripple, { 
+                        scale: 500, 
+                        duration: 1, 
+                        ease: "power2.inOut",
+                        onComplete: () => {
+                            section.style.backgroundColor = nextColor;
+                            gsap.set(ripple, { scale: 0, opacity: 0 });
+                        }
+                    });
+
+                    // 2. PRODUCT ANIMATION (Rotate In)
+                    const product = activeSlide.querySelector('.product-can');
+                    const slices = activeSlide.querySelectorAll('.fruit-slice');
+                    const bigText = activeSlide.querySelector('.big-bg-text');
+                    const content = activeSlide.querySelector('.content-layer');
+
+                    gsap.set(product, { y: -500, rotation: -90, opacity: 0 });
+                    gsap.set(slices, { y: 100, opacity: 0 });
+                    gsap.set(bigText, { scale: 0, opacity: 0 });
+                    gsap.set(content, { x: -100, opacity: 0 });
+
+                    const tl = gsap.timeline({ delay: 0.2 });
+                    
+                    tl.to(product, { y: 0, rotation: 0, opacity: 1, duration: 1, ease: "bounce.out" });
+                    tl.to(bigText, { scale: 1, opacity: 0.3, duration: 0.8, ease: "back.out(1.2)" }, "-=0.8");
+                    tl.to(slices, { y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: "power2.out" }, "-=0.8");
+                    tl.to(content, { x: 0, opacity: 1, duration: 0.6 }, "-=0.6");
+                    
+                    // 3. EXIT ANIMATION (Previous Slide)
+                    if(prevSlide) {
+                         gsap.to(prevSlide.querySelector('.product-can'), { y: 500, rotation: 90, opacity: 0, duration: 0.5 });
+                    }
+                }
+            }
+        });
+
+        // 12. BENTO GRID
+        new Swiper('.swiper12', {
+            loop: true, speed: 1000,
+            navigation: { nextEl: '#section-12 .swiper-button-next', prevEl: '#section-12 .swiper-button-prev' },
+            on: {
+                slideChangeTransitionStart: function() {
+                    const cells = this.slides[this.activeIndex].querySelectorAll('.bento-cell');
+                    gsap.fromTo(cells, 
+                        { scale: 0.9, opacity: 0 }, 
+                        { scale: 1, opacity: 1, stagger: 0.1, duration: 0.8, ease: "power2.out" }
+                    );
+                }
+            }
+        });
+
+        // 13. CREATIVE GRID
+        new Swiper('.swiper13', {
+            loop: true, speed: 1200,
+            navigation: { nextEl: '#section-13 .swiper-button-next', prevEl: '#section-13 .swiper-button-prev' },
+            on: {
+                slideChangeTransitionStart: function() {
+                    const slide = this.slides[this.activeIndex];
+                    const imgs = slide.querySelectorAll('.c-img');
+                    const text = slide.querySelector('.c-text');
+                    gsap.fromTo(imgs, { y: 100, opacity: 0, rotation: 10 }, { y: 0, opacity: 1, rotation: 0, stagger: 0.2, duration: 1, ease: "back.out(1.5)" });
+                    gsap.fromTo(text, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, delay: 0.6 });
+                }
+            }
+        });
+
+        // 14. SLICED COLUMNS
+        new Swiper('.swiper14', {
+            loop: true, speed: 1200,
+            navigation: { nextEl: '.swiper14 .swiper-button-next', prevEl: '.swiper14 .swiper-button-prev' },
+            on: {
+                slideChangeTransitionStart: function() {
+                    const cols = this.slides[this.activeIndex].querySelectorAll('.slice-col');
+                    gsap.fromTo(cols, 
+                        { y: '100%' }, 
+                        { y: '0%', stagger: { amount: 0.5, from: "center" }, duration: 1, ease: "power3.inOut" }
+                    );
+                }
+            }
+        });
+
+        // 15. CIRCULAR REVEAL
+        new Swiper('.swiper15', {
+            loop: true, speed: 1500, autoplay: { delay: 4000 },
+            on: {
+                slideChangeTransitionStart: function() {
+                    const slide = this.slides[this.activeIndex];
+                    gsap.fromTo(slide, 
+                        { clipPath: 'circle(0% at 50% 50%)' }, 
+                        { clipPath: 'circle(100% at 50% 50%)', duration: 1.5, ease: "power4.out" }
+                    );
+                }
+            }
+        });
+
+        // 16. TYPOGRAPHY GIANT
+        new Swiper('.swiper16', {
+            speed: 1200, parallax: true,
+            pagination: { el: '.swiper16 .swiper-pagination', clickable: true }
+        });
+
+        // 17. SOFT BLUR
+        new Swiper('.swiper17', {
+            loop: true, speed: 1500,
+            navigation: { nextEl: '.swiper17 .swiper-button-next', prevEl: '.swiper17 .swiper-button-prev' },
+            on: {
+                slideChangeTransitionStart: function() {
+                    const slide = this.slides[this.activeIndex];
+                    gsap.fromTo(slide.querySelector('.blur-bg'), { scale: 1.2, opacity: 0 }, { scale: 1.1, opacity: 1, duration: 2 });
+                    gsap.fromTo(slide.querySelector('.sharp-img'), { scale: 0.9, opacity: 0, filter: 'blur(20px)' }, { scale: 1, opacity: 1, filter: 'blur(0px)', duration: 1.2, delay: 0.3 });
+                }
+            }
+        });
+
+        // 18. PERSPECTIVE TILT
+        new Swiper('.swiper18', { loop: true });
+        document.querySelectorAll('.tilt-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -10;
+                const rotateY = ((x - centerX) / centerX) * 10;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0) rotateY(0)`;
+            });
+        });
+
+        // 19. DUAL SYNC
+        const rightSwiper = new Swiper('.right-slider', { loop: true, speed: 1000 });
+        const leftSwiper = new Swiper('.left-slider', { loop: true, speed: 1000, controller: { control: rightSwiper } });
+        rightSwiper.controller.control = leftSwiper;
+
+        // 20. ACCORDION (Pure CSS, no JS needed)
+
+        // 21. MOSAIC FLIP
+        function flipMosaic() {
+            const tiles = document.querySelectorAll('.mosaic-tile');
+            gsap.to(tiles, { 
+                rotationY: "+=180", 
+                stagger: { amount: 1, grid: [2, 4], from: "center" }, 
+                duration: 1.5, 
+                ease: "back.inOut(1.7)"
+            });
+        }
+
+    </script>
+</body>
+</html>

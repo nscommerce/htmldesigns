@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homey - Future of Living</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+
+    <style>
+        /* =========================================
+           1. RESET & GLOBAL VARIABLES
+           ========================================= */
+        :root {
+            --primary: #00A9A5;
+            --primary-hover: #008f8c;
+            --dark-bg: #0b0b0b;
+            --card-bg: #ffffff;
+            --text-light: #ffffff;
+            --text-dark: #1a1a1a;
+            --text-gray: #888888;
+            --border-color: #e5e5e5;
+            --container-width: 1320px;
+            --font-main: 'Manrope', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+        
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2; /* Ensures content sits above backgrounds */
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            background-color: var(--primary);
+            color: #fff;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover { background-color: var(--primary-hover); }
+        .btn.outline { background: transparent; border: 2px solid var(--primary); }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        /* =========================================
+           2. TOP BAR & HEADER
+           ========================================= */
+        .top-bar {
+            background-color: var(--primary);
+            text-align: center;
+            padding: 8px 0;
+            font-size: 12px;
+            font-weight: 600;
+            color: #fff;
+            position: relative;
+            z-index: 200;
+        }
+
+        header {
+            padding: 20px 0;
+            background-color: transparent;
+            position: absolute;
+            width: 100%;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .main-nav ul {
+            display: flex;
+            gap: 30px;
+        }
+
+        .main-nav a {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .header-actions select {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-family: inherit;
+            cursor: pointer;
+        }
+        
+        /* =========================================
+           3. IMPROVED HERO SECTION
+           ========================================= */
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 750px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Background Slider (Text + Image) */
+        .bg-slider {
+            position: absolute !important;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .bg-slide-item {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        /* Background Image with Mobile Switching Logic */
+        .bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            /* Default uses the desktop variable */
+            background-image: var(--bg-desktop);
+            transition: background-image 0.3s ease-in-out;
+        }
+
+        /* Switch to mobile image on smaller screens */
+        @media (max-width: 768px) {
+            .bg-image {
+                background-image: var(--bg-mobile) !important;
+            }
+        }
+        
+        .bg-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(0,0,0,0.9) 10%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.1) 100%);
+        }
+
+        /* Text Content inside Background Slide */
+        .hero-text-container {
+            position: relative;
+            z-index: 5; /* Increased to ensure it's not buried */
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-top: 80px; /* Header Offset */
+            max-width: 550px;
+        }
+
+        .hero-text-container h1 {
+            font-size: 64px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            font-weight: 700;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .hero-text-container p {
+            margin-bottom: 30px;
+            color: #ddd;
+            font-size: 16px;
+            line-height: 1.8;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease 0.2s;
+        }
+        
+        .hero-text-container .btn-wrap {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease 0.4s;
+        }
+
+        /* Animation class for active slide */
+        .swiper-slide-active .hero-text-container h1,
+        .swiper-slide-active .hero-text-container p,
+        .swiper-slide-active .hero-text-container .btn-wrap {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Product Slider (Foreground) */
+        .hero-product-layer {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            pointer-events: none; /* KEY FIX: Let clicks pass through empty spaces */
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            width: 100%;
+            height: 100%; /* Ensure grid takes full height for positioning */
+            align-items: center;
+        }
+        
+        /* Spacer column needs to allow clicks on controls */
+        .spacer-col {
+            pointer-events: none;
+            height: 100%;
+            position: relative; /* For absolute positioning of controls */
+        }
+
+        /* Right column for products */
+        .product-slider-wrapper {
+            pointer-events: auto; /* KEY FIX: Re-enable clicks on cards */
+            width: 100%;
+            min-width: 0; /* Fix flex/grid overflow issues */
+            position: relative;
+        }
+
+        /* Swiper Controls Customization */
+        .hero-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            pointer-events: auto; /* KEY FIX: Re-enable clicks on controls */
+            
+            /* Positioning logic: Bottom Left */
+            position: absolute;
+            bottom: 20%; /* Puts it below the vertically centered text */
+            left: 0;
+            z-index: 20;
+        }
+
+        .hero-pagination {
+            width: auto !important;
+            position: static !important; /* Override swiper default */
+            display: flex;
+            gap: 8px;
+        }
+
+        .swiper-pagination-bullet {
+            width: 10px;
+            height: 10px;
+            background: rgba(255,255,255,0.3);
+            opacity: 1;
+            transition: 0.3s;
+            cursor: pointer; /* Ensure pointer shows on hover */
+        }
+
+        .swiper-pagination-bullet-active {
+            background: var(--primary);
+            width: 25px;
+            border-radius: 5px;
+        }
+
+        .nav-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.3s;
+            user-select: none;
+        }
+        
+        .nav-btn:hover { background: var(--primary); }
+
+        /* Product Card specific for Hero */
+        .hero-card {
+            background: #fff;
+            color: var(--text-dark);
+            padding: 25px;
+            border-radius: 4px;
+            height: 100%;
+        }
+
+        .hero-card img {
+            height: 200px;
+            object-fit: contain;
+            margin: 0 auto 20px;
+        }
+        
+        .hero-card .select-group {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px;
+            border: 1px solid #eee;
+            margin-top: 10px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* =========================================
+           4. FEATURE BANNER
+           ========================================= */
+        .feature-banner {
+            padding: 0;
+            display: flex;
+            background: #000;
+            overflow: hidden;
+            margin-bottom: 80px;
+        }
+
+        .feature-text {
+            flex: 1;
+            padding: 100px 50px 100px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .feature-text h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .feature-img {
+            flex: 1.2;
+            background: url('https://images.unsplash.com/photo-1582735689369-c613c66e5db2?q=80&w=2070&auto=format&fit=crop') no-repeat center center;
+            background-size: cover;
+            min-height: 500px;
+        }
+
+        /* =========================================
+           5. PRODUCT GRID SECTIONS
+           ========================================= */
+        .product-section {
+            padding: 60px 0;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            padding: 8px 20px;
+            cursor: pointer;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Swiper override for product tabs */
+        .product-tab-slider {
+            width: 100%;
+            padding-bottom: 40px !important; /* space for pagination if added later */
+        }
+
+        .product-card {
+            background: #fff;
+            color: var(--text-dark);
+            padding: 20px;
+            position: relative;
+            transition: transform 0.3s;
+            height: 100%; /* Make sure card fills slide height */
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--primary); /* Cyan */
+            color: #fff;
+            font-size: 11px;
+            padding: 2px 6px;
+            font-weight: 700;
+        }
+
+        .product-img-wrap {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .product-img-wrap img {
+            max-height: 100%;
+            mix-blend-mode: multiply; /* Helps integrate images with white bg */
+        }
+
+        .p-cat { font-size: 10px; text-transform: uppercase; color: var(--text-gray); letter-spacing: 1px; }
+        .p-title { font-size: 16px; font-weight: 700; margin: 5px 0; }
+        
+        .p-price-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        
+        .current-price { font-weight: 800; font-size: 18px; }
+        .old-price { text-decoration: line-through; color: var(--text-gray); font-size: 14px; }
+
+        .btn-full {
+            width: 100%;
+            text-align: center;
+        }
+        
+        /* New Nav for Tab Slider */
+        .tab-slider-nav {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* =========================================
+           6. NEW: SMART LIVING SHOWCASE (GSAP Style)
+           ========================================= */
+        .showcase-section {
+            padding: 80px 0;
+            background: #050505;
+            overflow: hidden;
+        }
+
+        .showcase-wrapper {
+            height: 500px;
+            position: relative;
+        }
+
+        .showcase-slide {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .showcase-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.6);
+            transition: transform 1s ease;
+        }
+
+        .swiper-slide-active .showcase-bg {
+            transform: scale(1.1); /* Slight zoom on active */
+        }
+
+        .showcase-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 700px;
+            padding: 40px;
+            color: #fff;
+        }
+
+        .showcase-subtitle {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: block;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: 0.6s ease 0.2s;
+        }
+
+        .showcase-title {
+            font-size: 56px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: 0.6s ease 0.4s;
+        }
+
+        .showcase-desc {
+            font-size: 16px;
+            color: #ddd;
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: 0.6s ease 0.6s;
+        }
+
+        /* Animation Trigger */
+        .swiper-slide-active .showcase-subtitle,
+        .swiper-slide-active .showcase-title,
+        .swiper-slide-active .showcase-desc {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* =========================================
+           7. NEWSLETTER
+           ========================================= */
+        .newsletter {
+            margin: 80px 0;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 0;
+            color: #fff;
+        }
+
+        .newsletter-content {
+            max-width: 600px;
+        }
+
+        .newsletter h2 { font-size: 42px; margin-bottom: 10px; }
+        
+        .subscribe-form {
+            display: flex;
+            margin-top: 30px;
+            height: 50px;
+        }
+        
+        .subscribe-form input {
+            flex: 1;
+            padding: 0 20px;
+            border: none;
+            outline: none;
+        }
+        
+        .subscribe-form button {
+            padding: 0 40px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        /* =========================================
+           8. CATEGORY BANNERS
+           ========================================= */
+        .category-promo {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 80px auto;
+        }
+
+        .cat-card {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+            group: 1;
+        }
+
+        .cat-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .cat-card:hover img { transform: scale(1.05); }
+
+        .cat-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+        }
+
+        .cat-overlay h4 { font-size: 18px; margin-bottom: 5px; }
+        .cat-link { font-size: 12px; color: var(--primary); font-weight: 700; text-transform: uppercase; }
+
+        /* =========================================
+           9. TESTIMONIALS SLIDER (New)
+           ========================================= */
+        .testimonials-slider-container {
+            position: relative;
+            padding-bottom: 50px; /* Space for pagination */
+        }
+
+        .testi-card {
+            background: #111;
+            padding: 40px;
+            border: 1px solid #333;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            border-radius: 8px;
+            height: 100%; /* Important for slider alignment */
+            transition: border-color 0.3s;
+        }
+
+        .testi-card:hover {
+            border-color: var(--primary);
+        }
+
+        .testi-content h5 { font-size: 20px; margin-bottom: 10px; color: #fff; }
+        .stars { color: var(--primary); font-size: 12px; margin-bottom: 15px; }
+        .testi-text { font-size: 15px; color: #aaa; margin-bottom: 20px; line-height: 1.7; }
+        .author { font-size: 13px; font-weight: 700; color: #fff; }
+        
+        .testi-prod-img {
+            width: 100px;
+            height: 120px;
+            background: #fff;
+            object-fit: contain;
+            padding: 10px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        /* Testimonial Controls */
+        .testi-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        /* =========================================
+           10. BLOG GRID
+           ========================================= */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .blog-card {
+            background: transparent;
+        }
+
+        .blog-thumb {
+            height: 220px;
+            width: 100%;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+
+        .blog-meta {
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .blog-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        /* =========================================
+           11. FOOTER
+           ========================================= */
+        footer {
+            background: #000;
+            padding: 80px 0 30px;
+            margin-top: 100px;
+            border-top: 1px solid #222;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-col h4 {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col ul li a { color: #888; font-size: 13px; }
+        .footer-col ul li a:hover { color: var(--primary); }
+
+        .footer-col p { font-size: 13px; color: #888; line-height: 1.6; }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #222;
+            padding-top: 30px;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .socials a { margin-right: 15px; font-size: 16px; }
+        
+        /* =========================================
+           RESPONSIVE MEDIA QUERIES
+           ========================================= */
+        @media (max-width: 1280px) {
+             .container { max-width: 100%; }
+        }
+
+        @media (max-width: 1024px) {
+            /* Hero adjustments for tablet */
+            .hero-grid { grid-template-columns: 1fr; text-align: center; }
+            .hero-text-container { margin: 0 auto; align-items: center; padding-top: 40px; max-width: 80%; padding-bottom: 30px; }
+            /* Adjusted min-height to allow content to dictate height + spacing */
+            .hero { height: auto; min-height: 100vh; padding-top: 100px; padding-bottom: 60px; flex-direction: column; justify-content: center; }
+            
+            /* Reposition controls for tablet layout */
+            .hero-controls {
+                position: relative;
+                bottom: auto;
+                left: auto;
+                justify-content: center;
+                margin: 40px auto 20px; /* Increased top margin to separate form text */
+                width: 100%;
+                z-index: 30;
+            }
+
+            .spacer-col { height: auto; display: flex; flex-direction: column; align-items: center; }
+            
+            /* Feature banner layout */
+            .feature-banner { flex-direction: column; }
+            .feature-text { padding: 60px 30px; }
+            .feature-img { min-height: 400px; order: -1; } /* Image on top */
+            
+            /* Grids */
+            .category-promo { grid-template-columns: 1fr; gap: 15px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
+            
+            /* Showcase */
+            .showcase-wrapper { height: 400px; }
+            .showcase-title { font-size: 40px; }
+        }
+
+        @media (max-width: 768px) {
+            /* Header adjustments */
+            .nav-wrapper { flex-direction: column; gap: 15px; padding-bottom: 15px; }
+            .main-nav ul { gap: 15px; flex-wrap: wrap; justify-content: center; }
+            .header-actions { width: 100%; justify-content: center; margin-top: 10px; }
+            
+            /* Typography scaling */
+            .hero-text-container h1 { font-size: 42px; }
+            .feature-text h2 { font-size: 32px; }
+            .section-title { font-size: 28px; }
+            
+            /* Section header stacking */
+            .section-header { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .filter-tabs { flex-wrap: wrap; }
+            
+            /* Testimonials stacking */
+            .testimonials-grid { grid-template-columns: 1fr; }
+            .testi-card { flex-direction: column; text-align: center; align-items: center; }
+            .testi-prod-img { width: 80px; height: 100px; margin-top: 20px; }
+            
+            /* Footer stacking */
+            .footer-grid { grid-template-columns: 1fr; }
+            .footer-col { margin-bottom: 20px; }
+            
+            /* Footer bottom stacking */
+            .footer-bottom { flex-direction: column; gap: 20px; text-align: center; }
+            .payment-icons { margin: 10px 0; }
+
+            /* Ensure background cover for mobile height */
+            .bg-image { background-position: center top; }
+            
+            /* Showcase */
+            .showcase-wrapper { height: 500px; }
+            .showcase-title { font-size: 32px; }
+        }
+
+        @media (max-width: 480px) {
+            /* Mobile specific tweaks */
+            .hero-text-container h1 { font-size: 32px; }
+            .top-bar { font-size: 10px; padding: 5px; }
+            .btn { padding: 10px 20px; font-size: 11px; }
+            
+            /* Product cards on mobile */
+            .product-grid { grid-template-columns: 1fr; }
+            
+            /* Swiper cards on mobile */
+            .hero-card { padding: 15px; }
+            .hero-card img { height: 160px; }
+            
+            /* Blog grid */
+            .blog-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        Summer Sale! Make Purchases For A Minimum Of $200 And You Will Receive A Free Pan. <a href="#" style="text-decoration: underline;">See More</a>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container nav-wrapper">
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#">All Products</a></li>
+                    <li><a href="#">Shop</a></li>
+                    <li><a href="#">Pages</a></li>
+                </ul>
+            </nav>
+
+            <a href="#" class="logo">HOMEY</a>
+
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Collections</a></li>
+                </ul>
+            </nav>
+
+            <div class="header-actions">
+                <i class="fas fa-search"></i>
+                <i class="fas fa-user"></i>
+                <div style="position:relative;">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span style="position:absolute; top:-8px; right:-8px; background:var(--primary); font-size:10px; width:16px; height:16px; border-radius:50%; display:flex; align-items:center; justify-content:center;">0</span>
+                </div>
+                <select>
+                    <option>ENG</option>
+                    <option>ESP</option>
+                </select>
+                <select>
+                    <option>USD</option>
+                    <option>EUR</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <!-- IMPROVED HERO SECTION with Dual Synchronized Sliders -->
+    <section class="hero">
+        
+        <!-- 1. BACKGROUND SLIDER (Images + Text) -->
+        <div class="swiper bg-slider">
+            <div class="swiper-wrapper">
+                
+                <!-- Slide 1: Fridge -->
+                <div class="swiper-slide bg-slide-item">
+                    <!-- 
+                         Using CSS Variables to handle responsive images.
+                         --bg-desktop: Used for screens > 768px
+                         --bg-mobile: Used for screens <= 768px
+                    -->
+                    <div class="bg-image" 
+                         style="--bg-desktop: url('https://images.unsplash.com/photo-1761839258657-457dda39b5cc?q=80&w=1170&auto=format&fit=crop'); 
+                                --bg-mobile: url('https://images.unsplash.com/photo-1761839258657-457dda39b5cc?q=80&w=600&h=900&auto=format&fit=crop');">
+                    </div>
+                    <div class="container" style="height: 100%;">
+                        <div class="hero-text-container">
+                            <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 12px; margin-bottom: 10px; color: var(--primary);">New Arrival</p>
+                            <h1>Smart Cooling<br>Innovation</h1>
+                            <p>Experience advanced cooling technology with the new 3-Star Inverter Fridge. Keeps your food fresh for longer with energy efficiency.</p>
+                            <div class="btn-wrap">
+                                <a href="#" class="btn">Shop Fridge <i class="fas fa-chevron-right" style="margin-left: 5px;"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 2: Router -->
+                <div class="swiper-slide bg-slide-item">
+                     <div class="bg-image" 
+                         style="--bg-desktop: url('https://images.unsplash.com/photo-1764816652739-f26b6dce430b?q=80&w=1170&auto=format&fit=crop'); 
+                                --bg-mobile: url('https://images.unsplash.com/photo-1764816652739-f26b6dce430b?q=80&w=600&h=900&auto=format&fit=crop');">
+                    </div>
+                    <div class="container" style="height: 100%;">
+                        <div class="hero-text-container">
+                             <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 12px; margin-bottom: 10px; color: var(--primary);">Networking</p>
+                            <h1>High Speed<br>Connectivity</h1>
+                            <p>Upgrade your home network with the 24 Port Gigabit Switch. Seamless streaming, gaming, and automation for the entire smart home.</p>
+                            <div class="btn-wrap">
+                                <a href="#" class="btn">View Details <i class="fas fa-chevron-right" style="margin-left: 5px;"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 3: Vacuum -->
+                <div class="swiper-slide bg-slide-item">
+                     <div class="bg-image" 
+                         style="--bg-desktop: url('https://images.unsplash.com/photo-1585792180666-f7347c490ee2?q=80&w=2070&auto=format&fit=crop'); 
+                                --bg-mobile: url('https://images.unsplash.com/photo-1585792180666-f7347c490ee2?q=80&w=600&h=900&auto=format&fit=crop');">
+                    </div>
+                    <div class="container" style="height: 100%;">
+                        <div class="hero-text-container">
+                             <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 12px; margin-bottom: 10px; color: var(--primary);">Cleaning</p>
+                            <h1>Automated<br>Clean Living</h1>
+                            <p>Let the Robot Vacuum take care of the mess. Smart mapping technology ensures every corner of your home is spotless while you relax.</p>
+                            <div class="btn-wrap">
+                                <a href="#" class="btn">Buy Now <i class="fas fa-chevron-right" style="margin-left: 5px;"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 2. PRODUCT SLIDER OVERLAY -->
+        <div class="container hero-product-layer">
+            <div class="hero-grid">
+                <!-- Left Column is empty to allow Background text to show -->
+                <div class="spacer-col">
+                    <!-- Controls are placed here to align with text on desktop -->
+                    <div class="hero-controls">
+                         <div class="nav-btn prev-btn"><i class="fas fa-arrow-left"></i></div>
+                         <div class="hero-pagination"></div>
+                         <div class="nav-btn next-btn"><i class="fas fa-arrow-right"></i></div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Product Cards -->
+                <div class="product-slider-wrapper">
+                    <div class="swiper product-slider">
+                        <div class="swiper-wrapper">
+                            
+                            <!-- Product 1 -->
+                            <div class="swiper-slide">
+                                <div class="hero-card">
+                                    <img src="https://images.unsplash.com/photo-1571175443880-49e1d58b794a?q=80&w=2070&auto=format&fit=crop" alt="Fridge">
+                                    <p class="cat" style="font-size:12px; color:#888; text-transform:uppercase;">Frigidaire</p>
+                                    <h3 style="font-size:16px; margin:5px 0;">3 Star Inverter Fridge</h3>
+                                    <div style="font-size:20px; font-weight:800; color:#000;">$40.00</div>
+                                    <div class="select-group">
+                                        <span>Color: Black</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <a href="#" class="btn btn-full" style="margin-top:15px;">Add To Cart</a>
+                                </div>
+                            </div>
+
+                            <!-- Product 2 -->
+                            <div class="swiper-slide">
+                                <div class="hero-card">
+                                    <img src="https://images.unsplash.com/photo-1544652478-6653e09f9039?q=80&w=2070&auto=format&fit=crop" alt="Router">
+                                    <p class="cat" style="font-size:12px; color:#888; text-transform:uppercase;">TP-Link</p>
+                                    <h3 style="font-size:16px; margin:5px 0;">24 Port Gigabit Switch</h3>
+                                    <div style="font-size:20px; font-weight:800; color:#000;">$15.00</div>
+                                    <div class="select-group">
+                                        <span>Color: Black</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <a href="#" class="btn btn-full outline" style="margin-top:15px;">Sold Out</a>
+                                </div>
+                            </div>
+
+                             <!-- Product 3 -->
+                             <div class="swiper-slide">
+                                <div class="hero-card">
+                                    <img src="https://images.unsplash.com/photo-1585792180666-f7347c490ee2?q=80&w=2070&auto=format&fit=crop" alt="Vacuum">
+                                    <p class="cat" style="font-size:12px; color:#888; text-transform:uppercase;">Robot</p>
+                                    <h3 style="font-size:16px; margin:5px 0;">Smart Vacuum Cleaner</h3>
+                                    <div style="font-size:20px; font-weight:800; color:#000;">$299.00</div>
+                                    <div class="select-group">
+                                        <span>Color: White</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <a href="#" class="btn btn-full" style="margin-top:15px;">Add To Cart</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature Section -->
+    <div class="container">
+        <div class="feature-banner">
+            <div class="feature-img"></div>
+            <div class="feature-text">
+                <span style="color:var(--text-gray); font-size:12px; margin-bottom:10px;">HOMEY</span>
+                <h2>The Living Is<br>More Caring</h2>
+                <p style="color:#aaa; margin-bottom:30px; max-width: 400px;">Homey is an innovative smart home system that seamlessly connects all aspects of your home, making it more comfortable.</p>
+                <div>
+                    <a href="#" class="btn">All Products >></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Grid with TABS & SLIDER -->
+    <section class="product-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Your Smart Home Solution</h2>
+                <div class="filter-tabs">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="grill">Grill Machine</button>
+                    <button class="filter-btn" data-filter="appliances">Appliances</button>
+                    <button class="filter-btn" data-filter="refrigerator">Refrigerator</button>
+                    <button class="filter-btn" data-filter="juice">Juice Machine</button>
+                </div>
+            </div>
+
+            <!-- Added navigation for the tab slider -->
+            <div class="tab-slider-nav">
+                <div class="nav-btn tab-prev"><i class="fas fa-chevron-left"></i></div>
+                <div class="nav-btn tab-next"><i class="fas fa-chevron-right"></i></div>
+            </div>
+
+            <div class="swiper product-tab-slider">
+                <div class="swiper-wrapper" id="product-wrapper">
+                    
+                    <!-- Product 1 (Juice) -->
+                    <div class="swiper-slide" data-category="juice">
+                        <div class="product-card">
+                            <div class="badge">-20%</div>
+                            <div class="product-img-wrap">
+                                <img src="https://images.unsplash.com/photo-1570222094114-2819cd0ddd20?q=80&w=2070&auto=format&fit=crop" alt="Juicer">
+                            </div>
+                            <p class="p-cat">Amzchef</p>
+                            <h3 class="p-title">Masticating Juicer</h3>
+                            <div class="select-group">
+                                <span>Style: 800 W</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="p-price-row">
+                                <span class="current-price">$28.00</span>
+                                <span class="old-price">$35.00</span>
+                            </div>
+                            <a href="#" class="btn btn-full outline">Sold Out >></a>
+                        </div>
+                    </div>
+
+                    <!-- Product 2 (Juice) -->
+                    <div class="swiper-slide" data-category="juice">
+                        <div class="product-card">
+                            <div class="badge">-33%</div>
+                            <div class="product-img-wrap">
+                                <img src="https://images.unsplash.com/photo-1589927692285-d72b2c34038a?q=80&w=2070&auto=format&fit=crop" alt="Juicer">
+                            </div>
+                            <p class="p-cat">Amzchef</p>
+                            <h3 class="p-title">Juicer Machines...</h3>
+                            <div class="select-group">
+                                <span>Color: Purple</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="p-price-row">
+                                <span class="current-price">$20.00</span>
+                                <span class="old-price">$30.00</span>
+                            </div>
+                            <a href="#" class="btn btn-full">Add To Cart >></a>
+                        </div>
+                    </div>
+
+                    <!-- Product 3 (Appliances) -->
+                    <div class="swiper-slide" data-category="appliances">
+                        <div class="product-card">
+                            <div class="product-img-wrap">
+                                <img src="https://images.unsplash.com/photo-1540448066576-9c766b1d40dc?q=80&w=2070&auto=format&fit=crop" alt="Juicer">
+                            </div>
+                            <p class="p-cat">Ninja</p>
+                            <h3 class="p-title">Hamilton Beach...</h3>
+                            <div class="select-group">
+                                <span>Color: Gray</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="p-price-row">
+                                <span class="current-price">$20.00</span>
+                            </div>
+                            <a href="#" class="btn btn-full">Add To Cart >></a>
+                        </div>
+                    </div>
+
+                    <!-- Product 4 (Juice) -->
+                    <div class="swiper-slide" data-category="juice">
+                        <div class="product-card">
+                            <div class="badge">-25%</div>
+                            <div class="product-img-wrap">
+                                <img src="https://images.unsplash.com/photo-1626806819282-2c1dc01a5e0c?q=80&w=2070&auto=format&fit=crop" alt="Juicer">
+                            </div>
+                            <p class="p-cat">Herrchef</p>
+                            <h3 class="p-title">Cold Press Juicer...</h3>
+                            <div class="select-group">
+                                <span>Style: 200 W</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="p-price-row">
+                                <span class="current-price">$25.00</span>
+                                <span class="old-price">$35.00</span>
+                            </div>
+                            <a href="#" class="btn btn-full outline">Sold Out >></a>
+                        </div>
+                    </div>
+
+                    <!-- Product 5 (Grill - Duplicate for Demo) -->
+                    <div class="swiper-slide" data-category="grill">
+                         <div class="product-card">
+                            <div class="product-img-wrap">
+                                <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=2070&auto=format&fit=crop" alt="Grill">
+                            </div>
+                            <p class="p-cat">Weber</p>
+                            <h3 class="p-title">Electric Grill</h3>
+                            <div class="select-group">
+                                <span>Color: Black</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="p-price-row">
+                                <span class="current-price">$120.00</span>
+                            </div>
+                            <a href="#" class="btn btn-full">Add To Cart >></a>
+                        </div>
+                    </div>
+
+                     <!-- Product 6 (Refrigerator - Duplicate for Demo) -->
+                     <div class="swiper-slide" data-category="refrigerator">
+                        <div class="product-card">
+                           <div class="product-img-wrap">
+                               <img src="https://images.unsplash.com/photo-1571175443880-49e1d58b794a?q=80&w=2070&auto=format&fit=crop" alt="Fridge">
+                           </div>
+                           <p class="p-cat">LG</p>
+                           <h3 class="p-title">Smart Fridge</h3>
+                           <div class="select-group">
+                               <span>Color: Silver</span>
+                               <i class="fas fa-chevron-down"></i>
+                           </div>
+                           <div class="p-price-row">
+                               <span class="current-price">$899.00</span>
+                           </div>
+                           <a href="#" class="btn btn-full">Add To Cart >></a>
+                       </div>
+                   </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW: SMART LIVING SHOWCASE (GSAP-like Swiper Creative Effect) -->
+    <section class="showcase-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Explore Collections</h2>
+                <div class="nav-btn showcase-next" style="margin-left: auto;"><i class="fas fa-arrow-right"></i></div>
+            </div>
+            
+            <div class="swiper showcase-slider">
+                <div class="swiper-wrapper showcase-wrapper">
+                    
+                    <!-- Slide 1 -->
+                    <div class="swiper-slide showcase-slide">
+                        <div class="showcase-bg" style="background-image: url('https://images.unsplash.com/photo-1558002038-1091a1661116?q=80&w=2070&auto=format&fit=crop');"></div>
+                        <div class="showcase-content">
+                            <span class="showcase-subtitle">Smart Audio</span>
+                            <h3 class="showcase-title">Immersive Sound<br>Experience</h3>
+                            <p class="showcase-desc">Fill your home with rich, crystal-clear sound. Our smart speakers adapt to your room's acoustics for the perfect listening experience.</p>
+                            <a href="#" class="btn">Discover Audio</a>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2 -->
+                    <div class="swiper-slide showcase-slide">
+                        <div class="showcase-bg" style="background-image: url('https://images.unsplash.com/photo-1563453392212-326f5e854473?q=80&w=2070&auto=format&fit=crop');"></div>
+                        <div class="showcase-content">
+                            <span class="showcase-subtitle">Smart Comfort</span>
+                            <h3 class="showcase-title">Climate Control<br>Reimagined</h3>
+                            <p class="showcase-desc">Set the perfect temperature from anywhere. Learn your habits and save energy without sacrificing comfort.</p>
+                            <a href="#" class="btn">View Thermostats</a>
+                        </div>
+                    </div>
+
+                    <!-- Slide 3 -->
+                    <div class="swiper-slide showcase-slide">
+                        <div class="showcase-bg" style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop');"></div>
+                        <div class="showcase-content">
+                            <span class="showcase-subtitle">Smart Security</span>
+                            <h3 class="showcase-title">Secure Your<br>Peace of Mind</h3>
+                            <p class="showcase-desc">Keep an eye on what matters most with high-definition smart cameras and intelligent alerts sent directly to your phone.</p>
+                            <a href="#" class="btn">Shop Security</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2>Subscribe Newsletter<br>And Get -20% Off</h2>
+                <p>The Homey Subscription offers an enhanced level of functionality and convenience.</p>
+                <form class="subscribe-form">
+                    <input type="email" placeholder="Enter email address...">
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Grid -->
+    <div class="container">
+        <div style="text-align:center; margin-bottom: 40px;">
+            <span style="font-size:12px; letter-spacing:2px; text-transform:uppercase;">Homey</span>
+            <h2 style="font-size:48px;">The Future Of Smart<br>Living With Homey</h2>
+        </div>
+        
+        <div class="category-promo">
+            <div class="cat-card">
+                <img src="https://images.unsplash.com/photo-1593784991095-a205069470b6?q=80&w=2070&auto=format&fit=crop" alt="TV">
+                <div class="cat-overlay">
+                    <p style="font-size:10px; text-transform:uppercase; margin-bottom:5px;">Category</p>
+                    <h4>Televisions And Audio</h4>
+                    <a href="#" class="cat-link">Show More Products >></a>
+                </div>
+            </div>
+            <div class="cat-card">
+                <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=2070&auto=format&fit=crop" alt="Household">
+                <div class="cat-overlay">
+                    <p style="font-size:10px; text-transform:uppercase; margin-bottom:5px;">Category</p>
+                    <h4>Household Appliances</h4>
+                    <a href="#" class="cat-link">Show More Products >></a>
+                </div>
+            </div>
+            <div class="cat-card">
+                <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=2070&auto=format&fit=crop" alt="Built-in">
+                <div class="cat-overlay">
+                    <p style="font-size:10px; text-transform:uppercase; margin-bottom:5px;">Category</p>
+                    <h4>Built-In Appliances</h4>
+                    <a href="#" class="cat-link">Show More Products >></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Testimonials Slider -->
+    <section class="product-section">
+        <div class="container">
+            <h2 class="section-title">Testimonials</h2>
+            
+            <div class="swiper testimonials-slider">
+                <div class="swiper-wrapper">
+                    <!-- Review 1 -->
+                    <div class="swiper-slide">
+                        <div class="testi-card">
+                            <div class="testi-content">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i> 4.5/5.0
+                                </div>
+                                <h5>Life With Home</h5>
+                                <p class="testi-text">Homey has simplified her daily routines and made her home more efficient. With the Homey mobile app, Sarah can effortlessly control lights and security.</p>
+                                <p class="author">Sarah, Client</p>
+                            </div>
+                            <img src="https://images.unsplash.com/photo-1584568694244-14fbdf83bd30?q=80&w=2069&auto=format&fit=crop" class="testi-prod-img" alt="Product">
+                        </div>
+                    </div>
+                     <!-- Review 2 -->
+                     <div class="swiper-slide">
+                        <div class="testi-card">
+                            <div class="testi-content">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> 5.0/5.0
+                                </div>
+                                <h5>My Living Space</h5>
+                                <p class="testi-text">Honey and how it has transformed her daily routines. From effortlessly controlling lights, temperature, and security with a single app.</p>
+                                <p class="author">Jane Smith, Client</p>
+                            </div>
+                            <img src="https://images.unsplash.com/photo-1585771724684-382054863d61?q=80&w=2069&auto=format&fit=crop" class="testi-prod-img" alt="Product">
+                        </div>
+                    </div>
+                    <!-- Review 3 (Duplicate for slider demo) -->
+                    <div class="swiper-slide">
+                        <div class="testi-card">
+                            <div class="testi-content">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> 5.0/5.0
+                                </div>
+                                <h5>Excellent Service</h5>
+                                <p class="testi-text">The setup was incredibly easy and the support team was very helpful. I can now manage my entire home from my phone.</p>
+                                <p class="author">Michael, Architect</p>
+                            </div>
+                            <img src="https://images.unsplash.com/photo-1558002038-1091a1661116?q=80&w=2070&auto=format&fit=crop" class="testi-prod-img" alt="Product">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testi-controls">
+                    <div class="nav-btn testi-prev"><i class="fas fa-chevron-left"></i></div>
+                    <div class="nav-btn testi-next"><i class="fas fa-chevron-right"></i></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="product-section">
+        <div class="container">
+            <div style="text-align:center; margin-bottom:50px;">
+                <span style="font-size:12px; letter-spacing:2px;">HOMEY</span>
+                <h2 style="font-size:36px; text-transform:uppercase;">From Our Blog</h2>
+            </div>
+            
+            <div class="blog-grid">
+                <!-- Blog 1 -->
+                <div class="blog-card">
+                    <div style="position:relative;">
+                        <img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2070&auto=format&fit=crop" class="blog-thumb">
+                        <span style="position:absolute; top:10px; left:10px; background:var(--primary); padding:2px 8px; font-size:10px; color:#fff;">Home</span>
+                    </div>
+                    <h3 class="blog-title">Branded Electric Rice...</h3>
+                    <p class="blog-meta">The ElectroChef Electric Rice Cooker is the ultimate kitchen companion.</p>
+                    <div style="display:flex; justify-content:space-between; margin-top:20px; font-size:11px; color:#666;">
+                        <span>AUTHOR: WorkDo</span>
+                        <span>DATE: 07 MAR 2023</span>
+                    </div>
+                    <a href="#" class="btn" style="margin-top:15px; width:100%; text-align:center;">Read More >></a>
+                </div>
+                <!-- Blog 2 -->
+                <div class="blog-card">
+                     <div style="position:relative;">
+                        <img src="https://images.unsplash.com/photo-1556910103-1c02745a30bf?q=80&w=2070&auto=format&fit=crop" class="blog-thumb">
+                        <span style="position:absolute; top:10px; left:10px; background:var(--primary); padding:2px 8px; font-size:10px; color:#fff;">Home</span>
+                    </div>
+                    <h3 class="blog-title">Modern And Classic...</h3>
+                    <p class="blog-meta">A kitchen that combines modern and classic elements creates a unique...</p>
+                     <div style="display:flex; justify-content:space-between; margin-top:20px; font-size:11px; color:#666;">
+                        <span>AUTHOR: WorkDo</span>
+                        <span>DATE: 07 MAR 2023</span>
+                    </div>
+                    <a href="#" class="btn" style="margin-top:15px; width:100%; text-align:center;">Read More >></a>
+                </div>
+                <!-- Blog 3 -->
+                <div class="blog-card">
+                     <div style="position:relative;">
+                        <img src="https://images.unsplash.com/photo-1565538810643-b5bdb714032a?q=80&w=2070&auto=format&fit=crop" class="blog-thumb">
+                         <span style="position:absolute; top:10px; left:10px; background:var(--primary); padding:2px 8px; font-size:10px; color:#fff;">Home</span>
+                    </div>
+                    <h3 class="blog-title">Sharp And Shining...</h3>
+                    <p class="blog-meta">Sharpness is a key characteristic of a quality knife. A sharp blade allows...</p>
+                     <div style="display:flex; justify-content:space-between; margin-top:20px; font-size:11px; color:#666;">
+                        <span>AUTHOR: WorkDo</span>
+                        <span>DATE: 07 MAR 2023</span>
+                    </div>
+                    <a href="#" class="btn" style="margin-top:15px; width:100%; text-align:center;">Read More >></a>
+                </div>
+                <!-- Blog 4 -->
+                <div class="blog-card">
+                     <div style="position:relative;">
+                        <img src="https://images.unsplash.com/photo-1484154218962-a1c002085d2f?q=80&w=2070&auto=format&fit=crop" class="blog-thumb">
+                         <span style="position:absolute; top:10px; left:10px; background:var(--primary); padding:2px 8px; font-size:10px; color:#fff;">Home</span>
+                    </div>
+                    <h3 class="blog-title">Stunning Glass...</h3>
+                    <p class="blog-meta">A stunning glass container adds a touch of elegance and sophistication...</p>
+                     <div style="display:flex; justify-content:space-between; margin-top:20px; font-size:11px; color:#666;">
+                        <span>AUTHOR: WorkDo</span>
+                        <span>DATE: 07 MAR 2023</span>
+                    </div>
+                    <a href="#" class="btn" style="margin-top:15px; width:100%; text-align:center;">Read More >></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>SHOP:</h4>
+                    <ul>
+                        <li><a href="#">Search</a></li>
+                        <li><a href="#">All Collections</a></li>
+                        <li><a href="#">All Products</a></li>
+                        <li><a href="#">My Cart</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>About Us:</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact with us</a></li>
+                        <li><a href="#">FAQ's</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col" style="grid-column: span 2;">
+                    <h4 style="color:var(--primary);">Homey</h4>
+                    <p style="margin-bottom:10px; color:#fff; font-weight:700;">Seamless Integration For A Smarter Home</p>
+                    <p>Homey is accessible to everyone, regardless of technical expertise. The setup process is straightforward, and the intuitive app guides you through the configuration.</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025, Homey WorkDo, Powered by WorkDo.io</p>
+                
+                <div class="payment-icons">
+                    <!-- Using FontAwesome icons as placeholders for Payment methods -->
+                    <i class="fab fa-cc-visa fa-2x"></i>
+                    <i class="fab fa-cc-mastercard fa-2x"></i>
+                    <i class="fab fa-cc-paypal fa-2x"></i>
+                    <i class="fab fa-cc-apple-pay fa-2x"></i>
+                </div>
+
+                <div class="socials">
+                    <span>Share:</span>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#"><i class="fab fa-facebook-messenger"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+    <!-- Script to Init Swipers -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // 1. HERO BG SLIDER
+            var bgSwiper = new Swiper(".bg-slider", {
+                loop: false, 
+                effect: "fade", 
+                fadeEffect: { crossFade: true },
+                allowTouchMove: false, 
+                speed: 800,
+            });
+
+            // 2. HERO PRODUCT SLIDER
+            var productSwiper = new Swiper(".product-slider", {
+                loop: false,
+                slidesPerView: 1,
+                spaceBetween: 30,
+                speed: 600,
+                watchSlidesProgress: true,
+                grabCursor: true,
+                navigation: {
+                    nextEl: ".next-btn",
+                    prevEl: ".prev-btn",
+                },
+                pagination: {
+                    el: ".hero-pagination",
+                    clickable: true,
+                },
+                breakpoints: {
+                    640: { slidesPerView: 1.5, spaceBetween: 20 },
+                    1024: { slidesPerView: 2, spaceBetween: 30 },
+                },
+            });
+
+            // Sync Hero Sliders
+            productSwiper.on('slideChange', function () {
+                bgSwiper.slideTo(productSwiper.activeIndex);
+            });
+            bgSwiper.slideTo(productSwiper.activeIndex);
+
+
+            // 3. TAB FILTER + PRODUCT SLIDER
+            const tabButtons = document.querySelectorAll('.filter-btn');
+            const wrapper = document.getElementById('product-wrapper');
+            const allSlides = Array.from(wrapper.children);
+            
+            let tabSwiper = new Swiper(".product-tab-slider", {
+                slidesPerView: 1,
+                spaceBetween: 30,
+                observer: true,
+                observeParents: true,
+                navigation: {
+                    nextEl: ".tab-next",
+                    prevEl: ".tab-prev",
+                },
+                breakpoints: {
+                    640: { slidesPerView: 2, spaceBetween: 20 },
+                    1024: { slidesPerView: 4, spaceBetween: 30 }
+                }
+            });
+
+            tabButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    tabButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    const filter = btn.getAttribute('data-filter');
+                    
+                    wrapper.innerHTML = '';
+                    allSlides.forEach(slide => {
+                        const category = slide.getAttribute('data-category');
+                        if (filter === 'all' || category === filter) {
+                            wrapper.appendChild(slide.cloneNode(true));
+                        }
+                    });
+                    tabSwiper.update();
+                    tabSwiper.slideTo(0);
+                });
+            });
+
+            // 4. TESTIMONIALS SLIDER
+            var testiSwiper = new Swiper(".testimonials-slider", {
+                slidesPerView: 1,
+                spaceBetween: 40,
+                loop: true,
+                navigation: {
+                    nextEl: ".testi-next",
+                    prevEl: ".testi-prev",
+                },
+                breakpoints: {
+                    768: {
+                        slidesPerView: 2,
+                        spaceBetween: 40,
+                    }
+                }
+            });
+
+            // 5. SHOWCASE SLIDER (GSAP Style Creative Effect)
+            var showcaseSwiper = new Swiper(".showcase-slider", {
+                slidesPerView: 1,
+                speed: 1000,
+                loop: true,
+                effect: 'creative',
+                creativeEffect: {
+                    prev: {
+                        shadow: true,
+                        translate: ['-20%', 0, -1],
+                    },
+                    next: {
+                        translate: ['100%', 0, 0],
+                    },
+                },
+                navigation: {
+                    nextEl: ".showcase-next",
+                },
+            });
+        });
+    </script>
+
+</body>
+</html>
