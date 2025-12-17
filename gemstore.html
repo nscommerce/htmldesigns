@@ -1,0 +1,1804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swiper.js Video Banner Slider</title>
+    
+    <!-- GSAP library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <!-- GSAP ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    
+    <style>
+        /* --- RESET & GLOBAL VARIABLES --- */
+        :root {
+            --primary-color: #4f46e5; /* Indigo 600 */
+            --primary-dark: #4338ca;
+            --primary-light: #e0e7ff;
+            --text-dark: #111827;
+            --text-gray: #4b5563;
+            --text-light: #9ca3af;
+            --bg-light: #f8fafc;
+            --white: #ffffff;
+            --black: #000000;
+            --container-width: 1600px;
+            --header-height: 70px;
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: color var(--transition-speed);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img, video {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        button {
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        /* Container Utility */
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Section Utility */
+        .section-padding {
+            padding: 80px 0;
+        }
+
+        /* Heading Utility */
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .section-title p {
+            font-size: 1.125rem;
+            color: var(--text-gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .highlight-text {
+            color: var(--primary-color);
+        }
+
+        /* --- HEADER SECTION --- */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            height: var(--header-height);
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            color: var(--primary-dark);
+        }
+
+        .logo span {
+            color: #7c3aed; /* Purple */
+        }
+
+        .desktop-nav {
+            display: none;
+        }
+
+        .nav-link {
+            font-weight: 600;
+            color: var(--text-gray);
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        /* Mega Menu */
+        .nav-item {
+            position: relative;
+        }
+
+        .mega-menu {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            top: 100%;
+            margin-top: 0.5rem;
+            width: 800px;
+            max-width: 90vw;
+            background: var(--white);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #f3f4f6;
+            border-radius: 12px;
+            padding: 2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-speed);
+            z-index: 50;
+        }
+
+        .nav-item:hover .mega-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .mega-menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .mega-menu h3 {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--primary-light);
+            color: var(--text-dark);
+        }
+
+        .mega-menu ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .mega-menu ul li a {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        .mega-menu ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Utility Icons */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .icon-btn {
+            padding: 0.5rem;
+            color: var(--text-gray);
+            transition: color var(--transition-speed);
+        }
+
+        .icon-btn:hover {
+            color: var(--primary-color);
+        }
+
+        .hamburger-btn {
+            display: block;
+        }
+
+        /* --- MOBILE MENU --- */
+        #mobileMenu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+            z-index: 50;
+            display: none;
+            overflow-y: auto;
+            transform: translateX(100%); /* Initial State for GSAP */
+        }
+
+        .mobile-menu-header {
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .mobile-nav {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .mobile-nav a {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        /* --- SEARCH MODAL --- */
+        #searchModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: var(--white);
+            z-index: 60;
+            display: none;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .search-container {
+            max-width: 800px;
+            margin: 2rem auto 0;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .search-input {
+            width: 100%;
+            font-size: 1.5rem;
+            border: none;
+            outline: none;
+            color: var(--text-dark);
+            background: transparent;
+        }
+
+        /* --- ANNOUNCEMENT BAR (MARQUEE) --- */
+        .marquee-section {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 0.5rem 0;
+            overflow: hidden;
+            position: relative;
+            border-top: 4px solid var(--primary-dark);
+            border-bottom: 4px solid var(--primary-dark);
+        }
+
+        .marquee-wrapper {
+            display: flex;
+            white-space: nowrap;
+        }
+
+        .marquee-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .marquee-item {
+            padding: 0 2rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        /* New Large Scrolling Marquee */
+        .big-marquee-section {
+            background-color: var(--primary-color);
+            padding: 1.5rem 0;
+            overflow: hidden;
+            position: relative;
+            z-index: 20;
+            border-top: 4px solid var(--primary-dark);
+            border-bottom: 4px solid var(--primary-dark);
+        }
+        
+        .big-marquee-content {
+            display: flex;
+            font-size: 3rem;
+            font-weight: 900;
+            color: transparent;
+            text-transform: uppercase;
+            font-style: italic;
+            -webkit-text-stroke: 1px rgba(255,255,255,0.5);
+        }
+        
+        .big-marquee-content span.solid {
+            color: var(--white);
+            -webkit-text-stroke: 0;
+        }
+        
+        .big-marquee-item {
+            padding: 0 2rem;
+        }
+
+        /* --- HERO SLIDER --- */
+        #videoSliderContainer {
+            height: 600px;
+            width: 100%;
+            position: relative;
+            background-color: var(--black);
+        }
+
+        .swiper-slide {
+            position: relative;
+            overflow: hidden;
+            background-color: #111;
+        }
+
+        .slide-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        .slide-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%);
+            z-index: 10;
+        }
+
+        .slide-content {
+            position: absolute;
+            top: 50%;
+            left: 5%;
+            transform: translateY(-50%);
+            max-width: 90%;
+            z-index: 20;
+            color: var(--white);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .slide-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .slide-subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .btn-primary {
+            background-color: var(--white);
+            color: var(--primary-color);
+            font-weight: 700;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            display: inline-block;
+            transition: transform var(--transition-speed);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        /* Circular Pagination */
+        .swiper-pagination-custom {
+            position: absolute;
+            bottom: 20px !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            display: flex;
+            gap: 10px;
+            z-index: 30;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(4px);
+            padding: 8px 16px;
+            border-radius: 50px;
+        }
+
+        .swiper-pagination-bullet {
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            opacity: 1;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 !important;
+        }
+
+        .progress-ring {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring__bg {
+            stroke: rgba(255, 255, 255, 0.2);
+            fill: transparent;
+        }
+
+        .progress-ring__circle {
+            stroke: var(--primary-color);
+            fill: transparent;
+            stroke-dasharray: 113; /* 2 * PI * 18 */
+            stroke-dashoffset: 113;
+        }
+
+        .bullet-text {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--white);
+            z-index: 2;
+        }
+
+        .swiper-pagination-bullet-active .progress-ring__circle {
+            animation: progress-animation 8s linear forwards;
+        }
+
+        @keyframes progress-animation {
+            to { stroke-dashoffset: 0; }
+        }
+
+        /* --- CATEGORIES SECTION --- */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .category-card {
+            position: relative;
+            height: 400px;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .category-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+        }
+
+        .category-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .category-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+        }
+
+        .category-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            padding: 1.5rem;
+            width: 100%;
+            transform: translateY(10px);
+            transition: transform 0.5s ease;
+        }
+
+        .category-card:hover .category-info {
+            transform: translateY(0);
+        }
+
+        .category-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .category-link {
+            color: var(--white);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* --- TRENDING SCROLL SECTION --- */
+        #trendingScrollSection {
+            position: relative;
+            background: var(--white);
+            overflow: hidden;
+        }
+
+        .trending-wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .trending-left {
+            width: 100%;
+            height: 40%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2rem;
+            background: var(--white);
+            z-index: 10;
+        }
+
+        .trending-right {
+            width: 100%;
+            height: 60%;
+            background: #f9fafb;
+            display: flex;
+            align-items: center;
+            overflow: hidden; 
+        }
+
+        .trending-tag {
+            background: #e0e7ff;
+            color: var(--primary-color);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 99px;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .trending-heading {
+            font-size: 2.5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .trending-gradient {
+            background: linear-gradient(to right, var(--primary-color), #9333ea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .products-track {
+            display: flex;
+            gap: 2rem;
+            padding-left: 2rem;
+            padding-right: 5rem;
+        }
+
+        .trending-card {
+            flex-shrink: 0;
+            width: 280px;
+            height: 400px;
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .trending-card:hover {
+            transform: scale(1.02);
+        }
+
+        .trending-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .trending-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .trending-card:hover .trending-info {
+            transform: translateY(0);
+        }
+
+        .trending-title {
+            color: var(--white);
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .trending-price {
+            color: #d1d5db;
+            margin-bottom: 1rem;
+        }
+
+        .btn-shop {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--white);
+            color: var(--text-dark);
+            font-weight: 700;
+            border-radius: 8px;
+        }
+
+        /* --- FEATURED PRODUCTS SECTION --- */
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image-wrapper {
+            position: relative;
+            padding: 1rem;
+            background: #f3f4f6; /* Default bg */
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .product-image-wrapper img {
+            width: 100%;
+            border-radius: 8px;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .rating-badge {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(255,255,255,0.9);
+            padding: 0.25rem 0.5rem;
+            border-radius: 99px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .product-details {
+            padding: 0 1rem 1.5rem;
+        }
+
+        .product-name {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .product-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .btn-add-cart {
+            width: 100%;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: var(--primary-color);
+            color: var(--white);
+            border-radius: 99px;
+            font-weight: 600;
+            transition: background-color var(--transition-speed);
+        }
+
+        .btn-add-cart:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* --- PROMO VIDEO SECTION --- */
+        .promo-section {
+            position: relative;
+            height: 500px;
+            background: var(--black);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .promo-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+        }
+
+        .promo-content {
+            position: relative;
+            z-index: 10;
+            padding: 0 1rem;
+        }
+
+        .promo-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--white);
+            margin-bottom: 1rem;
+        }
+
+        /* --- SERVICE HIGHLIGHTS --- */
+        .service-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .service-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: 16px;
+            border: 1px solid #f3f4f6;
+            transition: all var(--transition-speed);
+        }
+
+        .service-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-icon {
+            padding: 0.75rem;
+            background: var(--primary-light);
+            color: var(--primary-color);
+            border-radius: 50%;
+            transition: all var(--transition-speed);
+        }
+
+        .service-item:hover .service-icon {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: #111827; /* Gray 900 */
+            color: var(--white);
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h4 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-col ul li a {
+            color: #9ca3af;
+        }
+
+        .footer-col ul li a:hover {
+            color: #818cf8;
+        }
+
+        .footer-input {
+            width: 100%;
+            padding: 0.75rem;
+            background: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            color: var(--white);
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding-top: 2rem;
+            color: #6b7280;
+            text-align: center;
+            font-size: 0.875rem;
+        }
+
+        /* --- RESPONSIVE BREAKPOINTS --- */
+        @media (min-width: 768px) {
+            .desktop-nav {
+                display: flex;
+            }
+            
+            .hamburger-btn {
+                display: none;
+            }
+
+            #videoSliderContainer {
+                height: 750px;
+            }
+
+            .slide-content {
+                left: 8%;
+                text-align: left;
+                max-width: 600px;
+            }
+
+            .slide-title {
+                font-size: 4rem;
+            }
+
+            /* Pagination Desktop */
+            .swiper-pagination-custom {
+                bottom: 60px !important;
+                left: auto !important;
+                right: 60px !important;
+                transform: none !important;
+                gap: 15px;
+            }
+            .swiper-pagination-bullet {
+                width: 60px;
+                height: 60px;
+            }
+            .progress-ring__circle {
+                stroke-dasharray: 176; /* 2 * PI * 28 */
+                stroke-dashoffset: 176;
+            }
+            .bullet-text {
+                font-size: 14px;
+            }
+
+            /* Grids */
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .category-card:nth-child(3n+2) { /* Stagger effect visual */
+                margin-top: 3rem;
+            }
+            .category-card:nth-child(3n+4) {
+                margin-top: -3rem;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .service-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            /* Trending Scroll */
+            .trending-wrapper {
+                flex-direction: row;
+            }
+            .trending-left {
+                width: 35%;
+                height: 100%;
+                padding-left: 5rem;
+            }
+            .trending-right {
+                width: 65%;
+                height: 100%;
+            }
+            .trending-heading {
+                font-size: 4rem;
+            }
+            .trending-card {
+                width: 400px;
+                height: 550px;
+            }
+            
+            .promo-section {
+                height: 600px;
+            }
+            .promo-title {
+                font-size: 4rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .categories-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .product-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .service-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .footer-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* Mobile Swiper Pagination Override */
+        .mobile-pagination .swiper-pagination-bullet {
+            width: 10px;
+            height: 10px;
+            background: #cbd5e1 !important;
+            opacity: 1 !important;
+            border: none;
+            backdrop-filter: none;
+            margin: 0 4px !important;
+        }
+        .mobile-pagination .swiper-pagination-bullet-active {
+            background: var(--primary-color) !important;
+            width: 24px;
+            border-radius: 99px;
+        }
+        /* Hide mobile pagination on desktop */
+        @media (min-width: 768px) {
+            .mobile-pagination {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <div class="container header-content">
+            <div class="header-actions">
+                <button id="hamburgerBtn" class="icon-btn hamburger-btn">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+                <a href="#" class="logo">GEM<span>STORE</span></a>
+            </div>
+
+            <nav class="desktop-nav">
+                <div class="nav-item">
+                    <a href="#" class="nav-link">
+                        Tops <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </a>
+                    <!-- Mega Menu -->
+                    <div class="mega-menu">
+                        <div class="mega-menu-grid">
+                            <div>
+                                <h3>Core Categories</h3>
+                                <ul>
+                                    <li><a href="#">T-Shirts & Tanks</a></li>
+                                    <li><a href="#">Blouses & Shirts</a></li>
+                                    <li><a href="#">Sweaters & Cardigans</a></li>
+                                    <li><a href="#">Tunic Tops</a></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3>Trends</h3>
+                                <ul>
+                                    <li><a href="#">Linen Collection</a></li>
+                                    <li><a href="#">Weekend Essentials</a></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3>New Arrivals</h3>
+                                <p style="font-size: 0.9rem; color: #666;">Check out the latest drops.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" class="nav-link">Bottoms</a>
+                <div class="nav-item">
+                    <a href="#" class="nav-link">
+                        Sarees <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-grid">
+                            <div>
+                                <h3>Fabric</h3>
+                                <ul>
+                                    <li><a href="#">Silk Sarees</a></li>
+                                    <li><a href="#">Cotton Sarees</a></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3>Occasion</h3>
+                                <ul>
+                                    <li><a href="#">Wedding</a></li>
+                                    <li><a href="#">Party Wear</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" class="nav-link">Kurtis</a>
+                <a href="#" class="nav-link">Jeans</a>
+            </nav>
+
+            <div class="header-actions">
+                <button id="searchBtn" class="icon-btn"><svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></button>
+                <a href="#" class="icon-btn"><svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg></a>
+                <a href="#" class="icon-btn"><svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14c-4.418 0-8 2.239-8 5v2h16v-2c0-2.761-3.582-5-8-5z"></path></svg></a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Announcement Bar (Marquee) -->
+    <div class="marquee-section">
+        <div id="announcementScroller" class="marquee-wrapper">
+            <div class="marquee-content">
+                <span class="marquee-item">⚡ FREE SHIPPING on all orders over $50!</span>
+                <span class="marquee-item">|</span>
+                <span class="marquee-item">Limited Time Offer! 🎁</span>
+                <span class="marquee-item">|</span>
+                <span class="marquee-item">Shop Now! 🛍️</span>
+                <span class="marquee-item">|</span>
+                <span class="marquee-item">New Arrivals Every Week! 🌟</span>
+            </div>
+            <div class="marquee-content">
+                <span class="marquee-item">⚡ FREE SHIPPING on all orders over $50!</span>
+                <span class="marquee-item">|</span>
+                <span class="marquee-item">Limited Time Offer! 🎁</span>
+                <span class="marquee-item">|</span>
+                <span class="marquee-item">Shop Now! 🛍️</span>
+                <span class="marquee-item">|</span>
+                <span class="marquee-item">New Arrivals Every Week! 🌟</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobileMenu">
+        <div class="mobile-menu-header">
+            <span class="logo">Menu</span>
+            <button onclick="closeMenu()" class="icon-btn">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <nav class="mobile-nav">
+            <a href="#">Tops</a>
+            <a href="#">Sarees</a>
+            <a href="#">Kurtis</a>
+            <a href="#">Jeans</a>
+        </nav>
+    </div>
+
+    <!-- Search Modal -->
+    <div id="searchModal">
+        <div class="search-container">
+            <svg width="24" height="24" style="color: #9ca3af; margin-right: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <input type="text" id="searchInput" placeholder="Search for products..." class="search-input">
+            <button onclick="closeSearch()" class="icon-btn" style="margin-left: 1rem;">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Hero Banner Slider -->
+    <section id="videoSliderContainer">
+        <div id="videoSlider" class="swiper h-full w-full">
+            <div class="swiper-wrapper" id="swiperWrapper">
+                <!-- Slides generated by JS -->
+            </div>
+            <!-- Custom Circular Pagination -->
+            <div class="swiper-pagination swiper-pagination-custom"></div>
+        </div>
+    </section>
+
+    <!-- Infinite Scrolling Marquee (Big) -->
+    <section class="big-marquee-section">
+        <div class="scrolling-text-wrapper marquee-wrapper">
+            <div class="scrolling-text-content big-marquee-content">
+                <span class="big-marquee-item solid">New Collection Drop</span>
+                <span class="big-marquee-item">•</span>
+                <span class="big-marquee-item solid">Summer 2025</span>
+                <span class="big-marquee-item">•</span>
+                <span class="big-marquee-item solid">Limited Edition</span>
+                <span class="big-marquee-item">•</span>
+                <span class="big-marquee-item solid">Free Shipping</span>
+                <span class="big-marquee-item">•</span>
+            </div>
+            <div class="scrolling-text-content big-marquee-content">
+                <span class="big-marquee-item solid">New Collection Drop</span>
+                <span class="big-marquee-item">•</span>
+                <span class="big-marquee-item solid">Summer 2025</span>
+                <span class="big-marquee-item">•</span>
+                <span class="big-marquee-item solid">Limited Edition</span>
+                <span class="big-marquee-item">•</span>
+                <span class="big-marquee-item solid">Free Shipping</span>
+                <span class="big-marquee-item">•</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section id="categoryGridSection" class="section-padding" style="background-color: #f9fafb;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Curated Categories</h2>
+                <p>Explore our most popular collections, handpicked for the season.</p>
+            </div>
+
+            <!-- Category Slider (Mobile) / Grid (Desktop) -->
+            <div class="category-slider swiper">
+                <div class="swiper-wrapper categories-grid">
+                    <!-- Cards 1-6 (Added via HTML for structure, images can stay same) -->
+                    <!-- Note: I am keeping static HTML here for cleaner demonstration, mimicking previous loop -->
+                    
+                    <div class="swiper-slide category-card">
+                        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=2020&auto=format&fit=crop" alt="Dresses">
+                        <div class="category-overlay"></div>
+                        <div class="category-info">
+                            <h3 class="category-title">Dresses</h3>
+                            <span class="category-link">Shop Collection &rarr;</span>
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide category-card">
+                        <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=2536&auto=format&fit=crop" alt="Outerwear">
+                        <div class="category-overlay"></div>
+                        <div class="category-info">
+                            <h3 class="category-title">Outerwear</h3>
+                            <span class="category-link">Shop Collection &rarr;</span>
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide category-card">
+                        <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070&auto=format&fit=crop" alt="Accessories">
+                        <div class="category-overlay"></div>
+                        <div class="category-info">
+                            <h3 class="category-title">Accessories</h3>
+                            <span class="category-link">Shop Collection &rarr;</span>
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide category-card">
+                        <img src="https://images.unsplash.com/photo-1542272617-08f08630329e?q=80&w=2574&auto=format&fit=crop" alt="Denim">
+                        <div class="category-overlay"></div>
+                        <div class="category-info">
+                            <h3 class="category-title">Denim</h3>
+                            <span class="category-link">Shop Collection &rarr;</span>
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide category-card">
+                        <img src="https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?q=80&w=2535&auto=format&fit=crop" alt="Footwear">
+                        <div class="category-overlay"></div>
+                        <div class="category-info">
+                            <h3 class="category-title">Footwear</h3>
+                            <span class="category-link">Shop Collection &rarr;</span>
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide category-card">
+                        <img src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?q=80&w=2576&auto=format&fit=crop" alt="Activewear">
+                        <div class="category-overlay"></div>
+                        <div class="category-info">
+                            <h3 class="category-title">Activewear</h3>
+                            <span class="category-link">Shop Collection &rarr;</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Pagination for Mobile -->
+                <div class="swiper-pagination mobile-pagination"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trending Horizontal Scroll Section -->
+    <section id="trendingScrollSection">
+        <div class="trending-wrapper">
+            <!-- Left Fixed Panel -->
+            <div class="trending-left">
+                <div class="trending-text-content">
+                    <span class="trending-tag">HOT RIGHT NOW</span>
+                    <h2 class="trending-heading">
+                        Trending <br> <span class="trending-gradient">Products</span>
+                    </h2>
+                    <p style="margin-bottom: 2rem; color: #4b5563; font-size: 1.125rem;">
+                        Explore the styles defining this season. Curated pieces that are selling out fast.
+                    </p>
+                    <a href="#" style="color: var(--primary-color); font-weight: 700; font-size: 1.125rem; display: inline-flex; align-items: center; gap: 8px;">
+                        See All Trends <span>&rarr;</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Right Scrolling Track -->
+            <div class="trending-right">
+                <div class="products-track">
+                    
+                    <!-- Card 1 -->
+                    <div class="trending-card">
+                        <img src="https://images.unsplash.com/photo-1539008835657-9e8e9680c956?q=80&w=2574&auto=format&fit=crop" alt="Velvet Dress">
+                        <div class="trending-info">
+                            <h3 class="trending-title">Velvet Evening Gown</h3>
+                            <p class="trending-price">$299.00</p>
+                            <button class="btn-shop">Shop Now</button>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="trending-card">
+                        <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=2574&auto=format&fit=crop" alt="Black Shirt">
+                        <div class="trending-info">
+                            <h3 class="trending-title">Classic Noir Shirt</h3>
+                            <p class="trending-price">$89.00</p>
+                            <button class="btn-shop">Shop Now</button>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="trending-card">
+                        <img src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?q=80&w=2030&auto=format&fit=crop" alt="Casual Tee">
+                        <div class="trending-info">
+                            <h3 class="trending-title">Streetwear Tee</h3>
+                            <p class="trending-price">$45.00</p>
+                            <button class="btn-shop">Shop Now</button>
+                        </div>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="trending-card">
+                        <img src="https://images.unsplash.com/photo-1551488852-d8048d5146d6?q=80&w=2670&auto=format&fit=crop" alt="Winter Coat">
+                        <div class="trending-info">
+                            <h3 class="trending-title">Wool Trench Coat</h3>
+                            <p class="trending-price">$350.00</p>
+                            <button class="btn-shop">Shop Now</button>
+                        </div>
+                    </div>
+
+                    <!-- Card 5 -->
+                    <div class="trending-card">
+                        <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=2564&auto=format&fit=crop" alt="Summer Dress">
+                        <div class="trending-info">
+                            <h3 class="trending-title">Floral Summer Dress</h3>
+                            <p class="trending-price">$75.00</p>
+                            <button class="btn-shop">Shop Now</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- New Arrivals Section -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="section-title">
+                <h2>New Arrivals <span class="highlight-text">You'll Love</span></h2>
+            </div>
+            
+            <div class="product-slider swiper">
+                <div id="productGrid" class="swiper-wrapper product-grid">
+                    <!-- Products inserted via JS -->
+                </div>
+                <div class="swiper-pagination mobile-pagination"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trending Collections Section -->
+    <section class="section-padding" style="background: var(--white);">
+        <div class="container">
+            <div class="section-title">
+                <h2>Shop by <span class="highlight-text">Category</span></h2>
+            </div>
+            <!-- Using custom CSS Grid Logic inside this block -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; min-height: 600px;">
+                <!-- Large Feature (Left) -->
+                <div class="collection-card" style="grid-column: span 2; grid-row: span 2; position: relative; border-radius: 16px; overflow: hidden; height: 100%;">
+                    <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070&auto=format&fit=crop" style="width: 100%; height: 100%; object-fit: cover;" alt="Fashion Week">
+                    <div style="position: absolute; bottom: 0; left: 0; padding: 2rem; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); width: 100%;">
+                        <span style="background: var(--primary-color); color: white; padding: 4px 12px; font-size: 12px; border-radius: 99px;">TRENDING</span>
+                        <h3 style="color: white; font-size: 2.5rem; font-weight: 800; margin: 10px 0;">Winter Fashion</h3>
+                        <p style="color: #ddd;">Explore the styles defining this season.</p>
+                    </div>
+                </div>
+                <!-- Small items mimicking the previous grid roughly using flex/grid basics or simplified -->
+                <!-- For simplicity in pure CSS grid without complex span logic on mobile, allowing auto-fit -->
+                <div class="collection-card" style="position: relative; border-radius: 16px; overflow: hidden; height: 300px;">
+                    <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=2574&auto=format&fit=crop" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div style="position: absolute; bottom: 0; left: 0; padding: 1.5rem; background: rgba(0,0,0,0.3); width: 100%;">
+                        <h3 style="color: white; font-weight: 700;">Accessories</h3>
+                    </div>
+                </div>
+                <div class="collection-card" style="position: relative; border-radius: 16px; overflow: hidden; height: 300px;">
+                    <img src="https://images.unsplash.com/photo-1620799140408-ed5341cd2431?q=80&w=2072&auto=format&fit=crop" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div style="position: absolute; bottom: 0; left: 0; padding: 1.5rem; background: rgba(0,0,0,0.3); width: 100%;">
+                        <h3 style="color: white; font-weight: 700;">Denim</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Promotional Video Section -->
+    <section class="promo-section">
+        <video autoplay muted loop playsinline class="promo-video">
+            <source src="https://cdn.shopify.com/videos/c/o/v/5b507f78837646908d14e40059eb492d.mp4" type="video/mp4">
+        </video>
+        <div class="promo-content">
+            <h2 class="promo-title">Redefine Your Wardrobe</h2>
+            <p style="font-size: 1.25rem; color: #e5e7eb; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Discover the new season essentials crafted for the modern lifestyle.
+            </p>
+            <a href="#" class="btn-primary">Explore The Collection</a>
+        </div>
+    </section>
+
+    <!-- Service Highlights Section -->
+    <section class="section-padding" style="background: var(--white);">
+        <div class="container">
+            <div class="service-slider swiper">
+                <div class="swiper-wrapper service-grid">
+                    <div class="swiper-slide service-item">
+                        <div class="service-icon"><svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg></div>
+                        <div>
+                            <h4 style="font-weight: 700;">Free Shipping</h4>
+                            <p style="font-size: 0.875rem; color: #666;">On all orders over $150</p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide service-item">
+                        <div class="service-icon"><svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
+                        <div>
+                            <h4 style="font-weight: 700;">24/7 Support</h4>
+                            <p style="font-size: 0.875rem; color: #666;">Expert assistance anytime</p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide service-item">
+                        <div class="service-icon"><svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
+                        <div>
+                            <h4 style="font-weight: 700;">Secure Payment</h4>
+                            <p style="font-size: 0.875rem; color: #666;">100% protected payments</p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide service-item">
+                        <div class="service-icon"><svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg></div>
+                        <div>
+                            <h4 style="font-weight: 700;">Easy Returns</h4>
+                            <p style="font-size: 0.875rem; color: #666;">30-day money back guarantee</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-pagination mobile-pagination"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="#" class="logo" style="color:white; margin-bottom: 1rem; display:block;">GEM<span style="color:#818cf8;">STORE</span></a>
+                    <p style="color: #9ca3af; font-size: 0.9rem;">Elevating your style with sustainable, premium quality fashion.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Shop</h4>
+                    <ul>
+                        <li><a href="#">New Arrivals</a></li>
+                        <li><a href="#">Best Sellers</a></li>
+                        <li><a href="#">Men's Collection</a></li>
+                        <li><a href="#">Women's Collection</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Order Status</a></li>
+                        <li><a href="#">Shipping & Returns</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Newsletter</h4>
+                    <p style="color: #9ca3af; font-size: 0.9rem; margin-bottom: 1rem;">Subscribe to get special offers.</p>
+                    <form>
+                        <input type="email" placeholder="Enter your email" class="footer-input">
+                        <button type="button" class="btn-primary" style="width: 100%; border-radius: 8px;">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 GemStore Inc. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+        // --- VARIABLES ---
+        const mobileMenu = document.getElementById('mobileMenu');
+        const searchModal = document.getElementById('searchModal');
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const searchBtn = document.getElementById('searchBtn');
+        const announcementScroller = document.getElementById('announcementScroller'); 
+        const swiperWrapper = document.getElementById('swiperWrapper');
+        const productGrid = document.getElementById('productGrid');
+        
+        // --- DATA ---
+        const SLIDES = [
+            { 
+                title: "Experience the New Era of Style", 
+                subtitle: "Our latest collection blends technology and timeless design.", 
+                cta: "Shop Now", 
+                type: 'video',
+                url: "https://cdn.shopify.com/videos/c/o/v/5b507f78837646908d14e40059eb492d.mp4", 
+                thumbText: "C1"
+            },
+            { 
+                title: "Uncompromising Quality & Comfort", 
+                subtitle: "Every piece is crafted for maximum durability and effortless wear.", 
+                cta: "View Materials", 
+                type: 'image',
+                url: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop",
+                thumbText: "C2"
+            },
+            { 
+                title: "The Essential Accessories Drop", 
+                subtitle: "Complete your look with limited-edition jewelry and bags.", 
+                cta: "Discover More", 
+                type: 'image',
+                url: "https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=2071&auto=format&fit=crop",
+                thumbText: "C3"
+            }
+        ];
+
+        const PRODUCT_DATA = [
+            { name: "Silk Blend Kurti", price: 79.99, imageText: "Kurti", imageColor: "8b5cf6", rating: 4.8 },
+            { name: "High-Waist Denim Jeans", price: 49.99, imageText: "Jeans", imageColor: "34d399", rating: 4.5 },
+            { name: "Organic Cotton T-Shirt", price: 29.50, imageText: "Tee", imageColor: "facc15", rating: 4.9 },
+            { name: "Cashmere Cardigan", price: 129.00, imageText: "Cargdn", imageColor: "fb7185", rating: 4.7 },
+            { name: "Embroidered Saree", price: 249.99, imageText: "Saree", imageColor: "f97316", rating: 5.0 },
+            { name: "Leather Tote Bag", price: 159.00, imageText: "Bag", imageColor: "10b981", rating: 4.6 },
+            { name: "Running Sneakers Pro", price: 99.00, imageText: "Shoe", imageColor: "0ea5e9", rating: 4.4 },
+            { name: "Classic Blazer", price: 110.00, imageText: "Blazer", imageColor: "6366f1", rating: 4.8 },
+        ];
+
+        // --- FUNCTIONS ---
+
+        function buildSwiperSlides() {
+            swiperWrapper.innerHTML = SLIDES.map((slide, index) => {
+                let mediaHtml = '';
+                if (slide.type === 'video') {
+                    mediaHtml = `
+                        <video muted loop playsinline class="slide-bg">
+                            <source src="${slide.url}" type="video/mp4">
+                        </video>`;
+                } else {
+                    mediaHtml = `<img src="${slide.url}" class="slide-bg" alt="${slide.title}">`;
+                }
+
+                return `
+                <div class="swiper-slide" data-thumb-text="${slide.thumbText}">
+                    ${mediaHtml}
+                    <div class="slide-overlay"></div>
+                    <div class="slide-content">
+                        <h1 class="slide-title">${slide.title}</h1>
+                        <p class="slide-subtitle">${slide.subtitle}</p>
+                        <button class="btn-primary">
+                            ${slide.cta} &rarr;
+                        </button>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        function initSwiper() {
+            buildSwiperSlides();
+
+            const mySwiper = new Swiper('#videoSlider', {
+                direction: 'horizontal',
+                loop: true,
+                speed: 1000,
+                effect: 'creative',
+                creativeEffect: {
+                    prev: { shadow: true, translate: [0, 0, -400], opacity: 0 },
+                    next: { translate: [0, '100%', 0] },
+                },
+                autoplay: { delay: 8000, disableOnInteraction: false },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                    renderBullet: function (index, className) {
+                        const slide = SLIDES[index];
+                        return `<div class="${className}" role="button" aria-label="Go to slide ${index + 1}">
+                                    <svg class="progress-ring" width="40" height="40" viewBox="0 0 40 40">
+                                        <circle class="progress-ring__bg" stroke-width="2" r="18" cx="20" cy="20" />
+                                        <circle class="progress-ring__circle" stroke-width="2" r="18" cx="20" cy="20" />
+                                    </svg>
+                                    <span class="bullet-text">${slide.thumbText}</span>
+                                </div>`;
+                    },
+                },
+                on: {
+                    init: function () { playActiveVideo(this); },
+                    slideChangeTransitionEnd: function () { playActiveVideo(this); }
+                }
+            });
+        }
+
+        function playActiveVideo(swiper) {
+            const slides = document.querySelectorAll('.swiper-slide');
+            slides.forEach(slide => {
+                const video = slide.querySelector('video');
+                if (video) {
+                    video.pause();
+                    video.currentTime = 0;
+                }
+            });
+            const activeSlide = swiper.slides[swiper.activeIndex];
+            const activeVideo = activeSlide.querySelector('video');
+            if (activeVideo) {
+                activeVideo.play().catch(e => console.log("Video play interrupted:", e));
+            }
+        }
+
+        function renderProducts() {
+            productGrid.innerHTML = PRODUCT_DATA.map(product => `
+                <div class="swiper-slide product-card">
+                    <div class="product-image-wrapper">
+                        <img src="https://placehold.co/400x400/${product.imageColor}/ffffff?text=${product.imageText}" 
+                             alt="${product.name}">
+                        <div class="rating-badge">
+                            <svg width="12" height="12" style="color:#eab308" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.696h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.725c-.783-.57-.381-1.81.588-1.81h3.461a1 1 0 00.951-.696l1.07-3.292z"></path></svg>
+                            ${product.rating}
+                        </div>
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-price">$${product.price.toFixed(2)}</p>
+                        <button class="btn-add-cart">Add to Cart</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // --- ANIMATIONS ---
+        function setupProductAnimations() {
+            renderProducts();
+            
+            const productCards = gsap.utils.toArray('.product-card');
+            if (productCards.length > 0) {
+                gsap.registerPlugin(ScrollTrigger);
+                ScrollTrigger.refresh();
+                gsap.from(productCards, {
+                    opacity: 0,
+                    y: 100, scale: 0.9, duration: 0.8, ease: "power3.out",
+                    stagger: { amount: 0.8, grid: "auto", from: "start" },
+                    scrollTrigger: {
+                        trigger: "#productGrid",
+                        start: "top 85%",
+                        toggleActions: "play none none reverse",
+                    }
+                });
+            }
+
+            const categoryCards = gsap.utils.toArray('.category-card');
+            if(categoryCards.length > 0) {
+                gsap.from(categoryCards, {
+                    opacity: 0,
+                    y: 100, rotation: 2, duration: 1, ease: "power4.out", stagger: 0.2,
+                    scrollTrigger: {
+                        trigger: "#categoryGridSection",
+                        start: "top 75%",
+                        toggleActions: "play none none reverse"
+                    }
+                });
+            }
+        }
+
+        function setupGlobalAnimations() {
+            gsap.registerPlugin(ScrollTrigger);
+            gsap.from("body", { opacity: 0, duration: 1.2, ease: "power2.out" });
+            gsap.from("header", { y: -100, opacity: 0, duration: 1, ease: "power3.out", delay: 0.5 });
+
+            const sections = document.querySelectorAll('section:not(#videoSliderContainer):not(#trendingScrollSection)');
+            sections.forEach(section => {
+                gsap.from(section, {
+                    y: 50, opacity: 0, duration: 1, ease: "power3.out",
+                    scrollTrigger: { trigger: section, start: "top 85%", toggleActions: "play none none reverse" }
+                });
+            });
+
+            gsap.from("footer", {
+                y: 50, opacity: 0, duration: 1, ease: "power3.out",
+                scrollTrigger: { trigger: "footer", start: "top 90%", toggleActions: "play none none reverse" }
+            });
+        }
+
+        function setupTrendingScroll() {
+            const section = document.getElementById('trendingScrollSection');
+            const track = section.querySelector('.products-track');
+            
+            if (!section || !track) return;
+
+            const getScrollAmount = () => {
+                const trackWidth = track.scrollWidth;
+                const containerWidth = section.querySelector('.trending-right').offsetWidth;
+                return -(trackWidth - containerWidth + 100);
+            };
+
+            const tween = gsap.to(track, {
+                x: getScrollAmount,
+                ease: "none",
+            });
+
+            ScrollTrigger.create({
+                trigger: section,
+                start: "top top",
+                end: () => `+=${getScrollAmount() * -1}`,
+                pin: true,
+                animation: tween,
+                scrub: 1,
+                invalidateOnRefresh: true,
+            });
+        }
+
+        function setupMarquee() {
+            gsap.to(".scrolling-text-content", {
+                xPercent: -100, repeat: -1, duration: 25, ease: "linear"
+            });
+        }
+
+        // --- MENU & INTERACTION ---
+        function openMenu() {
+            document.body.style.overflow = 'hidden';
+            const tl = gsap.timeline();
+            tl.set(mobileMenu, { display: 'block' })
+              .fromTo(mobileMenu, { x: '100%' }, { x: '0%', duration: 0.5, ease: "power3.inOut" });
+        }
+
+        function closeMenu() {
+            const tl = gsap.timeline({ onComplete: () => { 
+                document.body.style.overflow = ''; 
+                gsap.set(mobileMenu, { display: 'none' }); 
+            }});
+            tl.to(mobileMenu, { x: '100%', duration: 0.4, ease: "power3.inOut" });
+        }
+
+        function openSearch() {
+            document.body.style.overflow = 'hidden';
+            const tl = gsap.timeline();
+            tl.set(searchModal, { display: 'block' })
+              .fromTo(searchModal, { y: '-100%', opacity: 0 }, { y: '0%', opacity: 1, duration: 0.4, ease: "power3.out" });
+        }
+
+        function closeSearch() {
+            const tl = gsap.timeline({ onComplete: () => {
+                document.body.style.overflow = '';
+                gsap.set(searchModal, { display: 'none' });
+            }});
+            tl.to(searchModal, { y: '-100%', opacity: 0, duration: 0.3, ease: "power2.in" });
+        }
+
+        let categorySwiper = null;
+        let productSwiper = null;
+        let serviceSwiper = null;
+
+        function initMobileSwipers() {
+            const width = window.innerWidth;
+            const mobileBreakpoint = 768;
+
+            if (width < mobileBreakpoint) {
+                if (!categorySwiper) {
+                    categorySwiper = new Swiper('.category-slider', {
+                        slidesPerView: 1.2, spaceBetween: 16, centeredSlides: true, loop: true,
+                        pagination: { el: '.category-slider .swiper-pagination', clickable: true },
+                    });
+                }
+                if (!productSwiper) {
+                    productSwiper = new Swiper('.product-slider', {
+                        slidesPerView: 1.3, spaceBetween: 20, centeredSlides: true, loop: true,
+                        pagination: { el: '.product-slider .swiper-pagination', clickable: true },
+                    });
+                }
+                if (!serviceSwiper) {
+                    serviceSwiper = new Swiper('.service-slider', {
+                        slidesPerView: 1.1, spaceBetween: 16, centeredSlides: true, loop: true,
+                        pagination: { el: '.service-slider .swiper-pagination', clickable: true },
+                    });
+                }
+            } else {
+                if (categorySwiper) { categorySwiper.destroy(true, true); categorySwiper = null; }
+                if (productSwiper) { productSwiper.destroy(true, true); productSwiper = null; }
+                if (serviceSwiper) { serviceSwiper.destroy(true, true); serviceSwiper = null; }
+            }
+        }
+
+        // --- INIT ---
+        document.addEventListener('DOMContentLoaded', () => {
+             if(hamburgerBtn) hamburgerBtn.addEventListener('click', openMenu);
+             if(searchBtn) searchBtn.addEventListener('click', openSearch);
+        });
+
+        window.addEventListener('load', () => {
+            setupMarquee();
+            initSwiper();
+            setupProductAnimations();
+            setupTrendingScroll();
+            setupGlobalAnimations();
+            initMobileSwipers();
+        });
+        
+        window.addEventListener('resize', () => {
+            initMobileSwipers();
+            ScrollTrigger.refresh();
+        });
+
+    </script>
+</body>
+</html>

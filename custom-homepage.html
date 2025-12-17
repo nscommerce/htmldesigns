@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swiper.js Video Banner Slider</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- GSAP library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <!-- GSAP ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <style>
+        /* Custom styles for the demo */
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            background-color: #f8fafc;
+        }
+        
+        /* Mobile Menu */
+        #mobileMenu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 50;
+            display: none; 
+            overflow-y: auto;
+        }
+
+        /* Search Modal */
+        #searchModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 60;
+            display: none;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Icon styling */
+        .icon {
+            cursor: pointer;
+            transition: color 0.2s;
+            will-change: transform; 
+        }
+        .icon:hover {
+            color: #4f46e5;
+        }
+        
+        /* Marquee styles */
+        .marquee-content-block {
+            flex-shrink: 0;
+        }
+
+        /* Mega Menu Styles */
+        .mega-menu {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 100%;
+            margin-top: 0.5rem;
+            width: 800px; 
+            max-width: 90vw;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            border: 1px solid #f3f4f6;
+        }
+        
+        /* --- SWIPER SLIDER STYLES --- */
+        #videoSliderContainer {
+            height: 750px;
+            max-height: 90vh;
+        }
+
+        .swiper-slide {
+            position: relative;
+            background-color: #111;
+            overflow: hidden;
+        }
+        
+        /* Media Background */
+        .slide-video-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+        
+        .slide-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%);
+            z-index: 10;
+        }
+
+        .slide-content {
+            position: absolute;
+            top: 50%;
+            left: 8%;
+            transform: translateY(-50%);
+            max-width: 600px;
+            z-index: 20;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        /* --- CIRCULAR PROGRESS PAGINATION --- */
+        .swiper-pagination-custom {
+            position: absolute;
+            right: 60px !important;
+            bottom: 60px !important;
+            left: auto !important;
+            top: auto !important;
+            transform: none !important;
+            
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 15px;
+            
+            width: auto;
+            z-index: 50 !important;
+            pointer-events: none;
+        }
+
+        .swiper-pagination-bullet {
+            width: 60px;  
+            height: 60px;
+            position: relative;
+            background: rgba(0, 0, 0, 0.3) !important; 
+            border-radius: 50%;
+            opacity: 1 !important;
+            margin: 0 !important;
+            cursor: pointer;
+            pointer-events: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .swiper-pagination-bullet:hover {
+            transform: scale(1.1);
+            background: rgba(0, 0, 0, 0.5) !important;
+        }
+
+        /* SVG Ring Styling */
+        .progress-ring {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: rotate(-90deg);
+            width: 100%;
+            height: 100%;
+        }
+
+        .progress-ring__bg {
+            stroke: rgba(255, 255, 255, 0.2);
+            fill: transparent;
+        }
+
+        .progress-ring__circle {
+            stroke: #4f46e5;
+            fill: transparent;
+            stroke-dasharray: 176;
+            stroke-dashoffset: 176;
+            transition: stroke-dashoffset 0s linear; 
+        }
+
+        .bullet-text {
+            position: relative;
+            z-index: 10;
+            font-size: 14px;
+            font-weight: 800;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .swiper-pagination-bullet-active {
+            background: rgba(0, 0, 0, 0.6) !important;
+            transform: scale(1.1);
+        }
+
+        .swiper-pagination-bullet-active .progress-ring__circle {
+            animation: progress-animation 8s linear forwards; 
+        }
+
+        @keyframes progress-animation {
+            from { stroke-dashoffset: 176; }
+            to { stroke-dashoffset: 0; }
+        }
+        
+        /* Collection Card Hover Effects */
+        .collection-card {
+            overflow: hidden;
+        }
+        .collection-card img {
+            transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .collection-card:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Stroke Text for Marquee */
+        .stroke-text {
+            -webkit-text-stroke: 1px rgba(255,255,255,0.5);
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            #videoSliderContainer {
+                height: 80vh; 
+            }
+            .slide-content {
+                left: 5%;
+                right: 5%;
+                max-width: none;
+                text-align: center;
+                top: 40%; 
+            }
+            .swiper-pagination-custom {
+                right: 50% !important;
+                left: auto !important;
+                transform: translateX(50%) !important;
+                bottom: 20px !important;
+                justify-content: center;
+                gap: 12px;
+            }
+            .swiper-pagination-bullet {
+                width: 48px;
+                height: 48px;
+            }
+            .progress-ring__circle {
+                stroke-dasharray: 138;
+                stroke-dashoffset: 138;
+            }
+            @keyframes progress-animation {
+                from { stroke-dashoffset: 138; }
+                to { stroke-dashoffset: 0; }
+            }
+        }
+
+        /* Mobile Slider Styles (Custom Pagination) */
+        .mobile-pagination .swiper-pagination-bullet {
+            width: 10px;
+            height: 10px;
+            background: #cbd5e1 !important; /* slate-300 */
+            opacity: 1 !important;
+            border: none;
+            backdrop-filter: none;
+        }
+        .mobile-pagination .swiper-pagination-bullet-active {
+            background: #4f46e5 !important; /* indigo-600 */
+            width: 24px;
+            border-radius: 999px;
+        }
+    </style>
+</head>
+<body class="selection:bg-indigo-300 selection:text-indigo-900 overflow-x-hidden">
+    <!-- Announcement Bar -->
+    <div class="w-full bg-indigo-600 text-white overflow-hidden py-2 text-sm relative">
+        <div id="announcementScroller" class="flex whitespace-nowrap font-medium uppercase tracking-wider">
+            <div class="marquee-content-block">
+                <span class="inline-block px-8">⚡ FREE SHIPPING on all orders over $50! | Limited Time Offer! 🎁 | Shop Now! 🛍️ | New Arrivals Every Week! 🌟 | Don't Miss Out! </span>
+            </div>
+            <div class="marquee-content-block">
+                <span class="inline-block px-8">⚡ FREE SHIPPING on all orders over $50! | Limited Time Offer! 🎁 | Shop Now! 🛍️ | New Arrivals Every Week! 🌟 | Don't Miss Out! </span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Header -->
+    <header class="bg-white shadow-md rounded-b-xl px-4 py-3 sticky top-0 z-40">
+        <div class="max-w-[1600px] mx-auto flex items-center justify-between h-14">
+            <div class="flex items-center space-x-4">
+                <button id="hamburgerBtn" class="lg:hidden p-2 text-gray-700 hover:text-indigo-600 icon">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+                <div class="hidden lg:block">
+                    <a href="#" class="text-2xl font-black text-indigo-700 tracking-wider">GEM<span class="text-purple-600">STORE</span></a>
+                </div>
+            </div>
+            <div class="flex-1 flex justify-center lg:justify-center">
+                <nav class="hidden lg:flex space-x-8 font-medium text-gray-600">
+                    <div id="topsTrigger" class="group relative flex items-center">
+                        <a href="#" class="hover:text-indigo-600 transition-colors p-2 font-semibold flex items-center space-x-1">
+                            <span>Tops</span>
+                            <svg class="w-4 h-4 text-gray-400 group-hover:text-indigo-600 group-hover:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </a>
+                        <div id="topsMegaMenu" class="mega-menu p-6 bg-white rounded-xl opacity-0 invisible pointer-events-none z-50">
+                            <!-- Mega Menu Content -->
+                            <div class="grid grid-cols-3 gap-8">
+                                <div>
+                                    <h3 class="font-bold text-gray-900 mb-3 text-lg border-b pb-1 border-indigo-100">Core Categories</h3>
+                                    <ul class="space-y-2 text-sm">
+                                        <li><a href="#" class="block text-gray-600 hover:text-indigo-600">T-Shirts & Tanks</a></li>
+                                        <li><a href="#" class="block text-gray-600 hover:text-indigo-600">Blouses & Shirts</a></li>
+                                        <li><a href="#" class="block text-gray-600 hover:text-indigo-600">Sweaters & Cardigans</a></li>
+                                        <li><a href="#" class="block text-gray-600 hover:text-indigo-600">Tunic Tops</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-gray-900 mb-3 text-lg border-b pb-1 border-indigo-100">Trends</h3>
+                                    <div class="space-y-4">
+                                        <a href="#" class="block hover:shadow-md transition-shadow">
+                                            <img src="https://placehold.co/400x200/4f46e5/ffffff?text=Linen" class="rounded w-full" alt="Linen">
+                                            <p class="mt-2 text-sm font-medium">Linen Collection</p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="bg-indigo-50 p-4 rounded">
+                                    <h3 class="font-bold text-indigo-700">New Arrivals</h3>
+                                    <p class="text-sm text-gray-600 mb-2">Check out the latest drops.</p>
+                                    <a href="#" class="text-indigo-600 font-bold text-sm">View All &rarr;</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" class="hover:text-indigo-600 transition-colors p-2 font-semibold">Bottoms</a>
+                    <div id="sareesTrigger" class="group relative flex items-center">
+                        <a href="#" class="hover:text-indigo-600 transition-colors p-2 font-semibold flex items-center space-x-1">
+                            <span>Sarees</span>
+                            <svg class="w-4 h-4 text-gray-400 group-hover:text-indigo-600 group-hover:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </a>
+                        <div id="sareesMegaMenu" class="mega-menu p-6 bg-white rounded-xl opacity-0 invisible pointer-events-none z-50">
+                             <div class="grid grid-cols-3 gap-8">
+                                <div>
+                                    <h3 class="font-bold text-gray-900 mb-3 text-lg border-b pb-1 border-purple-100">Fabric</h3>
+                                    <ul class="space-y-2 text-sm">
+                                        <li><a href="#" class="block text-gray-600 hover:text-indigo-600">Silk Sarees</a></li>
+                                        <li><a href="#" class="block text-gray-600 hover:text-indigo-600">Cotton Sarees</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-gray-900 mb-3 text-lg border-b pb-1 border-purple-100">Occasion</h3>
+                                    <ul class="space-y-2 text-sm">
+                                        <li><a href="#" class="block text-gray-600 hover:text-indigo-600">Wedding</a></li>
+                                        <li><a href="#" class="block text-gray-600 hover:text-indigo-600">Party Wear</a></li>
+                                    </ul>
+                                </div>
+                                <div class="bg-purple-50 p-4 rounded">
+                                    <h3 class="font-bold text-purple-700">Silk Collection</h3>
+                                    <p class="text-sm text-gray-600 mb-2">Handwoven luxury.</p>
+                                    <a href="#" class="text-purple-600 font-bold text-sm">Shop Now &rarr;</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" class="hover:text-indigo-600 transition-colors p-2 font-semibold">Kurtis</a>
+                    <a href="#" class="hover:text-indigo-600 transition-colors p-2 font-semibold">Jeans</a>
+                </nav>
+                <div class="lg:hidden absolute top-1/2 transform -translate-y-1/2">
+                    <a href="#" class="text-xl font-black text-indigo-700">GEM<span class="text-purple-600">S</span></a>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4 text-gray-700 text-xl">
+                <button id="searchBtn" class="icon p-2"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></button>
+                <a href="#" class="icon p-2"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg></a>
+                <a href="#" class="icon p-2"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14c-4.418 0-8 2.239-8 5v2h16v-2c0-2.761-3.582-5-8-5z"></path></svg></a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="bg-white shadow-2xl">
+        <div class="p-4 flex justify-between items-center border-b">
+            <span class="text-xl font-bold text-indigo-700">Menu</span>
+            <button onclick="closeMenu()" class="p-2 text-gray-600 hover:text-red-500 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <nav class="flex flex-col p-6 space-y-6 text-xl font-medium text-gray-700">
+            <a href="#" class="block hover:text-indigo-600 transition-colors">Tops</a>
+            <a href="#" class="block hover:text-indigo-600 transition-colors">Sarees</a>
+            <a href="#" class="block hover:text-indigo-600 transition-colors">Kurtis</a>
+            <a href="#" class="block hover:text-indigo-600 transition-colors">Jeans</a>
+        </nav>
+    </div>
+
+    <!-- Search Modal -->
+    <div id="searchModal" class="bg-white p-4">
+        <div class="max-w-4xl mx-auto mt-10">
+            <div class="flex items-center border-b-2 border-indigo-600 pb-2">
+                <svg class="w-6 h-6 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <input type="text" id="searchInput" placeholder="Search for products..." class="w-full text-2xl outline-none text-gray-700 placeholder-gray-300">
+                <button onclick="closeSearch()" class="text-gray-500 hover:text-red-500 ml-4 transition-colors">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SWIPER BANNER SLIDER SECTION -->
+    <section id="videoSliderContainer" class="relative w-full shadow-xl bg-black">
+        <div id="videoSlider" class="swiper h-full w-full">
+            <div class="swiper-wrapper" id="swiperWrapper">
+                <!-- Slides generated by JS -->
+            </div>
+            <!-- Custom Inline Pagination (Bottom Right) -->
+            <div class="swiper-pagination swiper-pagination-custom"></div>
+        </div>
+    </section>
+
+    <!-- INFINITE SCROLLING MARQUEE SECTION -->
+    <section class="w-full bg-indigo-600 py-6 overflow-hidden relative z-20 border-y-4 border-indigo-700">
+        <div class="scrolling-text-wrapper flex whitespace-nowrap">
+            <!-- Content duplicated for seamless loop -->
+            <div class="scrolling-text-content flex text-4xl md:text-6xl font-black text-transparent stroke-text uppercase tracking-tight italic">
+                <span class="px-8 text-white">New Collection Drop</span>
+                <span class="px-8" style="-webkit-text-stroke: 1px rgba(255,255,255,0.5);">•</span>
+                <span class="px-8 text-white">Summer 2025</span>
+                <span class="px-8" style="-webkit-text-stroke: 1px rgba(255,255,255,0.5);">•</span>
+                <span class="px-8 text-white">Limited Edition</span>
+                <span class="px-8" style="-webkit-text-stroke: 1px rgba(255,255,255,0.5);">•</span>
+                <span class="px-8 text-white">Free Shipping</span>
+                <span class="px-8" style="-webkit-text-stroke: 1px rgba(255,255,255,0.5);">•</span>
+            </div>
+            <div class="scrolling-text-content flex text-4xl md:text-6xl font-black text-transparent stroke-text uppercase tracking-tight italic">
+                <span class="px-8 text-white">New Collection Drop</span>
+                <span class="px-8" style="-webkit-text-stroke: 1px rgba(255,255,255,0.5);">•</span>
+                <span class="px-8 text-white">Summer 2025</span>
+                <span class="px-8" style="-webkit-text-stroke: 1px rgba(255,255,255,0.5);">•</span>
+                <span class="px-8 text-white">Limited Edition</span>
+                <span class="px-8" style="-webkit-text-stroke: 1px rgba(255,255,255,0.5);">•</span>
+                <span class="px-8 text-white">Free Shipping</span>
+                <span class="px-8" style="-webkit-text-stroke: 1px rgba(255,255,255,0.5);">•</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- UPDATED: CATEGORY GRID/SLIDER SECTION -->
+    <section id="categoryGridSection" class="max-w-[1600px] mx-auto px-8 py-20 bg-gray-50">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4 tracking-tight">Curated Categories</h2>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">Explore our most popular collections, handpicked for the season.</p>
+        </div>
+
+        <!-- Added swiper container class for mobile logic -->
+        <div class="category-slider swiper">
+            <!-- Added swiper-wrapper and preserved grid classes for desktop -->
+            <div class="swiper-wrapper grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Category Card 1 -->
+                <div class="swiper-slide category-card group relative h-[500px] overflow-hidden rounded-2xl cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=2020&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Dresses">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-90"></div>
+                    <div class="absolute bottom-0 left-0 p-8 w-full transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 class="text-3xl font-bold text-white mb-2">Dresses</h3>
+                        <a href="#" class="inline-flex items-center text-white font-semibold text-lg hover:text-indigo-400 transition-colors">
+                            Shop Collection <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Category Card 2 -->
+                <div class="swiper-slide category-card group relative h-[500px] overflow-hidden rounded-2xl cursor-pointer lg:mt-12"> 
+                    <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=2536&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Outerwear">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-90"></div>
+                    <div class="absolute bottom-0 left-0 p-8 w-full transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 class="text-3xl font-bold text-white mb-2">Outerwear</h3>
+                        <a href="#" class="inline-flex items-center text-white font-semibold text-lg hover:text-indigo-400 transition-colors">
+                            Shop Collection <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Category Card 3 -->
+                <div class="swiper-slide category-card group relative h-[500px] overflow-hidden rounded-2xl cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Accessories">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-90"></div>
+                    <div class="absolute bottom-0 left-0 p-8 w-full transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 class="text-3xl font-bold text-white mb-2">Accessories</h3>
+                        <a href="#" class="inline-flex items-center text-white font-semibold text-lg hover:text-indigo-400 transition-colors">
+                            Shop Collection <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </a>
+                    </div>
+                </div>
+                 <!-- Category Card 4 -->
+                <div class="swiper-slide category-card group relative h-[500px] overflow-hidden rounded-2xl cursor-pointer lg:-mt-12">
+                    <img src="https://images.unsplash.com/photo-1542272617-08f08630329e?q=80&w=2574&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Denim">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-90"></div>
+                    <div class="absolute bottom-0 left-0 p-8 w-full transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 class="text-3xl font-bold text-white mb-2">Denim</h3>
+                        <a href="#" class="inline-flex items-center text-white font-semibold text-lg hover:text-indigo-400 transition-colors">
+                            Shop Collection <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </a>
+                    </div>
+                </div>
+
+                 <!-- Category Card 5 -->
+                <div class="swiper-slide category-card group relative h-[500px] overflow-hidden rounded-2xl cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?q=80&w=2535&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Footwear">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-90"></div>
+                    <div class="absolute bottom-0 left-0 p-8 w-full transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 class="text-3xl font-bold text-white mb-2">Footwear</h3>
+                        <a href="#" class="inline-flex items-center text-white font-semibold text-lg hover:text-indigo-400 transition-colors">
+                            Shop Collection <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </a>
+                    </div>
+                </div>
+
+                 <!-- Category Card 6 -->
+                <div class="swiper-slide category-card group relative h-[500px] overflow-hidden rounded-2xl cursor-pointer lg:mt-12">
+                    <img src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?q=80&w=2576&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Activewear">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-90"></div>
+                    <div class="absolute bottom-0 left-0 p-8 w-full transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 class="text-3xl font-bold text-white mb-2">Activewear</h3>
+                        <a href="#" class="inline-flex items-center text-white font-semibold text-lg hover:text-indigo-400 transition-colors">
+                            Shop Collection <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- Pagination for mobile -->
+            <div class="swiper-pagination mobile-pagination md:hidden"></div>
+        </div>
+    </section>
+
+    <!-- NEW: TRENDING HORIZONTAL SCROLL SECTION -->
+    <section id="trendingScrollSection" class="relative bg-white overflow-hidden">
+        <!-- Flex Container -->
+        <div class="trending-wrapper flex flex-col md:flex-row h-screen w-full items-center overflow-hidden">
+            
+            <!-- Left Panel: Pinned Heading -->
+            <div class="trending-left w-full md:w-1/3 h-full flex flex-col justify-center px-8 md:pl-20 z-10 bg-white relative">
+                <div class="trending-text-content">
+                    <span class="inline-block px-3 py-1 bg-indigo-100 text-indigo-700 text-xs font-bold rounded-full mb-4">HOT RIGHT NOW</span>
+                    <h2 class="text-5xl md:text-7xl font-black text-gray-900 leading-tight mb-6">
+                        Trending <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">Products</span>
+                    </h2>
+                    <p class="text-lg text-gray-600 mb-8 max-w-sm">
+                        Explore the styles defining this season. Curated pieces that are selling out fast.
+                    </p>
+                    <a href="#" class="group inline-flex items-center font-bold text-indigo-600 hover:text-indigo-800 transition-colors text-lg">
+                        See All Trends 
+                        <span class="ml-2 group-hover:translate-x-1 transition-transform">&rarr;</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Right Panel: Horizontal Scrolling Track -->
+            <div class="trending-right w-full md:w-2/3 h-full flex items-center overflow-hidden bg-gray-50">
+                <div class="products-track flex gap-8 pl-8 md:pl-20 pr-20 items-center">
+                    
+                    <!-- Trending Card 1 -->
+                    <div class="flex-shrink-0 w-[300px] md:w-[400px] h-[500px] bg-white rounded-3xl shadow-xl overflow-hidden group relative transform transition-transform hover:scale-[1.02]">
+                        <img src="https://images.unsplash.com/photo-1539008835657-9e8e9680c956?q=80&w=2574&auto=format&fit=crop" class="w-full h-full object-cover" alt="Velvet Dress">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute bottom-0 left-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-300 w-full">
+                            <h3 class="text-2xl font-bold text-white">Velvet Evening Gown</h3>
+                            <p class="text-gray-300 mb-4">$299.00</p>
+                            <button class="w-full py-3 bg-white text-black font-bold rounded-xl hover:bg-gray-200">Shop Now</button>
+                        </div>
+                    </div>
+
+                    <!-- Trending Card 2 -->
+                    <div class="flex-shrink-0 w-[300px] md:w-[400px] h-[500px] bg-white rounded-3xl shadow-xl overflow-hidden group relative transform transition-transform hover:scale-[1.02]">
+                        <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=2574&auto=format&fit=crop" class="w-full h-full object-cover" alt="Black Shirt">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute bottom-0 left-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-300 w-full">
+                            <h3 class="text-2xl font-bold text-white">Classic Noir Shirt</h3>
+                            <p class="text-gray-300 mb-4">$89.00</p>
+                            <button class="w-full py-3 bg-white text-black font-bold rounded-xl hover:bg-gray-200">Shop Now</button>
+                        </div>
+                    </div>
+
+                    <!-- Trending Card 3 -->
+                    <div class="flex-shrink-0 w-[300px] md:w-[400px] h-[500px] bg-white rounded-3xl shadow-xl overflow-hidden group relative transform transition-transform hover:scale-[1.02]">
+                        <img src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?q=80&w=2030&auto=format&fit=crop" class="w-full h-full object-cover" alt="Casual Tee">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute bottom-0 left-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-300 w-full">
+                            <h3 class="text-2xl font-bold text-white">Streetwear Tee</h3>
+                            <p class="text-gray-300 mb-4">$45.00</p>
+                            <button class="w-full py-3 bg-white text-black font-bold rounded-xl hover:bg-gray-200">Shop Now</button>
+                        </div>
+                    </div>
+
+                    <!-- Trending Card 4 -->
+                    <div class="flex-shrink-0 w-[300px] md:w-[400px] h-[500px] bg-white rounded-3xl shadow-xl overflow-hidden group relative transform transition-transform hover:scale-[1.02]">
+                        <img src="https://images.unsplash.com/photo-1551488852-d8048d5146d6?q=80&w=2670&auto=format&fit=crop" class="w-full h-full object-cover" alt="Winter Coat">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute bottom-0 left-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-300 w-full">
+                            <h3 class="text-2xl font-bold text-white">Wool Trench Coat</h3>
+                            <p class="text-gray-300 mb-4">$350.00</p>
+                            <button class="w-full py-3 bg-white text-black font-bold rounded-xl hover:bg-gray-200">Shop Now</button>
+                        </div>
+                    </div>
+
+                    <!-- Trending Card 5 -->
+                    <div class="flex-shrink-0 w-[300px] md:w-[400px] h-[500px] bg-white rounded-3xl shadow-xl overflow-hidden group relative transform transition-transform hover:scale-[1.02]">
+                        <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=2564&auto=format&fit=crop" class="w-full h-full object-cover" alt="Summer Dress">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute bottom-0 left-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-300 w-full">
+                            <h3 class="text-2xl font-bold text-white">Floral Summer Dress</h3>
+                            <p class="text-gray-300 mb-4">$75.00</p>
+                            <button class="w-full py-3 bg-white text-black font-bold rounded-xl hover:bg-gray-200">Shop Now</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- UPDATED: FEATURED PRODUCTS SECTION -->
+    <section class="max-w-[1600px] mx-auto p-8 pt-4 pb-12">
+        <h2 class="text-4xl font-extrabold text-gray-900 mb-12 text-center border-b-2 border-indigo-100 pb-4">
+            New Arrivals <span class="text-indigo-600">You'll Love</span>
+        </h2>
+        <!-- Wrapped in Swiper container -->
+        <div class="product-slider swiper">
+            <!-- Swiper Wrapper + Grid layout for desktop -->
+            <div id="productGrid" class="swiper-wrapper grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
+                <!-- Product cards will be inserted here by JavaScript -->
+            </div>
+            <!-- Pagination for mobile -->
+            <div class="swiper-pagination mobile-pagination md:hidden"></div>
+        </div>
+    </section>
+
+    <!-- TRENDING COLLECTIONS SECTION (RESTORED) -->
+    <section class="w-full bg-white py-20">
+        <div class="max-w-[1600px] mx-auto px-8">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-8 tracking-tight">Shop by <span class="text-indigo-600">Category</span></h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-auto md:h-[600px]">
+                <!-- Large Feature -->
+                <div class="collection-card group relative rounded-2xl overflow-hidden cursor-pointer bg-gray-200 md:row-span-2 lg:col-span-2 h-[400px] md:h-full">
+                    <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover" alt="Fashion Week">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-90"></div>
+                    <div class="absolute bottom-0 left-0 p-8 w-full">
+                        <span class="inline-block px-3 py-1 bg-indigo-600 text-white text-xs font-bold rounded-full mb-3">TRENDING</span>
+                        <h3 class="text-3xl md:text-5xl font-bold text-white mb-2 leading-tight">Winter Fashion <br>Week 2025</h3>
+                        <p class="text-gray-300 mb-4 max-w-md hidden md:block">Explore the styles defining this season. From cozy knits to structured coats.</p>
+                        <span class="text-white font-semibold group-hover:underline decoration-2 underline-offset-4">Explore Collection &rarr;</span>
+                    </div>
+                </div>
+                <!-- Medium Feature -->
+                <div class="collection-card group relative rounded-2xl overflow-hidden cursor-pointer bg-gray-200 lg:col-span-2 h-[300px] md:h-auto">
+                    <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=2574&auto=format&fit=crop" class="w-full h-full object-cover" alt="Accessories">
+                    <div class="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
+                    <div class="absolute bottom-6 left-6 text-white">
+                        <h3 class="text-2xl font-bold mb-1">Luxury Accessories</h3>
+                        <span class="text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 block">Shop Bags & Scarves</span>
+                    </div>
+                </div>
+                <!-- Small Feature 1 -->
+                <div class="collection-card group relative rounded-2xl overflow-hidden cursor-pointer bg-gray-200 h-[250px] md:h-auto">
+                    <img src="https://images.unsplash.com/photo-1620799140408-ed5341cd2431?q=80&w=2072&auto=format&fit=crop" class="w-full h-full object-cover" alt="Denim">
+                    <div class="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
+                    <div class="absolute bottom-6 left-6 text-white">
+                        <h3 class="text-xl font-bold">Denim Edit</h3>
+                    </div>
+                </div>
+                <!-- Small Feature 2 -->
+                <div class="collection-card group relative rounded-2xl overflow-hidden cursor-pointer bg-gray-200 h-[250px] md:h-auto">
+                    <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=2583&auto=format&fit=crop" class="w-full h-full object-cover" alt="Dresses">
+                    <div class="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
+                    <div class="absolute bottom-6 left-6 text-white">
+                        <h3 class="text-xl font-bold">Party Dresses</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROMOTIONAL VIDEO BANNER SECTION (RESTORED & UPDATED) -->
+    <section class="w-full bg-black relative overflow-hidden h-[500px] md:h-[600px]">
+        <video autoplay muted loop playsinline class="absolute top-0 left-0 w-full h-full object-cover opacity-60">
+            <source src="https://cdn.shopify.com/videos/c/o/v/5b507f78837646908d14e40059eb492d.mp4" type="video/mp4">
+        </video>
+        <div class="relative z-10 max-w-[1600px] mx-auto h-full flex flex-col justify-center items-center text-center px-4">
+            <h2 class="text-4xl md:text-6xl font-black text-white mb-4 tracking-tight">Redefine Your Wardrobe</h2>
+            <p class="text-lg md:text-xl text-gray-200 mb-8 max-w-2xl">Discover the new season essentials crafted for the modern lifestyle. Quality that speaks for itself.</p>
+            <a href="#" class="inline-block bg-white text-black font-bold py-3 px-8 rounded-full hover:bg-gray-100 transition-colors transform hover:scale-105 duration-300">
+                Explore The Collection
+            </a>
+        </div>
+    </section>
+
+    <!-- UPDATED: SERVICE HIGHLIGHTS / USP SECTION -->
+    <section class="max-w-[1600px] mx-auto px-8 py-16 bg-white">
+        <!-- Wrapped in Swiper container -->
+        <div class="service-slider swiper">
+            <!-- Swiper Wrapper + Grid layout for desktop -->
+            <div class="swiper-wrapper grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Feature 1 -->
+                <div class="swiper-slide flex items-center space-x-4 p-6 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 cursor-default group">
+                    <div class="p-3 bg-indigo-50 rounded-full text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-900">Free Shipping</h4>
+                        <p class="text-sm text-gray-500">On all orders over $150</p>
+                    </div>
+                </div>
+                <!-- Feature 2 -->
+                <div class="swiper-slide flex items-center space-x-4 p-6 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 cursor-default group">
+                    <div class="p-3 bg-indigo-50 rounded-full text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-900">24/7 Support</h4>
+                        <p class="text-sm text-gray-500">Expert assistance anytime</p>
+                    </div>
+                </div>
+                <!-- Feature 3 -->
+                <div class="swiper-slide flex items-center space-x-4 p-6 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 cursor-default group">
+                    <div class="p-3 bg-indigo-50 rounded-full text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-900">Secure Payment</h4>
+                        <p class="text-sm text-gray-500">100% protected payments</p>
+                    </div>
+                </div>
+                <!-- Feature 4 -->
+                <div class="swiper-slide flex items-center space-x-4 p-6 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 cursor-default group">
+                    <div class="p-3 bg-indigo-50 rounded-full text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-900">Easy Returns</h4>
+                        <p class="text-sm text-gray-500">30-day money back guarantee</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Pagination for mobile -->
+            <div class="swiper-pagination mobile-pagination md:hidden"></div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
+        <div class="max-w-[1600px] mx-auto px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <!-- Brand -->
+                <div>
+                    <a href="#" class="text-3xl font-black text-white tracking-wider block mb-6">
+                        GEM<span class="text-indigo-500">STORE</span>
+                    </a>
+                    <p class="text-gray-400 mb-6">Elevating your style with sustainable, premium quality fashion. Designed for the modern individual.</p>
+                </div>
+                <!-- Links -->
+                <div>
+                    <h4 class="text-lg font-bold text-white mb-6">Shop</h4>
+                    <ul class="space-y-3 text-gray-400">
+                        <li><a href="#" class="hover:text-indigo-400 transition-colors">New Arrivals</a></li>
+                        <li><a href="#" class="hover:text-indigo-400 transition-colors">Best Sellers</a></li>
+                        <li><a href="#" class="hover:text-indigo-400 transition-colors">Men's Collection</a></li>
+                        <li><a href="#" class="hover:text-indigo-400 transition-colors">Women's Collection</a></li>
+                    </ul>
+                </div>
+                <!-- Links 2 -->
+                <div>
+                    <h4 class="text-lg font-bold text-white mb-6">Support</h4>
+                    <ul class="space-y-3 text-gray-400">
+                        <li><a href="#" class="hover:text-indigo-400 transition-colors">Order Status</a></li>
+                        <li><a href="#" class="hover:text-indigo-400 transition-colors">Shipping & Returns</a></li>
+                        <li><a href="#" class="hover:text-indigo-400 transition-colors">FAQ</a></li>
+                        <li><a href="#" class="hover:text-indigo-400 transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+                <!-- Newsletter -->
+                <div>
+                    <h4 class="text-lg font-bold text-white mb-6">Stay in the loop</h4>
+                    <p class="text-gray-400 mb-4 text-sm">Subscribe to get special offers.</p>
+                    <form class="flex flex-col space-y-3">
+                        <input type="email" placeholder="Enter your email" class="px-4 py-3 bg-gray-800 text-white rounded-lg focus:outline-none border border-gray-700">
+                        <button type="button" class="px-4 py-3 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition-colors">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+                <p>&copy; 2024 GemStore Inc. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Load Swiper JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+    <script>
+        // --- GSAP Setup and Variables ---
+        const mobileMenu = document.getElementById('mobileMenu');
+        const searchModal = document.getElementById('searchModal');
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const searchBtn = document.getElementById('searchBtn');
+        const announcementScroller = document.getElementById('announcementScroller'); 
+        const swiperWrapper = document.getElementById('swiperWrapper');
+        const productGrid = document.getElementById('productGrid');
+        
+        // --- SLIDER DATA (1 Video, 2 Images) ---
+        const SLIDES = [
+            { 
+                title: "Experience the New Era of Style", 
+                subtitle: "Our latest collection blends technology and timeless design.", 
+                cta: "Shop Now", 
+                type: 'video',
+                url: "https://cdn.shopify.com/videos/c/o/v/5b507f78837646908d14e40059eb492d.mp4", 
+                thumbText: "C1"
+            },
+            { 
+                title: "Uncompromising Quality & Comfort", 
+                subtitle: "Every piece is crafted for maximum durability and effortless wear.", 
+                cta: "View Materials", 
+                type: 'image',
+                url: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop",
+                thumbText: "C2"
+            },
+            { 
+                title: "The Essential Accessories Drop", 
+                subtitle: "Complete your look with limited-edition jewelry and bags.", 
+                cta: "Discover More", 
+                type: 'image',
+                url: "https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=2071&auto=format&fit=crop",
+                thumbText: "C3"
+            }
+        ];
+
+        // --- PRODUCT DATA ---
+        const PRODUCT_DATA = [
+            { name: "Silk Blend Kurti", price: 79.99, imageText: "Kurti", imageColor: "8b5cf6", rating: 4.8 },
+            { name: "High-Waist Denim Jeans", price: 49.99, imageText: "Jeans", imageColor: "34d399", rating: 4.5 },
+            { name: "Organic Cotton T-Shirt", price: 29.50, imageText: "Tee", imageColor: "facc15", rating: 4.9 },
+            { name: "Cashmere Cardigan", price: 129.00, imageText: "Cargdn", imageColor: "fb7185", rating: 4.7 },
+            { name: "Embroidered Saree", price: 249.99, imageText: "Saree", imageColor: "f97316", rating: 5.0 },
+            { name: "Leather Tote Bag", price: 159.00, imageText: "Bag", imageColor: "10b981", rating: 4.6 },
+            { name: "Running Sneakers Pro", price: 99.00, imageText: "Shoe", imageColor: "0ea5e9", rating: 4.4 },
+            { name: "Classic Blazer", price: 110.00, imageText: "Blazer", imageColor: "6366f1", rating: 4.8 },
+        ];
+
+
+        // --- SWIPER INITIALIZATION ---
+
+        function buildSwiperSlides() {
+            swiperWrapper.innerHTML = SLIDES.map((slide, index) => {
+                let mediaHtml = '';
+                if (slide.type === 'video') {
+                    mediaHtml = `
+                        <video muted loop playsinline class="slide-video-bg">
+                            <source src="${slide.url}" type="video/mp4">
+                        </video>`;
+                } else {
+                    mediaHtml = `<img src="${slide.url}" class="slide-video-bg" alt="${slide.title}">`;
+                }
+
+                return `
+                <div class="swiper-slide" data-thumb-text="${slide.thumbText}">
+                    ${mediaHtml}
+                    <!-- Dark Overlay -->
+                    <div class="slide-overlay"></div>
+                    
+                    <!-- Content Overlay -->
+                    <div class="slide-content text-white">
+                        <h1 class="text-4xl md:text-6xl font-extrabold mb-4 tracking-tighter drop-shadow-md">${slide.title}</h1>
+                        <p class="text-lg md:text-xl mb-8 opacity-95 drop-shadow-sm font-light">${slide.subtitle}</p>
+                        <button class="bg-white text-indigo-700 font-bold py-3 px-8 rounded-full shadow-xl hover:bg-indigo-50 transition-colors transform hover:-translate-y-1">
+                            ${slide.cta} &rarr;
+                        </button>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        function initSwiper() {
+            buildSwiperSlides();
+
+            const mySwiper = new Swiper('#videoSlider', {
+                direction: 'horizontal',
+                loop: true,
+                speed: 1000,
+                // BOTTOM TO TOP SLIDE ANIMATION
+                effect: 'creative',
+                creativeEffect: {
+                    prev: {
+                        shadow: true,
+                        translate: [0, 0, -400],
+                        opacity: 0,
+                    },
+                    next: {
+                        translate: [0, '100%', 0], // Starts from the bottom
+                    },
+                },
+                autoplay: {
+                    delay: 8000, 
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                    // Render custom pagination dots with SVG Ring
+                    renderBullet: function (index, className) {
+                        const slide = SLIDES[index];
+                        // Use calculated stroke values for 28px radius (circumference ~176)
+                        return `<div class="${className}" role="button" aria-label="Go to slide ${index + 1}">
+                                    <svg class="progress-ring" width="60" height="60" viewBox="0 0 60 60">
+                                        <circle class="progress-ring__bg" stroke-width="2" r="28" cx="30" cy="30" />
+                                        <circle class="progress-ring__circle" stroke-width="2" r="28" cx="30" cy="30" />
+                                    </svg>
+                                    <span class="bullet-text">${slide.thumbText}</span>
+                                </div>`;
+                    },
+                },
+                // Handle Video Playback on Transition
+                on: {
+                    init: function () {
+                        playActiveVideo(this);
+                    },
+                    slideChangeTransitionEnd: function () {
+                        playActiveVideo(this);
+                    }
+                }
+            });
+        }
+
+        // Helper to play only the video in the active slide and pause others
+        function playActiveVideo(swiper) {
+            const slides = document.querySelectorAll('.swiper-slide');
+            slides.forEach(slide => {
+                const video = slide.querySelector('video');
+                if (video) {
+                    video.pause();
+                    video.currentTime = 0; // Optional: Reset video
+                }
+            });
+
+            const activeSlide = swiper.slides[swiper.activeIndex];
+            const activeVideo = activeSlide.querySelector('video');
+            if (activeVideo) {
+                activeVideo.play().catch(e => console.log("Video play interrupted:", e));
+            }
+        }
+
+        // --- PRODUCT GRID RENDERING ---
+        function renderProducts() {
+            productGrid.innerHTML = PRODUCT_DATA.map(product => `
+                <div class="swiper-slide product-card bg-white rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden cursor-pointer p-4 group">
+                    <div class="relative bg-${product.imageColor}/20 p-4 rounded-lg overflow-hidden mb-4">
+                        <img src="https://placehold.co/400x400/${product.imageColor}/ffffff?text=${product.imageText}" 
+                             class="w-full h-auto rounded-lg transition-transform duration-500 group-hover:scale-[1.05]" 
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/${product.imageColor}/ffffff?text=${product.imageText}';" 
+                             alt="${product.name}">
+                        <div class="absolute top-2 right-2 text-xs font-semibold px-2 py-1 bg-white/80 backdrop-blur-sm rounded-full text-gray-800 flex items-center shadow-md">
+                            <svg class="w-4 h-4 text-yellow-500 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.696h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.725c-.783-.57-.381-1.81.588-1.81h3.461a1 1 0 00.951-.696l1.07-3.292z"></path></svg>
+                            ${product.rating}
+                        </div>
+                    </div>
+                    <div class="px-2 pb-4">
+                        <h3 class="text-lg font-semibold text-gray-800 truncate">${product.name}</h3>
+                        <p class="text-2xl font-bold text-indigo-600 mt-1">$${product.price.toFixed(2)}</p>
+                        <button class="mt-4 w-full py-2 bg-indigo-500 text-white font-medium rounded-full hover:bg-indigo-600 transition-colors shadow-md">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // --- GSAP SCROLL TRIGGER ANIMATION ---
+        function setupProductAnimations() {
+            renderProducts();
+            
+            // Product Grid Animation
+            const productCards = gsap.utils.toArray('.product-card');
+            if (productCards.length > 0) {
+                gsap.registerPlugin(ScrollTrigger);
+                ScrollTrigger.refresh();
+                gsap.from(productCards, {
+                    opacity: 0,
+                    y: 100,        
+                    scale: 0.9,    
+                    duration: 0.8, 
+                    ease: "power3.out", 
+                    stagger: {
+                        amount: 0.8, 
+                        grid: "auto", 
+                        from: "start"
+                    },
+                    scrollTrigger: {
+                        trigger: "#productGrid",
+                        start: "top 85%", 
+                        toggleActions: "play none none reverse", 
+                    }
+                });
+            }
+
+            // NEW: Category Grid Animation
+            const categoryCards = gsap.utils.toArray('.category-card');
+            if(categoryCards.length > 0) {
+                gsap.from(categoryCards, {
+                    opacity: 0,
+                    y: 100,
+                    rotation: 2, // Slight rotation for a stylish entrance
+                    duration: 1,
+                    ease: "power4.out",
+                    stagger: 0.2, // Sequential stagger
+                    scrollTrigger: {
+                        trigger: "#categoryGridSection",
+                        start: "top 75%", // Triggers slightly earlier
+                        toggleActions: "play none none reverse"
+                    }
+                });
+            }
+        }
+
+        // --- GLOBAL PAGE ANIMATIONS (NEW) ---
+        function setupGlobalAnimations() {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // 1. Initial Page Load Fade-In (Body)
+            gsap.from("body", {
+                opacity: 0,
+                duration: 1.2,
+                ease: "power2.out"
+            });
+
+            // 2. Header Slide Down
+            gsap.from("header", {
+                y: -100,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out",
+                delay: 0.5 // Wait for body fade
+            });
+
+            // 3. Section Entrance Animations
+            // EXCLUDE the pinned section from generic animations to avoid conflicts
+            const sections = document.querySelectorAll('section:not(#videoSliderContainer):not(#trendingScrollSection)');
+            sections.forEach(section => {
+                gsap.from(section, {
+                    y: 50,
+                    opacity: 0,
+                    duration: 1,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: section,
+                        start: "top 85%", // Start animation when top of section hits 85% of viewport
+                        toggleActions: "play none none reverse"
+                    }
+                });
+            });
+
+            // 4. Footer Animation
+            gsap.from("footer", {
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: "footer",
+                    start: "top 90%",
+                    toggleActions: "play none none reverse"
+                }
+            });
+        }
+
+        // --- NEW: SETUP TRENDING HORIZONTAL SCROLL ---
+        function setupTrendingScroll() {
+            const section = document.getElementById('trendingScrollSection');
+            const track = section.querySelector('.products-track');
+            
+            // Only setup animation if elements exist and on desktop (mostly)
+            // We can let it run on mobile too, but pin behavior might need tweaks for touch
+            if (!section || !track) return;
+
+            // Calculate the total scroll amount needed
+            // We want to scroll the track to the left until the last item is visible
+            const getScrollAmount = () => {
+                const trackWidth = track.scrollWidth;
+                const containerWidth = section.querySelector('.trending-right').offsetWidth;
+                return -(trackWidth - containerWidth + 100); // +100 for some padding
+            };
+
+            const tween = gsap.to(track, {
+                x: getScrollAmount,
+                ease: "none",
+            });
+
+            ScrollTrigger.create({
+                trigger: section,
+                start: "top top", // When top of section hits top of viewport
+                end: () => `+=${getScrollAmount() * -1}`, // Duration based on scroll width
+                pin: true,        // Pin the section
+                animation: tween, // Link the tween
+                scrub: 1,         // Smooth scrubbing
+                invalidateOnRefresh: true, // Recalculate on resize
+                // markers: true // Uncomment for debugging
+            });
+        }
+        
+        // --- MOBILE SWIPER LOGIC ---
+        let categorySwiper = null;
+        let productSwiper = null;
+        let serviceSwiper = null;
+
+        function initMobileSwipers() {
+            const width = window.innerWidth;
+            const mobileBreakpoint = 768; // md breakpoint in Tailwind
+
+            if (width < mobileBreakpoint) {
+                // Initialize Category Swiper if not active
+                if (!categorySwiper) {
+                    categorySwiper = new Swiper('.category-slider', {
+                        slidesPerView: 1.2, // Show part of next slide
+                        spaceBetween: 16,
+                        centeredSlides: true,
+                        loop: true,
+                        pagination: {
+                            el: '.category-slider .swiper-pagination',
+                            clickable: true,
+                        },
+                    });
+                }
+                
+                // Initialize Product Swiper if not active
+                if (!productSwiper) {
+                    productSwiper = new Swiper('.product-slider', {
+                        slidesPerView: 1.3,
+                        spaceBetween: 20,
+                        centeredSlides: true,
+                        loop: true,
+                        pagination: {
+                            el: '.product-slider .swiper-pagination',
+                            clickable: true,
+                        },
+                    });
+                }
+
+                // Initialize Service Swiper if not active
+                if (!serviceSwiper) {
+                    serviceSwiper = new Swiper('.service-slider', {
+                        slidesPerView: 1.1,
+                        spaceBetween: 16,
+                        centeredSlides: true,
+                        loop: true,
+                        pagination: {
+                            el: '.service-slider .swiper-pagination',
+                            clickable: true,
+                        },
+                    });
+                }
+            } else {
+                // Destroy Swipers on desktop to revert to grid
+                if (categorySwiper) {
+                    categorySwiper.destroy(true, true);
+                    categorySwiper = null;
+                }
+                if (productSwiper) {
+                    productSwiper.destroy(true, true);
+                    productSwiper = null;
+                }
+                if (serviceSwiper) {
+                    serviceSwiper.destroy(true, true);
+                    serviceSwiper = null;
+                }
+            }
+        }
+
+        // --- Existing Header & Utility Functions ---
+
+        function setupMarquee() {
+            // New Marquee GSAP Animation
+            gsap.to(".scrolling-text-content", {
+                xPercent: -100,
+                repeat: -1,
+                duration: 25,
+                ease: "linear"
+            });
+        }
+
+        function setupMicroAnimations() {
+            const interactiveElements = document.querySelectorAll('.icon');
+            interactiveElements.forEach(el => {
+                const pressHandler = () => { gsap.to(el, { scale: 0.9, duration: 0.1, ease: "power2.in" }); };
+                const releaseHandler = () => { gsap.to(el, { scale: 1, duration: 0.3, ease: "back.out(2)" }); };
+                el.addEventListener('mousedown', pressHandler);
+                el.addEventListener('touchstart', pressHandler);
+                el.addEventListener('mouseup', releaseHandler);
+                el.addEventListener('touchend', releaseHandler);
+                el.addEventListener('mouseleave', releaseHandler); 
+            });
+        }
+        
+        function initializeMegaMenu(triggerId, menuId) {
+            const menuTrigger = document.getElementById(triggerId);
+            const megaMenu = document.getElementById(menuId);
+            if (!menuTrigger || !megaMenu) return;
+
+            const openTimeline = gsap.timeline({ paused: true })
+                .set(megaMenu, { display: 'block', pointerEvents: 'auto', visibility: 'visible' })
+                .fromTo(megaMenu, 
+                    { opacity: 0, y: 10, scale: 0.98 }, 
+                    { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: 'power2.out' }
+                );
+
+            const closeTimeline = gsap.timeline({ paused: true })
+                .to(megaMenu, { 
+                    opacity: 0, y: 10, scale: 0.98, duration: 0.2, ease: 'power2.in',
+                    onComplete: () => {
+                        gsap.set(megaMenu, { display: 'none', pointerEvents: 'none', visibility: 'hidden' });
+                    } 
+                });
+
+            let currentTimeout;
+            menuTrigger.addEventListener('mouseenter', () => {
+                clearTimeout(currentTimeout);
+                closeTimeline.pause();
+                openTimeline.restart();
+            });
+
+            menuTrigger.addEventListener('mouseleave', () => {
+                currentTimeout = setTimeout(() => {
+                    openTimeline.pause();
+                    closeTimeline.restart();
+                }, 100); 
+            });
+        }
+
+        function openMenu() {
+            document.body.classList.add('overflow-hidden');
+            const tl = gsap.timeline();
+            tl.set(mobileMenu, { display: 'block' })
+              .fromTo(mobileMenu, { x: '100%' }, { x: '0%', duration: 0.5, ease: "power3.inOut" })
+              .fromTo(mobileMenu.querySelectorAll('nav a'), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, stagger: 0.05, ease: "power2.out" }, "-=0.2");
+        }
+
+        function closeMenu() {
+            const tl = gsap.timeline({ onComplete: () => { document.body.classList.remove('overflow-hidden'); gsap.set(mobileMenu, { display: 'none' }); } });
+            tl.to(mobileMenu.querySelectorAll('nav a'), { opacity: 0, y: 10, duration: 0.2, stagger: -0.05 })
+              .to(mobileMenu, { x: '100%', duration: 0.4, ease: "power3.inOut" }, "-=0.1");
+        }
+
+
+        function openSearch() {
+            document.body.classList.add('overflow-hidden', 'search-overlay-active');
+            document.body.style.setProperty('transition', 'background-color 0.3s');
+            document.body.style.setProperty('background-color', 'rgba(0, 0, 0, 0.4)');
+            
+            const tl = gsap.timeline();
+            tl.set(searchModal, { display: 'block' })
+              .fromTo(searchModal, { y: '-100%', opacity: 0, scaleY: 0.98 }, {
+                y: '0%', opacity: 1, scaleY: 1, duration: 0.4, ease: "power3.out",
+                onComplete: () => { /* document.getElementById('searchInput').focus(); */ }
+            });
+        }
+
+        function closeSearch() {
+            const tl = gsap.timeline({
+                onComplete: () => {
+                    document.body.classList.remove('overflow-hidden', 'search-overlay-active');
+                    document.body.style.removeProperty('background-color');
+                    document.body.style.removeProperty('transition');
+                    gsap.set(searchModal, { display: 'none' });
+                }
+            });
+            tl.to(searchModal, { y: '-100%', opacity: 0, scaleY: 0.98, duration: 0.3, ease: "power2.in" });
+        }
+
+
+        // --- Event Listeners and Initialization ---
+        
+        document.addEventListener('DOMContentLoaded', () => {
+             if(hamburgerBtn) hamburgerBtn.addEventListener('click', openMenu);
+             if(searchBtn) searchBtn.addEventListener('click', openSearch);
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (document.body.classList.contains('search-overlay-active') && searchModal && searchBtn && !searchModal.contains(e.target) && !searchBtn.contains(e.target)) {
+                closeSearch();
+            }
+        });
+
+        window.addEventListener('load', () => {
+            setupMarquee();
+            setupMicroAnimations();
+            initializeMegaMenu('topsTrigger', 'topsMegaMenu'); 
+            initializeMegaMenu('sareesTrigger', 'sareesMegaMenu'); 
+            
+            initSwiper();
+            setupProductAnimations();
+            setupTrendingScroll(); // Initialize the new scroll section
+            setupGlobalAnimations();
+            
+            // Initial check for mobile swipers
+            initMobileSwipers();
+            
+            // NEW: Setup Main Marquee Animation
+            gsap.to(".scrolling-text-content", {
+                xPercent: -100,
+                repeat: -1,
+                duration: 25,
+                ease: "linear"
+            });
+        });
+        
+        // Listen for resize to toggle Swipers
+        window.addEventListener('resize', () => {
+            initMobileSwipers();
+            ScrollTrigger.refresh(); // Ensure pinned section recalculates
+        });
+
+    </script>
+</body>
+</html>
